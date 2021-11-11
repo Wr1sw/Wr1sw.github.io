@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>创建SpringBoot项目的三种方法</title>
+    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01/</url>
+    <content><![CDATA[<h3 id="SpringBoot的介绍"><a href="#SpringBoot的介绍" class="headerlink" title="SpringBoot的介绍"></a>SpringBoot的介绍</h3><p>上javaweb课程的时候，使用Servlet/JSP做开发，一个接口就需要搞一个Servlet，使用很不方便；后来引入了SpringMVC一类的框架，提高了生产力，但是用久了，发现了新问题，即配置繁琐易出错；如果想做一个新项目，需要先搭环境，环境也就是那几行配置，不同的项目可能只有包不同，其他部分的配置都是一样的，Java总背诟病配置繁琐代码量巨大（我学习了golang之后发现go真的太香了），那怎么办呢？Spring Boot应运而生，主要提供了如下功能</p>
+<ol>
+<li><p>为所有基于Spring的Java开发提供了方便快捷的入门体验</p>
+</li>
+<li><p>开箱即用，有自己的自定义配置的话用自己的，没有的话用官方自带的即可</p>
+</li>
+<li><p>提供了一系列通用的非功能性的功能，例如嵌入式服务器、安全管理、健康检测等</p>
+</li>
+<li><p>绝对没有代码生成，也不需要XML配置</p>
+</li>
+</ol>
+<h3 id="SpringBoot系统要求"><a href="#SpringBoot系统要求" class="headerlink" title="SpringBoot系统要求"></a>SpringBoot系统要求</h3><p>至少要求JDK8，内置的Tomcat版本是9.0</p>
+<h3 id="SpringBoot项目的三种创建方式"><a href="#SpringBoot项目的三种创建方式" class="headerlink" title="SpringBoot项目的三种创建方式"></a>SpringBoot项目的三种创建方式</h3><h4 id="在线创建"><a href="#在线创建" class="headerlink" title="在线创建"></a>在线创建</h4><p>这个是官方推荐的创建方式，实际上我们使用IEDA创建SpringBoot项目(第二种方式),也就是从这个网站上或者其他网站上创建的，只不过开发工具帮我们完成了这个过程。</p>
+<p>首先打开 <a href="https://start.spring.io/">https://start.spring.io</a>这个网站，如下图：</p>
+<p><img src="1.1.png"></p>
+<p>配置简单说明：</p>
+<ul>
+<li><p>构建工具是Maven还是Gradle，我这里选择创建Maven项目</p>
+</li>
+<li><p>开发语言，这个当然选择Java</p>
+</li>
+<li><p>SpringBoot 版本，可以看到目前的最新稳定版是2.5.6，所以我这里选择最新稳定版</p>
+</li>
+<li><p>既然是Maven工程，当然得用项目坐标、项目描述等信息，另外这里还需要输入包名，因为创建成功后会自动生成启动类</p>
+</li>
+<li><p>Packing表示项目要打包成jar包还是war包，SpringBoot的一大优势就是内嵌了Servlet容器，所以打成jar包可以直接运行。当然也可以更具实际情况选择war包</p>
+</li>
+<li><p>选择构建的JDK版本</p>
+</li>
+<li><p>选择需要的依赖，输入关键字比如说web，会有相关的提示，这里我先加入web依赖</p>
+</li>
+</ul>
+<p>所有的事情都完成后，点击下方的<strong>generate</strong>按钮或者快捷键Alt+Enter，将下载下来的项目解压，然后用IDEA打开即可。</p>
+<h4 id="使用开发工具创建"><a href="#使用开发工具创建" class="headerlink" title="使用开发工具创建"></a>使用开发工具创建</h4><p>有人觉得使用第一种方式创建项目过于繁琐，那么可以使用开发工具来创建。需要注意的是IDEA只有ultimate版才能创建SpringBoot项目，社区版无此功能。<strong>学生可以通过教育邮箱免费白嫖</strong></p>
+<p>首先，在创建项目的时候选择<strong>Spring Initializr</strong></p>
+<p><img src="1-2.png"></p>
+<p>然后点击Next，填入Maven项目的基本信息</p>
+<p><img src="1-3.png"></p>
+<p>选择依赖</p>
+<p><img src="1-4.png"></p>
+<p>完成创建</p>
+<h4 id="使用Maven创建"><a href="#使用Maven创建" class="headerlink" title="使用Maven创建"></a>使用Maven创建</h4><p>上面提到的创建SpringBoot项目的方式都借助到了<strong><a href="https://start.spring.io/">https://start.spring.io/</a></strong> 这个网站；有时候网站不会很稳定，会出现项目创建失败的情况，所以这个时候可以选择通过Maven来创建项目。步骤如下</p>
+<p>首先创建一个普通的Maven项目</p>
+<p><img src="1-5.png"></p>
+<p>注意这里不用选择项目骨架（如果大伙是做练习的话，也可以去尝试选择一下，这里大概有十来个 Spring Boot 相关的项目骨架），直接点击 Next ，下一步中填入一个 Maven 项目的基本信息，如下图：</p>
+<p><img src="1-6.png"></p>
+<p>然后点击Next完成项目的创建。</p>
+<p>创建完成之后，在pom.xml文件下，添加如下依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.1.4.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/parent&gt;</span><br><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+
+<p>添加成功之后，在Java目录中创建包，编写启动类，这边参考松哥的启动类</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@EnableAutoConfiguration</span><br><span class="line">@RestController</span><br><span class="line">public class App &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(App.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">    @GetMapping(&quot;/hello&quot;)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        return &quot;hello&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>@EnableAutoConfiguration注解表示开启自动化配置</strong></p>
+<p>接下来执行main方法就可以启动一个SpringBoot项目了</p>
+<p>项目结构(参考松哥)：</p>
+<p><img src="1-7.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是常用的创建SringBoot项目的方式，随着我的学习，如果有更好的创建方式会分享给大家。</p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Maven工程的resource结点的理解</title>
+    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</url>
+    <content><![CDATA[<p>当我们使用Mybatis的时候，mapper文件想要在包中被解析，就需要配置resource</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">      &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;$&#123;basedir&#125;/src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">          &lt;include&gt;**/application*.yml&lt;/include&gt;</span><br><span class="line">          &lt;include&gt;**/application*.yaml&lt;/include&gt;</span><br><span class="line">          &lt;include&gt;**/application*.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">      &lt;/resource&gt;</span><br><span class="line">      &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;$&#123;basedir&#125;/src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;excludes&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.yml&lt;/exclude&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.yaml&lt;/exclude&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.properties&lt;/exclude&gt;</span><br><span class="line">        &lt;/excludes&gt;</span><br><span class="line">      &lt;/resource&gt;</span><br><span class="line">    &lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>resources中可以有多个resource</li>
+<li>directory 指定资源目录</li>
+<li>includes中可以有多个include</li>
+<li>**/application*.yml中最后一个*代表通配符，因为你可能会有-dev -test等等的profile</li>
+</ul>
+<h4 id="include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？"><a href="#include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？" class="headerlink" title="include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？"></a>include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？</h4><p>上下两个配置唯一的差别就在<filtering>true</filtering>中，所以关键就在这。</p>
+<p>下面是松哥的一个简单案例</p>
+<p>新建两个properties文件,a.properties和b.properties，两个文件分别写入a.name=wr1sw和b.name=wr1sw</p>
+<p><img src="1-1.png"></p>
+<p>接下来使用maven工具package给项目打一个包，会发现classes中出现了这两个配置文件</p>
+<p>在pom.xml中定义一些变量,变量是可以在properties文件中引用的，应用方式就是${wr1sw.name},当项目在编译打包的时候会自动替换变量值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">        &lt;wr1sw.name&gt;wr1sw&lt;/wr1sw.name&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但是，直接打包的话，properties文件中的变量并没有变，这就涉及到了resource的用法了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;!--   表示这个东西要进行过滤             --&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;a.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<p>加上这行会发现，a.properties中的变量成功能显示了，但是b.properties缺不见了;</p>
+<p>如果你没有指定的话，resources下的配置文件都会被编译，如果你指定了，就会按照你指定的来。</p>
+<p>如果说我现在不想忽略其他文件(b.properties)，我没有必要在include中加上b.properties，因为在b.properties里面没有需要引用pom.xml里的变量。这个时候可以定义一个exclude,含义是：<br><strong>除了a.properties的文件，其他文件呢会给你保留下来，但是呢其他文件不会进行一个过滤的处理，因为其他文件里面也没有需要处理的(没有引用变量)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;!--   表示这个东西要进行过滤             --&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line"></span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;a.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">            &lt;!--     默认就是false,这里写false是因为其他文件没有用到pom.xml的变量，没有必要过滤处理           --&gt;</span><br><span class="line">        &lt;filtering&gt;false&lt;/filtering&gt;</span><br><span class="line">        &lt;excludes&gt;</span><br><span class="line">            &lt;exclude&gt;a.properties&lt;/exclude&gt;</span><br><span class="line">        &lt;/excludes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+        <category>Maven</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring Boot 项目中的 parent</title>
+    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</url>
+    <content><![CDATA[<p>以下是学习松哥的SpringBoot的学习笔记</p>
+<h3 id="你真的了解SpringBoot中的parent吗？"><a href="#你真的了解SpringBoot中的parent吗？" class="headerlink" title="你真的了解SpringBoot中的parent吗？"></a>你真的了解SpringBoot中的parent吗？</h3><p>在上一篇博客中写到了SpringBoot项目的创建方式，这几种创建方式无论哪一种，创建项目成功之后，pom.xml坐标文件中都会有如下一段引用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">       &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</span><br><span class="line">       &lt;version&gt;2.5.6&lt;/version&gt;</span><br><span class="line">       &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;</span><br><span class="line">&lt;/parent&gt;</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+
+<h4 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h4><p>当我们创建一个SpringBoot项目的时，可以继承一个<strong>spring-boot-starter-parent</strong>，当然也可以不继承它。我们先来看看parent的基本功能有哪些？</p>
+<ol>
+<li>定义了Java编译版本为1.8</li>
+<li>使用UTF-8格式编码</li>
+<li>继承自<strong>spring-boot-dependencies</strong>，这个里面定义了依赖的版本，正因为继承了这个依赖，所以我们在写依赖的时候才不需要写版本号</li>
+<li>执行打包操作的配置</li>
+<li>自动化的资源过滤</li>
+<li>自动化的插件配置</li>
+<li>针对 application.properties 和 application.yml 的资源过滤，包括通过 profile 定义的不同环境的配置文件，例如 application-dev.properties 和 application-dev.yml</li>
+</ol>
+<p><strong>请注意，由于application.properties和application.yml文件接受Spring样式占位符 $ {…} ，因此 Maven 过滤更改为使用 @ .. @ 占位符，当然开发者可以通过设置名为 resource.delimiter 的Maven 属性来覆盖 @ .. @ 占位符。</strong></p>
+<h4 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h4><p>当我们创建一个 Spring Boot 项目后，我们可以在本地 Maven 仓库中看到看到这个具体的 parent 文件，以 2.1.4 这个版本为例,图片引用松哥。</p>
+<p><img src="1-1.png"></p>
+<p>我们可以看到，它继承自 spring-boot-dependencies ，这里保存了基本的依赖信息，另外我们也可以看到项目的编码格式，JDK 的版本等信息，当然也有我们前面提到的数据过滤信息。最后，我们再根据它的 parent 中指定的 spring-boot-dependencies 位置，来看看 spring-boot-dependencies 中的定义：</p>
+<p><img src="1-2.png"></p>
+<p>在这里，我们看到了版本的定义以及 dependencyManagement 节点，明白了为啥 Spring Boot 项目中部分依赖不需要写版本号了</p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+        <category>Maven</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SpringBoot的web容器基本配置</title>
+    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</url>
+    <content><![CDATA[<p>我们都知道SpringBoot中内嵌了一个Tomcat中可以直接使用。</p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/10/21/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>孤独</title>
+    <url>/2021/10/21/%E5%AD%A4%E7%8B%AC/</url>
+    <content><![CDATA[<h3 id="什么是孤独？"><a href="#什么是孤独？" class="headerlink" title="什么是孤独？"></a>什么是孤独？</h3><p>什么是孤独呢？可能就是离2021/10/22日还剩下3分钟了，而你还没回复我的消息；<br>-礼物已经买好，礼物已经送到，但是缺了一个主人。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>结束啦</title>
+    <url>/2021/10/22/%E7%BB%93%E6%9D%9F%E5%95%A6/</url>
+    <content><![CDATA[<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>纠结了很久，还是决定在你生日那天挣扎一下；估计你也能从一些空间的小细节能看出来吧；仔细想来，长那么大，第一次收到真正意义上的好人卡，感觉还是有点奇怪；<br>脸，会很热会热；心，真的会跳的蛮快的；脑子，确实是有那么一点点蒙蒙的感觉。可能，对这个结果早就预想到了，并没有多难受吧；刚才打开的是王道考研的视频，一直都没下定决心要不要考研。可能，这也是冥冥之中自有天意吧。</p>
+<p>有人在骗自己，听了一晚上房东的猫；有人在骗自己，她不玩qq了看不到信息；有人在骗自己，他并没有多难受；那只熊猫就让他在北京留着吧。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>老坛酸菜</title>
+    <url>/2021/10/23/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C/</url>
+    <content><![CDATA[<h4 id="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"><a href="#有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；" class="headerlink" title="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"></a>有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；</h4>]]></content>
+  </entry>
+  <entry>
+    <title>软件工程导论</title>
+    <url>/2021/10/21/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%AF%BC%E8%AE%BA/</url>
+    <content><![CDATA[<h5 id="1-软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）"><a href="#1-软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）" class="headerlink" title="1. 软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）"></a>1. 软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）</h5><h5 id="软件危机具体表现："><a href="#软件危机具体表现：" class="headerlink" title="软件危机具体表现："></a>软件危机具体表现：</h5><ul>
+<li>对软件开发成本和进度估计常常很不准确</li>
+<li>软件产品的质量往往靠不住</li>
+<li>软件常常是不可维护的</li>
+<li>软件通常没有适当的文档资料</li>
+<li>用户对已完成的软件系统不满意现象经常发生</li>
+<li>软件成本在计算机系统总成本中所占比例逐年上升</li>
+<li>软件开发生产率提高速度远远更不上计算机应用迅速普及深入的趋势</li>
+</ul>
+<h5 id="产生软件危机的原因："><a href="#产生软件危机的原因：" class="headerlink" title="产生软件危机的原因："></a>产生软件危机的原因：</h5><ul>
+<li>软件本身特点</li>
+<li>软件开发维护方法不正确</li>
+</ul>
+<h5 id="解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。"><a href="#解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。" class="headerlink" title="解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。"></a>解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。</h5><h5 id="软件工程的基本原理"><a href="#软件工程的基本原理" class="headerlink" title="软件工程的基本原理"></a>软件工程的基本原理</h5><ul>
+<li>用分阶段的生命周期计划严格管理</li>
+<li>坚持进行阶段评审</li>
+<li>采用严格的产品控制</li>
+<li>采用现代程序设计技术</li>
+<li>结果应能清楚的审查</li>
+<li>开发的小组成员应该少而精</li>
+<li>承认不断改进软件工程实践的必要性</li>
+</ul>
+<h5 id="方法学（范形）："><a href="#方法学（范形）：" class="headerlink" title="方法学（范形）："></a>方法学（范形）：</h5><ul>
+<li>定义：生命周期全过程使用的一整套技术方法的集合</li>
+<li>三要素：方法、工具、过程<h5 id="传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）"><a href="#传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）" class="headerlink" title="传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）"></a>传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）</h5></li>
+</ul>
+<h5 id="面向对象方法学四个要点："><a href="#面向对象方法学四个要点：" class="headerlink" title="面向对象方法学四个要点："></a>面向对象方法学四个要点：</h5><ul>
+<li>把对象作为融合了数据以及在数据上的操作行为的同意的软件构建</li>
+<li>把所有对象划分为类</li>
+<li>按照父类（基类）与子类（派生类）的关系，把若干的相关类组成一个层次结构的系统</li>
+<li>对象彼此间仅能同各国发送消息互相联系</li>
+</ul>
+<h5 id="软件生命周期："><a href="#软件生命周期：" class="headerlink" title="软件生命周期："></a>软件生命周期：</h5><p>组成：软件定义、软件开发、运行维护</p>
+<pre><code>软件定义时期三阶段：问题定义、可行性研究、需求分析
+</code></pre>
+<p>各个阶段：</p>
+<ul>
+<li>问题定义</li>
+<li>可行性研究</li>
+<li>需求分析</li>
+<li>总体设计</li>
+<li>详细设计</li>
+<li>编码和单元测试</li>
+<li>综合测试</li>
+</ul>
+<ol>
+<li></li>
+</ol>
+<p>待补充….</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>导航</tag>
+        <tag>分享</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>oracle复习1</title>
+    <url>/2021/11/11/oracle%E5%A4%8D%E4%B9%A01/</url>
+    <content><![CDATA[<h4 id="1-Oracle常用工具及默认用户"><a href="#1-Oracle常用工具及默认用户" class="headerlink" title="1. Oracle常用工具及默认用户"></a>1. Oracle常用工具及默认用户</h4><h4 id="1-1-常用工具"><a href="#1-1-常用工具" class="headerlink" title="1.1 常用工具"></a>1.1 常用工具</h4><h5 id="1-1-1-常用系统管理工具"><a href="#1-1-1-常用系统管理工具" class="headerlink" title="1.1.1 常用系统管理工具"></a>1.1.1 常用系统管理工具</h5><ul>
+<li>数据库配置助手（<strong>DataBase Configuration Assistant</strong>，简称DBCA）是Oracle提供的一种图形化管理工具，能够：</li>
+</ul>
+<ol>
+<li><p>创建数据库</p>
+</li>
+<li><p>配置数据库选项</p>
+</li>
+<li><p>删除数据库</p>
+</li>
+<li><p>管理数据库模板</p>
+</li>
+</ol>
+<ul>
+<li><p>网络配置助手(<strong>OracleNet Configuration Assistant</strong> 简称ONCA)： </p>
+<ol>
+<li><p>监听程序配置</p>
+</li>
+<li><p>本地网络服务配置 </p>
+</li>
+</ol>
+</li>
+</ul>
+<h5 id="1-1-2-常用数据库管理工具"><a href="#1-1-2-常用数据库管理工具" class="headerlink" title="1.1.2  常用数据库管理工具"></a>1.1.2  常用数据库管理工具</h5><ul>
+<li><p>SQLPlus工具的使用</p>
+<ol>
+<li><p>方法一：通过开始 菜单“SQL Plus” 。</p>
+</li>
+<li><p>方法二：通过DOS命令</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>点击“开始”—&gt;“运行”—&gt;输入“cmd命令”—&gt;进入DOS环境下执行SQLPLUS命令也可以打开SQL*Plus工具。</p>
+<p>◦（1）SQLPLUS [用户名]/[密码][@主机字符串][AS SYSDBA|SYSOPER] </p>
+<p>◦（2）SQLPLUS 用户名/密码@主机名|主机IP地址: 端口号/数据库实例名 [AS SYSDBA|SYSOPER]</p>
+<ul>
+<li>SQL Developer</li>
+</ul>
+<p><strong>SQL Develope</strong>r允许用户创建并维护数据库对象，查看和维护数据，编写、维护并调试PL/SQL代码。这款工具以其简洁整齐的图形用户界面大大简化了开发工作。</p>
+<p><strong>注意</strong>：如果Oracle SQL Developer的SQL工作表不能正常编辑,无法使用回车键,上下左右键:</p>
+<p><strong>打开菜单并选择 工具-首选项-加速器-加载预设-Default</strong></p>
+<hr>
+<h4 id="1-2-默认用户"><a href="#1-2-默认用户" class="headerlink" title="1.2 默认用户"></a>1.2 <strong>默认用户</strong></h4><p>SYS：该用户被默认创建并授予DBA角色，它是Oracle数据库中权限最大的管理员账号。</p>
+<p>SYSTEM：被默认创建并授予DBA角色权限仅次于SYS。该用户创建和管理数据库中可显示管理信息的表或视图，以及被Oracle数据库应用和工具使用的各种数据库对象。</p>
+<p>SYSMAN：该用户是企业管理的超级管理员账号，该账号能够创建和修改其他管理员账号，同时也能管理数据库实例。</p>
+<p>DBSNMP：是Oracle数据库中用于智能代理（Intelligent Agent）的用户，用来监控和管理数据库相关性能。如果停止该用户，则无法提取相关的数据库信息。</p>
+<hr>
+<p>例1.2 以system用户登录数据库。</p>
+<p>​    ◦ SQLPLUS </p>
+<p>​    ◦ SQLPLUS system </p>
+<p>​    ◦ SQLPLUS system/abcdef </p>
+<p>​    ◦ SQLPLUS system/abcdef@orcl</p>
+<p>例1.3 以sys用户登录数据库。</p>
+<p>​    ◦SQLPLUS sys/abcdef AS SYSDBA </p>
+<p>​    ◦SQLPLUS sys/abcdef@orcl AS SYSOPER</p>
+<p>例1.4 不使用已定义的主机字符串，直接指定要连接的主机名、端口号和数据库实例。</p>
+<p>​    ◦SQLPLUS system/abcdef@localhost:1521/orcl </p>
+<p>例1.5 在SQL*Plus环境下，使用CONNECT命令将当前用户分别切换到system用户或sys用户。</p>
+<p>​    CONNECT system/abcdef@orcl</p>
+<p>​    CONNECT sys/abcdef@orcl as sysdba</p>
+<h4 id="1-3-Oracle体系结构"><a href="#1-3-Oracle体系结构" class="headerlink" title="1.3 Oracle体系结构"></a>1.3 Oracle体系结构</h4><h5 id="1-3-1-物理存储结构"><a href="#1-3-1-物理存储结构" class="headerlink" title="1.3.1 物理存储结构"></a>1.3.1 物理存储结构</h5><p>概念：Oracle数据库的物理存储结构是从物理组成的角度分析一个数据库在存储介质上的实际构成，它是由操作系统组织和管理的，是Oracle数据库的外部存储结构。</p>
+<p>Oracle数据库主要包括4种类型的文件：</p>
+<ul>
+<li>数据文件</li>
+<li>日志文件</li>
+<li>控制文件</li>
+<li>初始化参数</li>
+</ul>
+<h4 id="1-3-2-逻辑存储结构"><a href="#1-3-2-逻辑存储结构" class="headerlink" title="1.3.2 逻辑存储结构"></a>1.3.2 逻辑存储结构</h4><p>概念：在逻辑上定义了一组存储单元，以逐层细分的思想将数据库对象占用的存储空间依次划分为表空间、段、盘区和数据块。</p>
+<ul>
+<li>表空间是最大的逻辑存储单元，一个数据库从逻辑结构上划分就包括多个表空间；</li>
+<li>一个表空间继续划分为多个段；</li>
+<li>一个段又被划分为多个盘区，盘区是最小的磁盘空间分配单元；</li>
+<li>一个盘区又被划分为多个数据块，数据块是Oracle最小的数据读写单元。</li>
+<li>表空间（tablespace）是Oracle数据库中最大的逻辑存储结构 。</li>
+<li>逻辑结构上的表空间与物理结构上的数据文件是有关联的。这种关联是：</li>
+<li>数据库中的一个表空间至少包含一个或多个数据文件，而一个数据文件只能属于一个表空间。</li>
+<li>一个表空间的大小就等于它包含的所有数据文件大小之和。 </li>
+</ul>
+<p><img src="1-1.png"></p>
+<p><img src="2-2.png"></p>
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+</search>
