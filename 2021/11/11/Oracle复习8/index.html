@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":320,"display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="PL&#x2F;SQL编程基础——控制语句、游标、异常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle复习8">
+<meta property="og:url" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/index.html">
+<meta property="og:site_name" content="wr1sw">
+<meta property="og:description" content="PL&#x2F;SQL编程基础——控制语句、游标、异常">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/1-13.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/1-14.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/1-15.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/1-17.png">
+<meta property="article:published_time" content="2021-11-11T14:51:43.000Z">
+<meta property="article:modified_time" content="2021-11-11T15:44:41.332Z">
+<meta property="article:author" content="wr1sw">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="导航">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/1-13.png">
+
+<link rel="canonical" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle复习8 | wr1sw</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wr1sw</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">wr1sw</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/wr1sw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wr1sw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wr1sw">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle复习8
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-11 22:51:43 / 修改时间：23:44:41" itemprop="dateCreated datePublished" datetime="2021-11-11T22:51:43+08:00">2021-11-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">PL/SQL编程基础——控制语句、游标、异常</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h3><h4 id="IF逻辑结构"><a href="#IF逻辑结构" class="headerlink" title="IF逻辑结构"></a>IF逻辑结构</h4><ul>
+<li><strong>IF-THEN-END IF</strong></li>
+<li><strong>IF-THEN-ELSE-END IF</strong></li>
+<li><strong>IF-THEN-ELSIF-END IF</strong></li>
+</ul>
+<h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">IF <span class="keyword">condition</span> <span class="keyword">THEN</span></span><br><span class="line">  statements;</span><br><span class="line">[ELSIF <span class="keyword">condition</span> <span class="keyword">THEN</span> </span><br><span class="line">  statements;]</span><br><span class="line">[<span class="keyword">ELSE</span> </span><br><span class="line">  statements;]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IF v_ename <span class="operator">=</span> <span class="string">&#x27;OSBORNE&#x27;</span> <span class="keyword">THEN</span> </span><br><span class="line">  v_mgr :<span class="operator">=</span> <span class="number">22</span>;</span><br><span class="line"><span class="keyword">END</span> IF; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">IF v_ename <span class="operator">=</span> <span class="string">&#x27;MILLER&#x27;</span> <span class="keyword">THEN</span></span><br><span class="line">  v_job :<span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>;     </span><br><span class="line">  v_deptno :<span class="operator">=</span> <span class="number">35</span>;</span><br><span class="line">  v_new_comm :<span class="operator">=</span> sal <span class="operator">*</span> <span class="number">0.20</span>; </span><br><span class="line"><span class="keyword">END</span> IF;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">If var1<span class="operator">&gt;</span><span class="number">10</span> <span class="keyword">then</span></span><br><span class="line">   if var2<span class="operator">&lt;</span>var1 <span class="keyword">then</span></span><br><span class="line">      var2:<span class="operator">=</span>var1<span class="operator">+</span><span class="number">20</span>;</span><br><span class="line">   <span class="keyword">end</span> if;</span><br><span class="line"><span class="keyword">End</span> if;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">IF v_shipdate <span class="operator">-</span> v_orderdate <span class="operator">&lt;</span> <span class="number">5</span> <span class="keyword">THEN</span>  </span><br><span class="line">  v_ship_flag :<span class="operator">=</span> <span class="string">&#x27;Acceptable&#x27;</span>;</span><br><span class="line"><span class="keyword">ELSE</span></span><br><span class="line">  v_ship_flag :<span class="operator">=</span> <span class="string">&#x27;Unacceptable&#x27;</span>;</span><br><span class="line"><span class="keyword">END</span> IF;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- ELSIF无匹配的END IF。</span></span><br><span class="line">IF v_start <span class="operator">&gt;</span> <span class="number">100</span> <span class="keyword">THEN</span></span><br><span class="line">  v_start :<span class="operator">=</span> <span class="number">2</span> <span class="operator">*</span> v_start;</span><br><span class="line">ELSIF v_start <span class="operator">&gt;=</span> <span class="number">50</span> <span class="keyword">THEN</span>              </span><br><span class="line">  v_start :<span class="operator">=</span> <span class="number">.5</span> <span class="operator">*</span> v_start;</span><br><span class="line"><span class="keyword">ELSE</span></span><br><span class="line">  v_start :<span class="operator">=</span> <span class="number">.1</span> <span class="operator">*</span> v_start;</span><br><span class="line"><span class="keyword">END</span> IF;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="CASE表达式"><a href="#CASE表达式" class="headerlink" title="CASE表达式"></a>CASE表达式</h4><ul>
+<li>CASE语句是在Oracle9i中引入的逻辑控制结构。使用CASE语句与IF语句结构不同，CASE语句可以使用简单的结构，有逻辑地从数值清单中作出选择。</li>
+</ul>
+<h5 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CASE</span> selector</span><br><span class="line"><span class="keyword">WHEN</span> expression1 <span class="keyword">THEN</span> sequence_of_statements1;</span><br><span class="line"><span class="keyword">WHEN</span> expression2 <span class="keyword">THEN</span> sequence_of_statements2;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">WHEN</span> expressionN <span class="keyword">THEN</span> sequence_of_statementsN;</span><br><span class="line">[<span class="keyword">ELSE</span> sequence_of_statementsN<span class="operator">+</span><span class="number">1</span>;]</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">CASE</span>;</span><br><span class="line"><span class="comment">-- 注意：为了避免CASE_NOT_FOUND异常，在编写CASE语句时应该带有ELSE语句。 </span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="比较IF语句和CASE语句"><a href="#比较IF语句和CASE语句" class="headerlink" title="比较IF语句和CASE语句"></a>比较IF语句和CASE语句</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">IF grade <span class="operator">=</span> <span class="string">&#x27;A&#x27;</span> <span class="keyword">THEN</span> dbms_output.put_line(<span class="string">&#x27;Excellent&#x27;</span>);</span><br><span class="line">ELSIF grade <span class="operator">=</span> <span class="string">&#x27;B&#x27;</span> <span class="keyword">THEN</span> dbms_output.put_line(<span class="string">&#x27;Very Good&#x27;</span>);</span><br><span class="line">ELSIF grade <span class="operator">=</span> <span class="string">&#x27;C&#x27;</span> <span class="keyword">THEN</span> dbms_output.put_line(<span class="string">&#x27;Good&#x27;</span>);</span><br><span class="line">ELSIF grade <span class="operator">=</span> <span class="string">&#x27;D&#x27;</span> <span class="keyword">THEN</span> dbms_output. put_line(<span class="string">&#x27;Fair&#x27;</span>);</span><br><span class="line">ELSIF grade <span class="operator">=</span> <span class="string">&#x27;E&#x27;</span> <span class="keyword">THEN</span> dbms_output.put_line(<span class="string">&#x27;Poor&#x27;</span>);</span><br><span class="line"><span class="keyword">ELSE</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;No such grade&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span> IF;</span><br><span class="line"><span class="comment">----------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">CASE</span> grade</span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;A&#x27;</span> <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;Excellent&#x27;</span>);</span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;B&#x27;</span> <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;Very Good&#x27;</span>);</span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;C&#x27;</span> <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;Good&#x27;</span>);</span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;D&#x27;</span> <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;Fair&#x27;</span>);</span><br><span class="line"><span class="keyword">WHEN</span> <span class="string">&#x27;E&#x27;</span> <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;Poor&#x27;</span>);</span><br><span class="line"><span class="keyword">ELSE</span> dbms_output.put_line(<span class="string">&#x27;No such grade&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span> <span class="keyword">CASE</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 从emp表中查询指定员工的工资，并判断该员工的工资是否低于2000，如果条件成立，那么将该员工的工资增加200</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_sal emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line">  v_ename emp.ename<span class="operator">%</span>type:<span class="operator">=</span><span class="string">&#x27;&amp;ename&#x27;</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SELECT</span> sal <span class="keyword">INTO</span> v_sal <span class="keyword">FROM</span> scott.emp</span><br><span class="line">  <span class="keyword">WHERE</span> <span class="built_in">LOWER</span>(ename)<span class="operator">=</span><span class="built_in">LOWER</span>(v_ename);</span><br><span class="line">  IF v_sal <span class="operator">&lt;</span><span class="number">2000</span> <span class="keyword">THEN</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> sal<span class="operator">=</span>v_sal<span class="operator">+</span><span class="number">200</span></span><br><span class="line">      <span class="keyword">WHERE</span> <span class="built_in">LOWER</span>(ename)<span class="operator">=</span><span class="built_in">LOWER</span>(v_ename);</span><br><span class="line">  <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 从emp表中查询指定员工的工作，并根据工作来修改他的工资</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_job emp.job<span class="operator">%</span>type;</span><br><span class="line">  v_sal emp.sal<span class="operator">%</span>type;</span><br><span class="line">  v_no emp.empno<span class="operator">%</span>type;</span><br><span class="line">  v_ename emp.ename<span class="operator">%</span>type;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  v_no:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line">  <span class="keyword">SELECT</span> job,sal,ename <span class="keyword">INTO</span> v_job,v_sal,v_ename</span><br><span class="line">  <span class="keyword">FROM</span>  emp <span class="keyword">WHERE</span> empno<span class="operator">=</span>v_no;</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;name:&#x27;</span><span class="operator">||</span>v_ename<span class="operator">||</span><span class="string">&#x27;job:&#x27;</span><span class="operator">||</span>v_job<span class="operator">||</span><span class="string">&#x27;sal:&#x27;</span><span class="operator">||</span>v_sal);</span><br><span class="line">  IF v_job<span class="operator">=</span><span class="string">&#x27;PRESIDENT&#x27;</span> <span class="keyword">THEN</span> </span><br><span class="line">	v_sal:<span class="operator">=</span> v_sal <span class="operator">+</span><span class="number">1000</span>; </span><br><span class="line">    UPDATE emp <span class="keyword">SET</span> sal<span class="operator">=</span>v_sal <span class="keyword">WHERE</span> empno<span class="operator">=</span>v_no;</span><br><span class="line">  ELSIF v_job<span class="operator">=</span><span class="string">&#x27;MANAGER&#x27;</span> <span class="keyword">THEN</span></span><br><span class="line">    UPDATE emp <span class="keyword">SET</span> sal<span class="operator">=</span>v_sal<span class="operator">+</span><span class="number">500</span> <span class="keyword">WHERE</span> empno<span class="operator">=</span>v_no;</span><br><span class="line">  ELSIF v_job<span class="operator">=</span><span class="string">&#x27;CLERK&#x27;</span> <span class="keyword">THEN</span></span><br><span class="line">    UPDATE emp <span class="keyword">SET</span> sal<span class="operator">=</span>v_sal<span class="operator">+</span><span class="number">200</span> <span class="keyword">where</span> empno<span class="operator">=</span>v_no;</span><br><span class="line">  <span class="keyword">ELSE</span></span><br><span class="line">    UPDATE emp <span class="keyword">SET</span> sal<span class="operator">=</span>v_sal<span class="operator">+</span><span class="number">100</span> <span class="keyword">WHERE</span> empno<span class="operator">=</span>v_no;</span><br><span class="line">  <span class="keyword">END</span> IF;</span><br><span class="line">  <span class="keyword">SELECT</span> sal <span class="keyword">INTO</span> v_sal <span class="keyword">FROM</span> scott.emp <span class="keyword">WHERE</span> empno<span class="operator">=</span>v_no;</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;name:&#x27;</span><span class="operator">||</span>v_ename<span class="operator">||</span><span class="string">&#x27;job:&#x27;</span><span class="operator">||</span>v_job<span class="operator">||</span><span class="string">&#x27;sal:&#x27;</span><span class="operator">||</span>v_sal);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改emp表中指定部门的职工的奖金</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_deptno emp.deptno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">CASE</span> v_deptno</span><br><span class="line">    <span class="keyword">WHEN</span> <span class="number">10</span> <span class="keyword">THEN</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> comm<span class="operator">=</span><span class="number">100</span> <span class="keyword">WHERE</span> deptno<span class="operator">=</span>v_deptno;</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;deptno:&#x27;</span><span class="operator">||</span>v_deptno<span class="operator">||</span><span class="string">&#x27;comm:&#x27;</span><span class="operator">||</span><span class="number">100</span>);</span><br><span class="line">    <span class="keyword">WHEN</span> <span class="number">20</span> <span class="keyword">THEN</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> comm<span class="operator">=</span><span class="number">80</span> <span class="keyword">WHERE</span> deptno<span class="operator">=</span>v_deptno;</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;deptno:&#x27;</span><span class="operator">||</span>v_deptno<span class="operator">||</span><span class="string">&#x27;comm:&#x27;</span><span class="operator">||</span><span class="number">80</span>);</span><br><span class="line">    <span class="keyword">WHEN</span> <span class="number">30</span> <span class="keyword">THEN</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> comm<span class="operator">=</span><span class="number">50</span> <span class="keyword">WHERE</span> deptno<span class="operator">=</span>v_deptno;</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;deptno:&#x27;</span><span class="operator">||</span>v_deptno<span class="operator">||</span><span class="string">&#x27;comm:&#x27;</span><span class="operator">||</span><span class="number">50</span>);</span><br><span class="line">    <span class="keyword">ELSE</span></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;the deptno is not exist&#x27;</span>);</span><br><span class="line">  <span class="keyword">END</span> <span class="keyword">CASE</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 根据员工的工资，修改emp表中的奖金值。</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_sal emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line">  v_ename emp.ename<span class="operator">%</span>TYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SELECT</span> ename,sal <span class="keyword">into</span> v_ename,v_sal <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> empno<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line">  <span class="keyword">CASE</span></span><br><span class="line">    <span class="keyword">WHEN</span> v_sal<span class="operator">&lt;</span><span class="number">1000</span> <span class="keyword">THEN</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> comm<span class="operator">=</span><span class="number">100</span> <span class="keyword">WHERE</span> ename<span class="operator">=</span>v_ename;</span><br><span class="line">    <span class="keyword">WHEN</span> v_sal<span class="operator">&lt;</span><span class="number">2000</span> <span class="keyword">THEN</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> comm<span class="operator">=</span><span class="number">80</span> <span class="keyword">WHERE</span> ename<span class="operator">=</span>v_ename;</span><br><span class="line">    <span class="keyword">WHEN</span> v_sal <span class="operator">&lt;</span><span class="number">6000</span> <span class="keyword">THEN</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> comm<span class="operator">=</span><span class="number">50</span> <span class="keyword">WHERE</span> ename<span class="operator">=</span>v_ename;</span><br><span class="line">    <span class="keyword">ELSE</span></span><br><span class="line">      UPDATE emp <span class="keyword">SET</span> comm<span class="operator">=</span><span class="number">30</span> <span class="keyword">WHERE</span> ename<span class="operator">=</span>v_ename;</span><br><span class="line">  <span class="keyword">END</span> <span class="keyword">CASE</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="循环控制结构"><a href="#循环控制结构" class="headerlink" title="循环控制结构"></a>循环控制结构</h3><ul>
+<li>Loops循环是一种控制结构，允许重复执行一组命令，直到决定停止循环为止</li>
+<li>三种loop循环类型:<ul>
+<li><strong>Basic loop</strong></li>
+<li><strong>FOR loop</strong></li>
+<li><strong>WHILE loop</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="Basic-Loop"><a href="#Basic-Loop" class="headerlink" title="Basic Loop"></a>Basic Loop</h4><h5 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LOOP              <span class="comment">-- 以循环关键字Loop开始循环        </span></span><br><span class="line">  statement1;     <span class="comment">-- 可执行语句</span></span><br><span class="line">  . . .</span><br><span class="line">  EXIT [<span class="keyword">WHEN</span> <span class="keyword">condition</span>]; <span class="comment">-- 满足条件退出循环[条件语句]</span></span><br><span class="line">  statement2;          </span><br><span class="line"><span class="keyword">END</span> LOOP;                <span class="comment">-- 关键字End Loop结束循环</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 上面的condition条件		是一个Boolean变量或表达式(TRUE、FALSE或NULL);</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 给定任意一个整数，计算该数的阶乘</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_num NUMBER(<span class="number">2</span>):<span class="operator">=</span><span class="operator">&amp;</span>num;  <span class="comment">--用户任意给定的一个整数</span></span><br><span class="line">  v_pro NUMBER(<span class="number">20</span>):<span class="operator">=</span><span class="number">1</span>;  </span><br><span class="line">  i NUMBER(<span class="number">2</span>):<span class="operator">=</span><span class="number">1</span>;  <span class="comment">--控制循环结束的循环变量</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  IF v_num<span class="operator">=</span><span class="number">0</span> <span class="keyword">THEN</span></span><br><span class="line">    v_pro:<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">  <span class="keyword">ELSE</span></span><br><span class="line">    LOOP</span><br><span class="line">      v_pro:<span class="operator">=</span>v_pro<span class="operator">*</span>i;  <span class="comment">--计算给定整数的阶乘</span></span><br><span class="line">      i:<span class="operator">=</span>i<span class="operator">+</span><span class="number">1</span>;</span><br><span class="line">      EXIT <span class="keyword">WHEN</span> i<span class="operator">&gt;</span>v_num;</span><br><span class="line">    <span class="keyword">END</span> LOOP;</span><br><span class="line">  <span class="keyword">END</span> IF;</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;num:&#x27;</span><span class="operator">||</span>v_num<span class="operator">||</span><span class="string">&#x27;  factorial:&#x27;</span><span class="operator">||</span>v_pro);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="FOR-Loop"><a href="#FOR-Loop" class="headerlink" title="FOR Loop"></a>FOR Loop</h4><h5 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FOR</span> counter <span class="keyword">in</span> [REVERSE] </span><br><span class="line">    lower_bound..upper_bound LOOP  </span><br><span class="line">  statement1;</span><br><span class="line">  statement2;</span><br><span class="line">  . . .</span><br><span class="line"><span class="keyword">END</span> LOOP;</span><br></pre></td></tr></table></figure>
+
+<h5 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用FOR循环实现某数的阶乘</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_num NUMBER(<span class="number">2</span>):<span class="operator">=</span><span class="operator">&amp;</span>num;</span><br><span class="line">  v_pro NUMBER(<span class="number">20</span>):<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  IF v_num<span class="operator">=</span><span class="number">0</span> <span class="keyword">THEN</span></span><br><span class="line">    v_pro:<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">  <span class="keyword">ELSE</span></span><br><span class="line">    <span class="keyword">FOR</span> i <span class="keyword">IN</span> <span class="number">1.</span>.v_num LOOP</span><br><span class="line">      v_pro:<span class="operator">=</span>v_pro<span class="operator">*</span>i;      </span><br><span class="line">    <span class="keyword">END</span> LOOP;</span><br><span class="line">  <span class="keyword">END</span> IF;</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;num:&#x27;</span><span class="operator">||</span>v_num<span class="operator">||</span><span class="string">&#x27;  factorial:&#x27;</span><span class="operator">||</span>v_pro);</span><br><span class="line">  <span class="comment">--dbms_output.put(&#x27;num:&#x27;||v_num);</span></span><br><span class="line">  <span class="comment">--dbms_output.put_line(&#x27;  factorial:&#x27;||v_pro);</span></span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="While-Loop"><a href="#While-Loop" class="headerlink" title="While Loop"></a>While Loop</h4><h5 id="语法-4"><a href="#语法-4" class="headerlink" title="语法"></a>语法</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">WHILE <span class="keyword">condition</span> LOOP</span><br><span class="line">  statement1;</span><br><span class="line">  statement2;</span><br><span class="line">  . . .</span><br><span class="line"><span class="keyword">END</span> LOOP;</span><br></pre></td></tr></table></figure>
+
+<h5 id="例子-2"><a href="#例子-2" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用WHILE循环实现某数的阶乘</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_num NUMBER(<span class="number">2</span>):<span class="operator">=</span><span class="operator">&amp;</span>num;</span><br><span class="line">  v_pro NUMBER(<span class="number">20</span>):<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">  i NUMBER(<span class="number">2</span>):<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  IF v_num<span class="operator">=</span><span class="number">0</span> <span class="keyword">THEN</span></span><br><span class="line">    v_pro:<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">  <span class="keyword">ELSE</span></span><br><span class="line">    WHILE i<span class="operator">&lt;=</span>v_num LOOP</span><br><span class="line">      v_pro:<span class="operator">=</span>v_pro<span class="operator">*</span>i; </span><br><span class="line">      i:<span class="operator">=</span>i<span class="operator">+</span><span class="number">1</span>;</span><br><span class="line">    <span class="keyword">END</span> LOOP;</span><br><span class="line">  <span class="keyword">END</span> IF;</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;num:&#x27;</span><span class="operator">||</span>v_num<span class="operator">||</span><span class="string">&#x27;  factorial:&#x27;</span><span class="operator">||</span>v_pro);</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="游标-Cursors"><a href="#游标-Cursors" class="headerlink" title="游标(Cursors)"></a>游标(Cursors)</h3><h4 id="隐式游标"><a href="#隐式游标" class="headerlink" title="隐式游标"></a>隐式游标</h4><p><img src="1-13.png"></p>
+<h5 id="例子-3"><a href="#例子-3" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 从表rooms中删除指定的room_id行，并打印删除的行数</span></span><br><span class="line"><span class="keyword">set</span> serveroutput <span class="keyword">on</span>;</span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empno  NUMBER :<span class="operator">=</span> <span class="number">7788</span>;</span><br><span class="line">  rows_deleted VARCHAR2(<span class="number">100</span>);</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DELETE</span>   <span class="keyword">FROM</span> emp</span><br><span class="line">  <span class="keyword">WHERE</span>    empno <span class="operator">=</span> v_empno;</span><br><span class="line">  rows_deleted :<span class="operator">=</span> <span class="keyword">SQL</span><span class="operator">%</span>ROWCOUNT<span class="operator">||</span><span class="string">&#x27; rows deleted.&#x27;</span>;</span><br><span class="line">  dbms_output.put_line(rows_deleted);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="显示游标"><a href="#显示游标" class="headerlink" title="显示游标"></a>显示游标</h4><p><img src="1-14.png"></p>
+<p><img src="1-15.png"></p>
+<h5 id="声明游标"><a href="#声明游标" class="headerlink" title="声明游标"></a>声明游标</h5><ul>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CURSOR</span> cursor_name <span class="keyword">IS</span></span><br><span class="line">     select_statement; </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在游标声明中<strong>不能包含INTO子句</strong></li>
+<li>如果处理的行<strong>要求特定的顺序</strong>，在查询语句中可以<strong>使用 ORDER BY子句</strong>。</li>
+</ul>
+</li>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  <span class="keyword">CURSOR</span> c1 <span class="keyword">IS</span> </span><br><span class="line">    <span class="keyword">SELECT</span> empno, ename</span><br><span class="line">	    <span class="keyword">FROM</span>   emp;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">CURSOR</span> c2 <span class="keyword">IS</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="operator">*</span></span><br><span class="line">    <span class="keyword">FROM</span>   dept</span><br><span class="line">    <span class="keyword">WHERE</span>  deptno <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="打开游标"><a href="#打开游标" class="headerlink" title="打开游标"></a>打开游标</h5><ul>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">OPEN</span>		cursor_name;                    </span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>打开游标</strong></p>
+<ol>
+<li><p><strong>执行查询。</strong></p>
+</li>
+<li><p><strong>活动集（查询结果的行的集合）被确定。</strong></p>
+</li>
+<li><p><strong>活动集的指针指向第一行。</strong></p>
+</li>
+</ol>
+<ul>
+<li><p><strong>如果查询没有返回行，不会抛出异常。</strong></p>
+</li>
+<li><p><strong>提取一行后，应该使用游标属性测试结果。</strong></p>
+</li>
+</ul>
+<h5 id="提取数据"><a href="#提取数据" class="headerlink" title="提取数据"></a>提取数据</h5><ul>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FETCH</span> cursor_name <span class="keyword">INTO</span>	[variable1, variable2, ...]</span><br><span class="line">									<span class="operator">|</span> record_name];   </span><br></pre></td></tr></table></figure></li>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_ename  emp.ename<span class="operator">%</span>TYPE;</span><br><span class="line">  v_sal    emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line">  v_empRecord  emp<span class="operator">%</span>ROWTYPE;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">CURSOR</span> cur_AllEmp <span class="keyword">IS</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="operator">*</span>  <span class="keyword">FROM</span> emp;  </span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">OPEN</span> cur_AllEmp;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">FETCH</span> cur_AllEmp <span class="keyword">INTO</span> v_empRecord;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">FETCH</span> cur_AllEmp <span class="keyword">INTO</span> v_ename, v_sal; <span class="comment">-- 错误</span></span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例子: 从scott.emp表中查询所有记录，利用游标获取前两行记录并输出ename、job、sal中的值 </span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line"><span class="keyword">CURSOR</span> c1 <span class="keyword">IS</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> emp;</span><br><span class="line">emp_rec emp<span class="operator">%</span>ROWTYPE;  <span class="comment">--定义一个和表结构完全一致的记录变量</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">OPEN</span> c1;</span><br><span class="line">   <span class="keyword">FETCH</span> c1 <span class="keyword">INTO</span> emp_rec;</span><br><span class="line">   dbms_output.put_line(<span class="string">&#x27;姓名是:&#x27;</span><span class="operator">||</span>emp_rec.ename<span class="operator">||</span> <span class="string">&#x27;工作是:&#x27;</span><span class="operator">||</span>emp_rec.job<span class="operator">||</span> <span class="string">&#x27;工资是:&#x27;</span><span class="operator">||</span>emp_rec.sal);</span><br><span class="line">   <span class="keyword">FETCH</span> c1 <span class="keyword">INTO</span> emp_rec;</span><br><span class="line">   dbms_output.put_line(<span class="string">&#x27;姓名是:&#x27;</span><span class="operator">||</span>emp_rec.ename<span class="operator">||</span><span class="string">&#x27;工作是:&#x27;</span><span class="operator">||</span>emp_rec.job<span class="operator">||</span> <span class="string">&#x27;工资是:&#x27;</span><span class="operator">||</span>emp_rec.sal);</span><br><span class="line">   <span class="keyword">CLOSE</span> c1;</span><br><span class="line"><span class="keyword">END</span>; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+</li>
+</ul>
+<h5 id="关闭游标"><a href="#关闭游标" class="headerlink" title="关闭游标"></a>关闭游标</h5><ul>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CLOSE</span>		cursor_name;                    </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当所有的活动集都被检索以后，游标就应该关闭</li>
+<li>如果需要，可以在重新打开游标</li>
+<li>一旦关闭了游标，再从该游标提取数据就将是非法的。这样做会产生一个Oracle错误</li>
+</ul>
+<h5 id="显示游标的属性"><a href="#显示游标的属性" class="headerlink" title="显示游标的属性"></a>显示游标的属性</h5></li>
+</ul>
+<p>![1-16.png]</p>
+<h5 id="游标提取BASIC-LOOP和WHILE-LOOP"><a href="#游标提取BASIC-LOOP和WHILE-LOOP" class="headerlink" title="游标提取BASIC LOOP和WHILE LOOP"></a>游标提取BASIC LOOP和WHILE LOOP</h5><ul>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用游标实现逐行输出scott.emp表中部门编号为10的员工姓名和工资。</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">   <span class="keyword">CURSOR</span> emp_cursor <span class="keyword">IS</span> </span><br><span class="line">	<span class="keyword">SELECT</span> ename,sal <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">   emp_record emp<span class="operator">%</span>ROWTYPE;  </span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">OPEN</span> emp_cursor ;</span><br><span class="line">   LOOP</span><br><span class="line">      <span class="keyword">FETCH</span> emp_cursor <span class="keyword">INTO</span> emp_record.ename,emp_record.sal;</span><br><span class="line">      EXIT <span class="keyword">WHEN</span> emp_cursor<span class="operator">%</span>NOTFOUND;</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;ename: &#x27;</span><span class="operator">||</span>emp_record.ename<span class="operator">||</span><span class="string">&#x27;  sal:&#x27;</span><span class="operator">||</span>emp_record.sal);</span><br><span class="line">   <span class="keyword">END</span> LOOP;</span><br><span class="line">   dbms_output.put_line(<span class="string">&#x27;row count:&#x27;</span><span class="operator">||</span>emp_cursor<span class="operator">%</span>rowcount);</span><br><span class="line">   <span class="keyword">CLOSE</span> emp_cursor;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用游标实现逐行输出scott.emp表中部门编号为10的员工姓名和工资。</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">   <span class="keyword">CURSOR</span> emp_cursor <span class="keyword">IS</span> </span><br><span class="line">	<span class="keyword">SELECT</span> ename,sal <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">   emp_record emp<span class="operator">%</span>ROWTYPE;  </span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">OPEN</span> emp_cursor ;</span><br><span class="line">   <span class="keyword">FETCH</span> emp_cursor <span class="keyword">INTO</span> emp_record.ename,emp_record.sal;</span><br><span class="line">   while emp_cursor<span class="operator">%</span>FOUND LOOP</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;ename: &#x27;</span><span class="operator">||</span>emp_record.ename<span class="operator">||</span><span class="string">&#x27;  sal:&#x27;</span><span class="operator">||</span>emp_record.sal);</span><br><span class="line">      <span class="keyword">FETCH</span> emp_cursor <span class="keyword">INTO</span> emp_record.ename,emp_record.sal;</span><br><span class="line">   <span class="keyword">END</span> LOOP;</span><br><span class="line">   dbms_output.put_line(<span class="string">&#x27;row count:&#x27;</span><span class="operator">||</span>emp_cursor<span class="operator">%</span>rowcount);</span><br><span class="line">   <span class="keyword">CLOSE</span> emp_cursor;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="游标提取FOR-LOOP"><a href="#游标提取FOR-LOOP" class="headerlink" title="游标提取FOR LOOP"></a>游标提取FOR LOOP</h5></li>
+<li><p><strong>语法</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FOR</span> record_name <span class="keyword">IN</span> cursor_name LOOP   </span><br><span class="line">  statement1;</span><br><span class="line">  statement2;</span><br><span class="line">  . . .</span><br><span class="line"><span class="keyword">END</span> LOOP;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>游标的FOR循环能够便捷的处理显示游标。</li>
+<li>FOR循环中的循环控制变量不需要事先定义。</li>
+<li>在游标的FOR循环之前，系统能够自动打开游标；在FOR循环结束后，系统能够自动关闭游标，不需要人为操作。</li>
+<li>在游标的FOR循环过程中，系统能够自动执行FETCH语句；每一次循环，系统就自动执行一次FETCH语句，将游标指向的当前行记录存入循环控制变量中</li>
+</ul>
+</li>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例子 使用FOR循环实现逐行输出emp表中部门编号为10的员工姓名和工资。</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">   <span class="keyword">CURSOR</span> emp_cursor <span class="keyword">IS</span> </span><br><span class="line">	<span class="keyword">SELECT</span> ename,sal <span class="keyword">FROM</span> scott.emp <span class="keyword">WHERE</span> deptno<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">FOR</span> emp_record <span class="keyword">IN</span> emp_cursor LOOP</span><br><span class="line"></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;ename: &#x27;</span><span class="operator">||</span>emp_record.ename<span class="operator">||</span><span class="string">&#x27;  sal:&#x27;</span><span class="operator">||</span>emp_record.sal);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">END</span> LOOP;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 该命令无效，因为FOR循环结束后游标自动关闭</span></span><br><span class="line"><span class="comment">dbms_output.put_line(&#x27;row count:&#x27;||emp_cursor%rowcount); */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例子 使用游标查询emp表中的所有记录，并在程序块中输出工资最高的前五行记录</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">   <span class="keyword">CURSOR</span> cur <span class="keyword">IS</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> scott.emp <span class="keyword">ORDER</span> <span class="keyword">BY</span> sal <span class="keyword">DESC</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">FOR</span> rec <span class="keyword">IN</span> cur  LOOP</span><br><span class="line">      IF cur<span class="operator">%</span>ROWCOUNT<span class="operator">&lt;=</span><span class="number">5</span> <span class="keyword">THEN</span></span><br><span class="line">                dbms_output.put_line(<span class="string">&#x27;ename:&#x27;</span><span class="operator">||</span>rec.ename<span class="operator">||</span>’sal:<span class="string">&#x27;||rec.sal);</span></span><br><span class="line"><span class="string">      ELSE </span></span><br><span class="line"><span class="string">        EXIT;</span></span><br><span class="line"><span class="string">      END IF;</span></span><br><span class="line"><span class="string">   END LOOP;</span></span><br><span class="line"><span class="string">END;</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="带参数的游标"><a href="#带参数的游标" class="headerlink" title="带参数的游标"></a>带参数的游标</h5><ul>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CURSOR</span> cursor_name(parameter_name datatype) <span class="keyword">IS</span> select_statment; </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用open命令打开带参数的游标时，需要给游标传递实参值。</li>
+</ul>
+</li>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例子   定义参数游标，查询指定部门的员工姓名</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line"><span class="comment">--定义游标参数no，参数类型为number类型</span></span><br><span class="line"><span class="keyword">CURSOR</span> emp_cursor( <span class="keyword">no</span> NUMBER) <span class="keyword">IS</span> </span><br><span class="line">		<span class="keyword">SELECT</span> ename <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> deptno<span class="operator">=</span><span class="keyword">no</span>;</span><br><span class="line">emp_rec emp_cursor<span class="operator">%</span>ROWTYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="comment">--打开参数游标时，指明一个替代变量作为游标参数的值</span></span><br><span class="line">  <span class="keyword">OPEN</span> emp_cursor(<span class="operator">&amp;</span><span class="keyword">no</span>); </span><br><span class="line">  LOOP</span><br><span class="line">    <span class="keyword">FETCH</span> emp_cursor <span class="keyword">INTO</span> emp_rec;</span><br><span class="line">    EXIT <span class="keyword">WHEN</span> emp_cursor<span class="operator">%</span>NOTFOUND;     </span><br><span class="line">    dbms_output.put_line(<span class="string">&#x27;ename:&#x27;</span><span class="operator">||</span>emp_rec.ename);</span><br><span class="line">  <span class="keyword">END</span> LOOP;</span><br><span class="line">  <span class="keyword">CLOSE</span> emp_cursor;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><h4 id="异常处理语法"><a href="#异常处理语法" class="headerlink" title="异常处理语法"></a>异常处理语法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">EXCEPTION</span><br><span class="line">  <span class="keyword">WHEN</span> exception1 [<span class="keyword">OR</span> exception2 . . .] <span class="keyword">THEN</span></span><br><span class="line">    statement1;</span><br><span class="line">    statement2;</span><br><span class="line">    . . .</span><br><span class="line">  [<span class="keyword">WHEN</span> exception3 [<span class="keyword">OR</span> exception4 . . .] <span class="keyword">THEN</span></span><br><span class="line">    statement1;</span><br><span class="line">    statement2;</span><br><span class="line">    . . .]</span><br><span class="line">  [<span class="keyword">WHEN</span> OTHERS <span class="keyword">THEN</span></span><br><span class="line">    statement1;</span><br><span class="line">    statement2;</span><br><span class="line">    . . .]</span><br></pre></td></tr></table></figure>
+
+<h4 id="捕获异常规则"><a href="#捕获异常规则" class="headerlink" title="捕获异常规则"></a>捕获异常规则</h4><ul>
+<li>WHEN OTHERS用于捕获所有未指定错误。必须是最后一个错误处理语句</li>
+<li>EXCEPTION关键字，标识异常处理的开始区域</li>
+<li>允许有多个异常处理子句。</li>
+<li>在离开异常处理程序块之前，只能有一个错误处理子句被执行。</li>
+</ul>
+<h4 id="异常的类型"><a href="#异常的类型" class="headerlink" title="异常的类型"></a>异常的类型</h4><p>隐式触发</p>
+<ul>
+<li>系统预定义异常</li>
+<li>系统非预定义异常</li>
+</ul>
+<p>显示触发</p>
+<ul>
+<li>用户自定义异常</li>
+</ul>
+<h5 id="系统预定义异常"><a href="#系统预定义异常" class="headerlink" title="系统预定义异常"></a>系统预定义异常</h5><p><img src="1-17.png"></p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span>  <span class="keyword">SELECT</span> ... <span class="keyword">COMMIT</span>;</span><br><span class="line">EXCEPTION</span><br><span class="line">  <span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line">    statement1; </span><br><span class="line">    statement2; 						         </span><br><span class="line">  <span class="keyword">WHEN</span> TOO_MANY_ROWS <span class="keyword">THEN</span></span><br><span class="line">    statement1;</span><br><span class="line">  <span class="keyword">WHEN</span> OTHERS <span class="keyword">THEN</span></span><br><span class="line">    statement1; </span><br><span class="line">    statement2; </span><br><span class="line">    statement3;</span><br><span class="line"><span class="keyword">END</span>;	</span><br></pre></td></tr></table></figure></li>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empRecord  emp<span class="operator">%</span>ROWTYPE; </span><br><span class="line">  v_empNo      emp.empno<span class="operator">%</span>TYPE; </span><br><span class="line"><span class="keyword">BEGIN</span>  </span><br><span class="line">  <span class="keyword">SELECT</span> <span class="operator">*</span>  <span class="keyword">INTO</span> v_empRecord  <span class="keyword">FROM</span> emp;</span><br><span class="line">  <span class="comment">--SELECT *  INTO v_empRecord  FROM emp  WHERE empno = 12345789 ;</span></span><br><span class="line">  <span class="comment">--SELECT ename  INTO v_empNo  FROM emp  WHERE empno = 7369;</span></span><br><span class="line">  EXCEPTION</span><br><span class="line">    <span class="keyword">WHEN</span> TOO_MANY_ROWS <span class="keyword">THEN</span></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;TOO_MANY_ROWS EXCEPTION&#x27;</span>); </span><br><span class="line">    <span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;NO_DATA_FOUND EXCEPTION&#x27;</span>); </span><br><span class="line">    <span class="keyword">WHEN</span> OTHERS <span class="keyword">THEN</span></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;OTHERS EXCEPTION&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="系统非预定义异常"><a href="#系统非预定义异常" class="headerlink" title="系统非预定义异常"></a>系统非预定义异常</h5><ul>
+<li><p>捕获Oracle服务器错误</p>
+</li>
+<li><p>将数字-2291与e_products_invalid相关联。（-2291表示违反了完整性约束）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  e_products_invalid	EXCEPTION;</span><br><span class="line">  PRAGMA EXCEPTION_INIT (</span><br><span class="line">		e_products_invalid, <span class="number">-2292</span>);</span><br><span class="line">  v_message VARCHAR2(<span class="number">50</span>);</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">. . .</span><br><span class="line">EXCEPTION</span><br><span class="line">  <span class="keyword">WHEN</span> e_products_invalid <span class="keyword">THEN</span></span><br><span class="line">    :g_message :<span class="operator">=</span> <span class="string">&#x27;Product code</span></span><br><span class="line"><span class="string">		specified is not valid.&#x27;</span>;</span><br><span class="line">. . .</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 为emp表创建一个能完成插入功能的存储过程insert_emp。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> insert_emp </span><br><span class="line">(<span class="keyword">no</span> <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE,   name <span class="keyword">IN</span> emp.ename<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">job <span class="keyword">IN</span> emp.job<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="string">&#x27;SALESMAN&#x27;</span>,</span><br><span class="line">mgr <span class="keyword">IN</span> emp.mgr<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">7369</span>,</span><br><span class="line">hiredate emp.hiredate<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> SYSDATE,</span><br><span class="line">salary emp.sal<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">800</span>,</span><br><span class="line">comm emp.comm<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">deptno emp.deptno<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">10</span></span><br><span class="line">)<span class="keyword">IS</span></span><br><span class="line">e_integrity EXCEPTION;</span><br><span class="line">PRAGMA EXCEPTION_INIT (e_integrity,<span class="number">-2291</span>);</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">     <span class="keyword">INSERT</span> <span class="keyword">INTO</span> emp <span class="keyword">VALUES</span>(<span class="keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);</span><br><span class="line">EXCEPTION</span><br><span class="line">    <span class="keyword">WHEN</span> DUP_VAL_ON_INDEX <span class="keyword">THEN</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;该员工已经存在！&#x27;</span>);</span><br><span class="line">    <span class="keyword">WHEN</span> e_integrity <span class="keyword">THEN</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;部门编号填写错误！&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="用户自定义异常"><a href="#用户自定义异常" class="headerlink" title="用户自定义异常"></a>用户自定义异常</h4><ul>
+<li><p>例子</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">DECLARE</span>]</span><br><span class="line">  e_amount_remaining EXCEPTION;</span><br><span class="line">. . .</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">. . .</span><br><span class="line">  RAISE e_amount_remaining;</span><br><span class="line">. . .</span><br><span class="line">EXCEPTION</span><br><span class="line">  <span class="keyword">WHEN</span> e_amount_remaining  <span class="keyword">THEN</span></span><br><span class="line">    :g_message :<span class="operator">=</span> <span class="string">&#x27;There is still an amount</span></span><br><span class="line"><span class="string">	             in stock.&#x27;</span>;</span><br><span class="line">. . .</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例子： 向emp表中插入一条新记录，在执行的过程中捕获系统预定义异常、系统非预定义异常、用户自定义异常，并分别作相应的处理。 </span></span><br><span class="line"><span class="keyword">DECLARE</span>  </span><br><span class="line">  ex_null EXCEPTION; <span class="comment">--系统非预定义异常的定义和关联</span></span><br><span class="line">  PRAGMA EXCEPTION_INIT(ex_null,<span class="number">-01400</span>);  </span><br><span class="line">  ex_insert EXCEPTION; <span class="comment">--用户自定义异常的定义  </span></span><br><span class="line">  eno scott.emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>; <span class="comment">--定义程序块变量</span></span><br><span class="line">  e_sal scott.emp.sal<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span>salary;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  IF e_sal<span class="operator">&gt;</span><span class="number">10000</span> <span class="keyword">THEN</span></span><br><span class="line">    RAISE ex_insert;  <span class="comment">--用户自定义异常的触发</span></span><br><span class="line">  <span class="keyword">END</span> IF;</span><br><span class="line">  <span class="keyword">INSERT</span> <span class="keyword">INTO</span> scott.emp(empno,sal) <span class="keyword">VALUES</span>(eno,e_sal);</span><br><span class="line">  EXCEPTION</span><br><span class="line">    <span class="keyword">WHEN</span> DUP_VAL_ON_INDEX  <span class="keyword">THEN</span>   <span class="comment">--系统预定义异常的捕获和处理</span></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;该员工已经存在！&#x27;</span>);</span><br><span class="line">    <span class="keyword">WHEN</span> ex_null <span class="keyword">THEN</span>   <span class="comment">--系统非预定义异常的捕获和处理</span></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;职工编号不能为空！&#x27;</span>);</span><br><span class="line">    <span class="keyword">WHEN</span> ex_insert <span class="keyword">THEN</span>   <span class="comment">--用户自定义异常的捕获和处理</span></span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;员工的工资不能超过10000！&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
+              <a href="/tags/%E5%AF%BC%E8%88%AA/" rel="tag"><i class="fa fa-tag"></i> 导航</a>
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/" rel="prev" title="Oracle复习7">
+      <i class="fa fa-chevron-left"></i> Oracle复习7
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">分支结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IF%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">IF逻辑结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">语法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CASE%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">CASE表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AF%94%E8%BE%83IF%E8%AF%AD%E5%8F%A5%E5%92%8CCASE%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.2.</span> <span class="nav-text">比较IF语句和CASE语句</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">循环控制结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Basic-Loop"><span class="nav-number">2.1.</span> <span class="nav-text">Basic Loop</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-2"><span class="nav-number">2.1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">2.1.2.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FOR-Loop"><span class="nav-number">2.2.</span> <span class="nav-text">FOR Loop</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-3"><span class="nav-number">2.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#While-Loop"><span class="nav-number">2.3.</span> <span class="nav-text">While Loop</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95-4"><span class="nav-number">2.3.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">例子</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87-Cursors"><span class="nav-number">3.</span> <span class="nav-text">游标(Cursors)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E6%B8%B8%E6%A0%87"><span class="nav-number">3.1.</span> <span class="nav-text">隐式游标</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-3"><span class="nav-number">3.1.1.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%B8%B8%E6%A0%87"><span class="nav-number">3.2.</span> <span class="nav-text">显示游标</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E6%B8%B8%E6%A0%87"><span class="nav-number">3.2.1.</span> <span class="nav-text">声明游标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E6%B8%B8%E6%A0%87"><span class="nav-number">3.2.2.</span> <span class="nav-text">打开游标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%90%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">3.2.3.</span> <span class="nav-text">提取数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E6%B8%B8%E6%A0%87"><span class="nav-number">3.2.4.</span> <span class="nav-text">关闭游标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%B8%B8%E6%A0%87%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">3.2.5.</span> <span class="nav-text">显示游标的属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87%E6%8F%90%E5%8F%96BASIC-LOOP%E5%92%8CWHILE-LOOP"><span class="nav-number">3.2.6.</span> <span class="nav-text">游标提取BASIC LOOP和WHILE LOOP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87%E6%8F%90%E5%8F%96FOR-LOOP"><span class="nav-number">3.2.7.</span> <span class="nav-text">游标提取FOR LOOP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E6%B8%B8%E6%A0%87"><span class="nav-number">3.2.8.</span> <span class="nav-text">带参数的游标</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8"><span class="nav-number">4.</span> <span class="nav-text">异常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E8%AF%AD%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">异常处理语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8%E8%A7%84%E5%88%99"><span class="nav-number">4.2.</span> <span class="nav-text">捕获异常规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.3.</span> <span class="nav-text">异常的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E9%A2%84%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="nav-number">4.3.1.</span> <span class="nav-text">系统预定义异常</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E9%9D%9E%E9%A2%84%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="nav-number">4.3.2.</span> <span class="nav-text">系统非预定义异常</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="nav-number">4.4.</span> <span class="nav-text">用户自定义异常</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wr1sw"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">wr1sw</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wr1sw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wr1sw" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蜀ICP备2021024994号 </a>
+      <img src="http://www.beian.gov.cn/portal/download" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wr1sw</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

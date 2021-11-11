@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":320,"display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="方案、方案对象、非方案对象的类型、表、视图、索引、序列等数据库对象的声明和创建方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle复习2">
+<meta property="og:url" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/index.html">
+<meta property="og:site_name" content="wr1sw">
+<meta property="og:description" content="方案、方案对象、非方案对象的类型、表、视图、索引、序列等数据库对象的声明和创建方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-1-2.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-1-3.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-2-1.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-2-2.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-3-1.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-2-5.png">
+<meta property="og:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-2-6.png">
+<meta property="article:published_time" content="2021-11-11T04:22:24.000Z">
+<meta property="article:modified_time" content="2021-11-11T10:11:39.829Z">
+<meta property="article:author" content="wr1sw">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="导航">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/1-1-2.png">
+
+<link rel="canonical" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle复习2 | wr1sw</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">wr1sw</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">wr1sw</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">4</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+  <a href="https://github.com/wr1sw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="wr1sw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wr1sw">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle复习2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-11 12:22:24 / 修改时间：18:11:39" itemprop="dateCreated datePublished" datetime="2021-11-11T12:22:24+08:00">2021-11-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">方案、方案对象、非方案对象的类型、表、视图、索引、序列等数据库对象的声明和创建方法</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="数据库对象——简介"><a href="#数据库对象——简介" class="headerlink" title="数据库对象——简介"></a>数据库对象——简介</h3><h4 id="1-1-Oracle服务器的方案对象和非方案对象的概念"><a href="#1-1-Oracle服务器的方案对象和非方案对象的概念" class="headerlink" title="1.1 Oracle服务器的方案对象和非方案对象的概念"></a>1.1 Oracle服务器的方案对象和非方案对象的概念</h4><h5 id="1-1-1-方案"><a href="#1-1-1-方案" class="headerlink" title="1.1.1 方案"></a>1.1.1 方案</h5><p>​    Oracle通过方案来组织和维护表、视图、索引、等数据库对象</p>
+<ul>
+<li><p>概念：是一系列逻辑数据结构或对象的集合。一个方案只能够被一个数据库用户所拥有，并且方案的名称与这个用户的名称相同。</p>
+</li>
+<li><p>Oracle数据库中的每个用户都拥有一个唯一的方案，他所创建的所有方案对象都保存在自己的方案中</p>
+</li>
+</ul>
+<h5 id="1-1-2-方案对象"><a href="#1-1-2-方案对象" class="headerlink" title="1.1.2 方案对象"></a>1.1.2 方案对象</h5><p>​    在Oracle数据库中不是所有对象都是方案。方案对象有：</p>
+<p><img src="1-1-2.png"></p>
+<h5 id="1-1-3-非方案对象的类型"><a href="#1-1-3-非方案对象的类型" class="headerlink" title="1.1.3 非方案对象的类型"></a>1.1.3 非方案对象的类型</h5><p>在Oracle数据库中不是所有的对象都是方案，还有一些数据库对象不属于任何方案，这些对象称为<strong>非方案对象</strong>，其类型有：</p>
+<ul>
+<li>表空间 Tablespaces</li>
+<li>用户 Users</li>
+<li>角色 Roles</li>
+<li>回退段 Rollback segments</li>
+<li>目录 Directories</li>
+</ul>
+<p><img src="1-1-3.png"></p>
+<h5 id="1-2-表、视图、索引、序列等数据库对象的声明和创建方法"><a href="#1-2-表、视图、索引、序列等数据库对象的声明和创建方法" class="headerlink" title="1.2 表、视图、索引、序列等数据库对象的声明和创建方法"></a>1.2 表、视图、索引、序列等数据库对象的声明和创建方法</h5><h6 id="1-2-1-表"><a href="#1-2-1-表" class="headerlink" title="1.2.1 表"></a>1.2.1 表</h6><ul>
+<li>表是Oracle数据库中基本的数据库存储结构。在定义表时为表建立多个字段，数据以行的记录的形式存储在表中。</li>
+</ul>
+<p><img src="1-2-1.png"></p>
+<p>字段约束：在创建表时，可对表的各个字段设置约束，强制规定表中的数据必须满足的条件。通过使用约束可以保证关系数据库中的三类完整性规则：</p>
+<ul>
+<li>实体完整性</li>
+<li>参照完整性</li>
+<li>用户定义完整性</li>
+</ul>
+<p>NULL值：在Oracle表中，某个字段可以不包含任何值，则称该字段具有“NULL”值</p>
+<p>数据完整性约束：数据完整性约束使用户定义的一系列规则，用于防止错误的或无效的数据被插入或删除。在Oracle中，一共可以为表中的字段定义如下五种类型的约束：</p>
+<ul>
+<li>PRIMARY KEY 主码约束</li>
+<li>NOT NULL 非空约束</li>
+<li>UNIQUE 唯一码约束</li>
+<li>FOREIGN KEY 外键(外部码)约束</li>
+<li>CHECK 约束</li>
+</ul>
+<h6 id="1-2-2-视图"><a href="#1-2-2-视图" class="headerlink" title="1.2.2 视图"></a>1.2.2 视图</h6><ul>
+<li><strong>视图</strong>是由一个或多个表（或其他视图）中的数据的一种定制的表示，是用一个查询定义，所以可认为是一个存储的查询（stored query）或是一个虚表(virtual table)。视图可在使用表的许多地方使用。</li>
+<li>引入<strong>视图的好处</strong><ul>
+<li>通过限制对表的行预定义集合的存取，为表提供附加的<strong>安全性</strong></li>
+<li>隐藏数据<strong>复杂性</strong></li>
+<li>为用户<strong>简化命令</strong></li>
+<li>为基本表的数据提供另一种观点</li>
+<li>可将应用隔离基本表定义的修改</li>
+<li>用于不用视图无法表示的查询</li>
+<li>用于<strong>保存复杂查询</strong></li>
+</ul>
+</li>
+</ul>
+<p>创建视图(以EMP为基础表创建STAFF视图)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> staff <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> empno, ename,job,mgr,deptno  <span class="keyword">FROM</span> emp</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="1-2-2.png"></p>
+<ul>
+<li><p>创建视图（以EMP和DEPT为基础表创建EMP_VIEW视图）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> emp_view <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> empno, ename, sal, loc</span><br><span class="line"><span class="keyword">FROM</span> emp, dept</span><br><span class="line"><span class="keyword">WHERE</span> emp.deptno <span class="operator">=</span> dept.deptno <span class="keyword">AND</span>  dept.deptno <span class="operator">=</span> <span class="number">10</span></span><br></pre></td></tr></table></figure></li>
+<li><p>查询EMP_VIEW视图</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ename  <span class="keyword">FROM</span> emp_view  <span class="keyword">WHERE</span> empno <span class="operator">=</span> <span class="number">9876</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Oracle将上述查询语句合并为如下查询语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ename  <span class="keyword">FROM</span> emp, dept</span><br><span class="line"><span class="keyword">WHERE</span> emp.deptno <span class="operator">=</span> dept.deptno  <span class="keyword">AND</span>  dept.deptno <span class="operator">=</span> <span class="number">10</span></span><br><span class="line"><span class="keyword">AND</span>  emp.empno <span class="operator">=</span> <span class="number">9876</span></span><br></pre></td></tr></table></figure></li>
+<li><p>重定义视图</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">VIEW</span> emp_view <span class="keyword">AS</span></span><br><span class="line"><span class="keyword">SELECT</span> empno, ename, sal, loc</span><br><span class="line"><span class="keyword">FROM</span> emp, dept</span><br><span class="line"><span class="keyword">WHERE</span> emp.deptno <span class="operator">=</span> dept.deptno;</span><br></pre></td></tr></table></figure></li>
+<li><p>删除视图</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">VIEW</span> emp_view;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h6 id="1-2-3-索引"><a href="#1-2-3-索引" class="headerlink" title="1.2.3 索引"></a>1.2.3 索引</h6><p><img src="1-3-1.png"></p>
+<h6 id="1-2-4-序列"><a href="#1-2-4-序列" class="headerlink" title="1.2.4 序列"></a>1.2.4 序列</h6><ul>
+<li><p>序列：序列也称序列生成器(sequence generator)产生序列号。在多用户环境下该序列生成器特别有用，可生成各返回序列号而不需要磁盘I/O或事务封锁。</p>
+</li>
+<li><p>•序列号为ORACLE整数，最多可有<strong>38</strong>个数字。</p>
+</li>
+<li><p>序列的创建</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> SEQUENCE project_team_seq</span><br><span class="line">               <span class="keyword">START</span> <span class="keyword">WITH</span> <span class="number">1000</span> INCREMENT <span class="keyword">BY</span> <span class="number">1</span></span><br><span class="line">               MINVALUE <span class="number">1</span></span><br><span class="line">               CACHE <span class="number">1000</span> NOCYCLE NOORDER</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="operator">/</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> project_team_seq.NEXTVAL <span class="keyword">FROM</span> DUAL;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h6 id="1-2-4-同义词"><a href="#1-2-4-同义词" class="headerlink" title="1.2.4 同义词"></a>1.2.4 同义词</h6></li>
+<li><p>一个同义词(synonym)为任何表、视图、快照、序列、过程、函数或包的别名，其定义存储在数据字典中。同义词因安全性和方便原因而经常使用，可用于：</p>
+<ul>
+<li>可屏蔽对象的名字及其持有者。</li>
+<li>为分布式数据库的远程对象提供位置透明性。</li>
+<li>为用户提供一个简单且易于区分的名字。</li>
+</ul>
+</li>
+<li><p>有两种同义词：公用和专用</p>
+<ul>
+<li>一个公用同义词为命名为PUBLIC特殊用户组所持有，可为数据库中每一个用户所存取。</li>
+<li>一个专用同义词是包含在指定用户的方案中，仅为该用户和授权的用户所使用。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 私有同义词</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> SYNONYM SALG <span class="keyword">FOR</span> SCOTT.SALGRADE</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="operator">/</span></span><br><span class="line"><span class="comment">-- 共有同义词</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> PUBLIC SYNONYM P_SALG <span class="keyword">FOR</span> SCOTT.SALGRADE</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="operator">/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h6 id="1-2-5-角色"><a href="#1-2-5-角色" class="headerlink" title="1.2.5 角色"></a>1.2.5 角色</h6><p><img src="1-2-5.png"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建、删除角色</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> ROLE oe_clerk;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> ROLE hr_clerk</span><br><span class="line">			IDENTIFIED <span class="keyword">BY</span> bonus;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> ROLE hr_manager</span><br><span class="line">			IDENTIFIED EXTERNALLY;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">DROP</span> ROLE oe_clerk;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="1-2-6-用户"><a href="#1-2-6-用户" class="headerlink" title="1.2.6 用户"></a>1.2.6 用户</h6><ul>
+<li><p>创建、删除用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> user_name</span><br><span class="line">IDENTIFIED <span class="keyword">BY</span> password</span><br><span class="line">[<span class="keyword">DEFAULT</span> TABLESPACE tablespace_name]</span><br><span class="line">[TEMPORARY TABLESPACE tablespace_name]</span><br><span class="line">[QUOTA quota_number [K <span class="operator">|</span> M] <span class="operator">|</span> UNLIMITED <span class="keyword">ON</span> tablespace_name]</span><br><span class="line">[PROFILE profile_name]</span><br><span class="line">[PASSWORD expire]</span><br><span class="line">[ACCOUNT lock<span class="operator">|</span> unlock] </span><br></pre></td></tr></table></figure>
+
+<p><img src="1-2-6.png"></p>
+</li>
+<li><p>命令解释 </p>
+<ul>
+<li>CREATE USER username —用户名</li>
+<li>IDENTIFIED BY password—- 用户口令</li>
+<li>[DEFAULT TABLESPACE tablespace ]— 缺省的表空间,该用户创建的对象默认存在此。</li>
+<li>[TEMPORARY TABLESPACE tablespace] —该用户使用的缺省的临时表空间</li>
+<li>[[QUOTA [integer K[M]][UNLIMITED] ON tablespace —用户在该表空间中允许使用k[m]字节</li>
+<li>[PROFILES profile_name] —概要文件的名字</li>
+<li>[PASSWORD EXPIRE] —立即将口令设成过期状态，用户在登录进入前必须修改口令。</li>
+<li>[ACCOUNT LOCK or ACCOUNT UNLOCK] —用户是否被加锁</li>
+</ul>
+</li>
+<li><p>启用与禁用用户</p>
+<ul>
+<li>禁用用户账户      ALTER USER user_name ACCOUNT LOCK;</li>
+<li>启用用户账户      ALTER USER user_name ACCOUNT UNLOCK;</li>
+</ul>
+</li>
+<li><p>删除用户 </p>
+<ul>
+<li><p>DROP USER user_name [CASCADE] </p>
+</li>
+<li><p>如果该用户方案中已存在方案对象，则需要带有CASCADE子句。 </p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例1  创建新用户zhangsan，密码为abcdef，命令如下。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> zhangsan</span><br><span class="line">IDENTIFIED <span class="keyword">BY</span> abcdef;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例2  创建新用户lisi，密码为abcdef，表空间为users，并且在users表空间上可以使-- 用10M的磁盘空间。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> lisi  IDENTIFIED <span class="keyword">BY</span> abcdef</span><br><span class="line"><span class="keyword">DEFAULT</span> TABLESPACE users</span><br><span class="line">QUOTA <span class="number">10</span>M <span class="keyword">ON</span> users; </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例3  创建新用户allen，密码为abcdef，并且设置密码已过期，用户的状态为加锁。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> allen</span><br><span class="line">IDENTIFIED <span class="keyword">BY</span> abcdef</span><br><span class="line">PASSWORD expire</span><br><span class="line">ACCOUNT lock; </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例4  为新用户zhangsan授予和数据库建立会话的权限，并用zhangsan连接数据库。</span></span><br><span class="line"><span class="comment">--在授权之前，用zhangsan连接数据库的操作失败</span></span><br><span class="line"><span class="keyword">CONNECT</span> zhangsan<span class="operator">/</span>abcdef; </span><br><span class="line"><span class="comment">--以system连接数据库，并使用GRANT命令为新用户授权</span></span><br><span class="line"><span class="keyword">CONNECT</span> <span class="keyword">system</span><span class="operator">/</span>abcdef;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CREATE</span> SESSION <span class="keyword">TO</span> zhangsan;</span><br><span class="line"><span class="comment">--授权后，再用zhangsan连接数据库，操作成功</span></span><br><span class="line"><span class="keyword">CONNECT</span> zhangsan<span class="operator">/</span>abcdef; </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例5  为新用户lisi授予CONNECT的角色。</span></span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">CONNECT</span> <span class="keyword">TO</span> lisi;</span><br><span class="line"><span class="keyword">CONNECT</span> lisi<span class="operator">/</span>abcdef;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例6  修改用户zhangsan的密码为ora，并设置默认表空间为users表空间，在该表空间中可以使用无限大的磁盘空间。</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> zhangsan</span><br><span class="line">IDENTIFIED <span class="keyword">BY</span> ora</span><br><span class="line"><span class="keyword">DEFAULT</span> TABLESPACE users</span><br><span class="line">QUOTA UNLIMITED <span class="keyword">ON</span> users; </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例7  为数据库中用户账号scott解锁，启用该账号。</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> scott ACCOUNT UNLOCK;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CONNECT</span> scott<span class="operator">/</span>tiger;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例8  删除用户zhangsan。</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">USER</span> zhangsan;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="1-3-数据库对象在数据库中的存储结构"><a href="#1-3-数据库对象在数据库中的存储结构" class="headerlink" title="1.3 数据库对象在数据库中的存储结构"></a>1.3 数据库对象在数据库中的存储结构</h5>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
+              <a href="/tags/%E5%AF%BC%E8%88%AA/" rel="tag"><i class="fa fa-tag"></i> 导航</a>
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/11/oracle%E5%A4%8D%E4%B9%A01/" rel="prev" title="oracle复习1">
+      <i class="fa fa-chevron-left"></i> oracle复习1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A03/" rel="next" title="Oracle复习3">
+      Oracle复习3 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E8%B1%A1%E2%80%94%E2%80%94%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">数据库对象——简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%96%B9%E6%A1%88%E5%AF%B9%E8%B1%A1%E5%92%8C%E9%9D%9E%E6%96%B9%E6%A1%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Oracle服务器的方案对象和非方案对象的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1-%E6%96%B9%E6%A1%88"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1 方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-2-%E6%96%B9%E6%A1%88%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2 方案对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-3-%E9%9D%9E%E6%96%B9%E6%A1%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.1.3 非方案对象的类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-%E8%A1%A8%E3%80%81%E8%A7%86%E5%9B%BE%E3%80%81%E7%B4%A2%E5%BC%95%E3%80%81%E5%BA%8F%E5%88%97%E7%AD%89%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%A3%B0%E6%98%8E%E5%92%8C%E5%88%9B%E5%BB%BA%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.2 表、视图、索引、序列等数据库对象的声明和创建方法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-1-%E8%A1%A8"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">1.2.1 表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-2-%E8%A7%86%E5%9B%BE"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">1.2.2 视图</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-3-%E7%B4%A2%E5%BC%95"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">1.2.3 索引</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-4-%E5%BA%8F%E5%88%97"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">1.2.4 序列</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-4-%E5%90%8C%E4%B9%89%E8%AF%8D"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">1.2.4 同义词</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-5-%E8%A7%92%E8%89%B2"><span class="nav-number">1.1.4.6.</span> <span class="nav-text">1.2.5 角色</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-6-%E7%94%A8%E6%88%B7"><span class="nav-number">1.1.4.7.</span> <span class="nav-text">1.2.6 用户</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%B9%E8%B1%A1%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.3 数据库对象在数据库中的存储结构</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wr1sw"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">wr1sw</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wr1sw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wr1sw" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蜀ICP备2021024994号 </a>
+      <img src="http://www.beian.gov.cn/portal/download" style="display: inline-block;">
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wr1sw</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
