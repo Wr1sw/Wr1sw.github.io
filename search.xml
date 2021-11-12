@@ -1,6 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Oracle复习3</title>
+    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A03/</url>
+    <content><![CDATA[<h3 id="表"><a href="#表" class="headerlink" title="表"></a>表</h3><h5 id="Oracle-SQL种类"><a href="#Oracle-SQL种类" class="headerlink" title="Oracle SQL种类"></a>Oracle SQL种类</h5><ul>
+<li><p><strong>数据定义语言 Data Definition Language Statements（DDL）</strong></p>
+</li>
+<li><p><strong>数据操纵语言 Data Manipulation Language（DML） Statements</strong></p>
+</li>
+<li><p>事务控制 Transaction Control Statements </p>
+</li>
+<li><p>会话控制 Session Control Statements </p>
+</li>
+<li><p>系统控制 System Control Statements </p>
+</li>
+<li><p>嵌入SQL Embedded SQL Statements</p>
+</li>
+</ul>
+<h5 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h5><ul>
+<li><p>Create、alter和drop方案对象与数据库结构 (CREATE, ALTER, DROP)</p>
+</li>
+<li><p>改变方案对象名称 (RENAME) </p>
+</li>
+<li><p>TRUNCATE</p>
+</li>
+<li><p>权限和角色的授予与回收 (GRANT, REVOKE) </p>
+</li>
+<li><p>打开与关闭审计操作 (AUDIT, NOAUDIT)</p>
+</li>
+<li><p>增加注释到数据字典 (COMMENT) </p>
+</li>
+<li><p><strong>当用户执行DDL语句时，在每一条DDL语句执行前后，Oracle都将提交当前的事务，理解这一点很重要。</strong></p>
+</li>
+</ul>
+<p><img src="1-1.png"></p>
+<h5 id="表的命名规定"><a href="#表的命名规定" class="headerlink" title="表的命名规定"></a>表的命名规定</h5><ol>
+<li><strong>必须是以字母开头。</strong></li>
+<li>1-30个字符长度</li>
+<li><strong>仅能包括A-Z，a-z，0-9，_,$,#</strong></li>
+<li>在同一个用户下表明不能重复</li>
+<li>不能是Oracle保留字</li>
+</ol>
+<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p><img src="1-2.png"></p>
+<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5><p>创建者必须具有</p>
+<ul>
+<li><p>CREATE TABLE 权限</p>
+</li>
+<li><p>一个存储区</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]tablename  </span><br><span class="line">             (columnname datatype [<span class="keyword">DEFAULT</span> expr][, 			...]);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>数据库表名</p>
+</li>
+<li><p>定义列（名称、数据类型、长度和缺省值）</p>
+</li>
+</ul>
+<h5 id="列的缺省值"><a href="#列的缺省值" class="headerlink" title="列的缺省值"></a>列的缺省值</h5><ul>
+<li>指定列的缺省值， 在以后的INSERT语句中忽略该列值时， 将此缺省值赋给该列。</li>
+<li>默认值的数据类型必须和列的数据类型匹配</li>
+<li>表达式、SQL函数和数值都是合法的值</li>
+<li>不能包括其他列和伪列的引用（ROWNUM，NEXTVAL，LEVEL和CURRVAL）</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept(</span><br><span class="line">	deptno number(<span class="number">2</span>),</span><br><span class="line">	dname varchar2(<span class="number">14</span>),</span><br><span class="line">	loc varchar2(<span class="number">13</span>));</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- Table created</span></span><br><span class="line"><span class="keyword">describe</span> dept</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NAME                NULL?       Type</span></span><br><span class="line">_____________________________________________</span><br><span class="line">DEPTNO                 <span class="keyword">NOT</span> <span class="keyword">NULL</span>     NUMBER(<span class="number">2</span>)</span><br><span class="line">DNAME                               VARCHAR2(<span class="number">14</span>)</span><br><span class="line">LOC                                 VARCHAR2(<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="使用子查询创建表"><a href="#使用子查询创建表" class="headerlink" title="使用子查询创建表"></a>使用子查询创建表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 语法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line">  	  [<span class="keyword">column</span>(, column...)]</span><br><span class="line"><span class="keyword">AS</span> subquery;</span><br><span class="line"></span><br><span class="line"><span class="comment">--------------------------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept30 </span><br><span class="line">	<span class="keyword">as</span> </span><br><span class="line">		<span class="keyword">select</span> empno, ename, sal<span class="operator">*</span><span class="number">12</span> annsal, hiredate</span><br><span class="line">		<span class="keyword">from</span> emp</span><br><span class="line">		<span class="keyword">where</span> deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="更改表"><a href="#更改表" class="headerlink" title="更改表"></a>更改表</h5><ol>
+<li><p>增加或删除列</p>
+</li>
+<li><p>增加完整性约束</p>
+</li>
+<li><p>重新定义列（数据类型、长度、缺省值）</p>
+</li>
+<li><p>修改存储参数或其它参数</p>
+</li>
+<li><p>使能、使不能或删除一完整性约束或触发器</p>
+</li>
+<li><p>显式地分配一个范围</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">ADD</span>		   (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		   [, <span class="keyword">column</span> datatype]...);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> DEPT30</span><br><span class="line">	<span class="keyword">ADD</span> (job VARCHAR2(<span class="number">9</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="1-3.png"></p>
+<hr>
+<h5 id="改变表名称"><a href="#改变表名称" class="headerlink" title="改变表名称"></a>改变表名称</h5><ul>
+<li><p>执行RENAME语句，将改变表、视图、序列和同义词的名称。</p>
+</li>
+<li><p>操作者必须是对象的拥有者。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">RENAME dept <span class="keyword">TO</span> department;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h5 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h5><ul>
+<li>删除表的所有数据和结构</li>
+<li>删除表的所有索引</li>
+<li>表的删除操作不能回退</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">DROP</span> <span class="keyword">TABLE</span> dept30;</span><br><span class="line"><span class="keyword">Table</span> dropped.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>如果在要删除的表中包含有被其它表的外部码引用的主码或唯一码，并且希望在删除这个表的同时删除其它表中的相关的外部码约束，可以在DROP TABLE语句中指定CASCADE字句</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> department CASCADE CONSTRAINTS;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h5 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a>截断表</h5><ul>
+<li>删除表的所有数据</li>
+<li>释放被表使用的存储空间</li>
+<li>截断操作不能回退</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> department;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">TABLE</span> emp</span><br><span class="line">	<span class="keyword">is</span> <span class="string">&#x27;Employee Information&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="创建约束和管理约束"><a href="#创建约束和管理约束" class="headerlink" title="创建约束和管理约束"></a>创建约束和管理约束</h5><p>约束类型</p>
+<ul>
+<li>NOT NULL</li>
+<li>UNIQUE</li>
+<li>PRIMARY KEY</li>
+<li>FOREIGN KEY</li>
+<li>CHECK</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]<span class="keyword">table</span></span><br><span class="line">	    (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		[column_constraint],</span><br><span class="line">		…</span><br><span class="line">		[table_constraint]);</span><br><span class="line">		</span><br><span class="line"><span class="comment">------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">	empno NUMBER(<span class="number">4</span>),</span><br><span class="line">	ename VARCHAR2(<span class="number">10</span>),</span><br><span class="line">	deptno NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	<span class="keyword">CONSTRAINT</span> emp_empno_pk <span class="keyword">PRIMARY</span> KEY(EMPNO));</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 唯一码约束</span></span><br><span class="line"><span class="comment">-- 唯一码约束可以定义在列上或者表上(unique)</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line">  		loc	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span>(dname));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 主键约束</span></span><br><span class="line"><span class="comment">-- 主键越是可以定义在列上或者表上（PRIMARY KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line"> 		loc	  	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span> (dname),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_deptno_pk <span class="keyword">PRIMARY</span> KEY(deptno) );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 外键约束</span></span><br><span class="line"><span class="comment">-- 外键约束可以定义在列上或者表上（FOREIGN KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">    	empno 	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		ename	VARCHAR2(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  		job	VARCHAR2(<span class="number">9</span>),</span><br><span class="line">  		mgr	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		hiredate	<span class="type">DATE</span>,</span><br><span class="line">  		sal	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">   		comm	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">		deptno	NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line"> 		<span class="keyword">CONSTRAINT</span> emp_deptno_fk <span class="keyword">FOREIGN</span> KEY (deptno)</span><br><span class="line"> 			<span class="keyword">REFERENCES</span> dept (deptno));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- check约束：定义表的每一行必须满足的条件</span></span><br><span class="line">..., deptno	NUMBER(<span class="number">2</span>),</span><br><span class="line">      <span class="keyword">CONSTRAINT</span> emp_deptno_ck  </span><br><span class="line">            <span class="keyword">CHECK</span> (DEPTNO <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">AND</span> <span class="number">99</span>),...</span><br></pre></td></tr></table></figure>
+
+<p><strong>可以增加和删除约束但是不能修改约束</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	 <span class="keyword">table</span></span><br><span class="line">  <span class="keyword">ADD</span> [<span class="keyword">CONSTRAINT</span> <span class="keyword">constraint</span>] type (<span class="keyword">column</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>删除</strong>在表DEPT上的<strong>PRIMARY KEY</strong>约束并且删除在表EMP的DEPTNO列上的<strong>FOREIGN KEY</strong>约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>     emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk </span><br><span class="line">  <span class="number">3</span>  		<span class="keyword">FOREIGN</span> KEY(mgr) <span class="keyword">REFERENCES</span> emp(empno);</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	  emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	dept</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>禁用和启用约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- </span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  ENABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  DISABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Oracle复习2</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/</url>
     <content><![CDATA[<h3 id="数据库对象——简介"><a href="#数据库对象——简介" class="headerlink" title="数据库对象——简介"></a>数据库对象——简介</h3><h4 id="1-1-Oracle服务器的方案对象和非方案对象的概念"><a href="#1-1-Oracle服务器的方案对象和非方案对象的概念" class="headerlink" title="1.1 Oracle服务器的方案对象和非方案对象的概念"></a>1.1 Oracle服务器的方案对象和非方案对象的概念</h4><h5 id="1-1-1-方案"><a href="#1-1-1-方案" class="headerlink" title="1.1.1 方案"></a>1.1.1 方案</h5><p>​    Oracle通过方案来组织和维护表、视图、索引、等数据库对象</p>
@@ -154,167 +315,6 @@
 
 
 <h5 id="1-3-数据库对象在数据库中的存储结构"><a href="#1-3-数据库对象在数据库中的存储结构" class="headerlink" title="1.3 数据库对象在数据库中的存储结构"></a>1.3 数据库对象在数据库中的存储结构</h5>]]></content>
-      <categories>
-        <category>Oracle</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>Oracle</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Oracle复习3</title>
-    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A03/</url>
-    <content><![CDATA[<h3 id="表"><a href="#表" class="headerlink" title="表"></a>表</h3><h5 id="Oracle-SQL种类"><a href="#Oracle-SQL种类" class="headerlink" title="Oracle SQL种类"></a>Oracle SQL种类</h5><ul>
-<li><p><strong>数据定义语言 Data Definition Language Statements（DDL）</strong></p>
-</li>
-<li><p><strong>数据操纵语言 Data Manipulation Language（DML） Statements</strong></p>
-</li>
-<li><p>事务控制 Transaction Control Statements </p>
-</li>
-<li><p>会话控制 Session Control Statements </p>
-</li>
-<li><p>系统控制 System Control Statements </p>
-</li>
-<li><p>嵌入SQL Embedded SQL Statements</p>
-</li>
-</ul>
-<h5 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h5><ul>
-<li><p>Create、alter和drop方案对象与数据库结构 (CREATE, ALTER, DROP)</p>
-</li>
-<li><p>改变方案对象名称 (RENAME) </p>
-</li>
-<li><p>TRUNCATE</p>
-</li>
-<li><p>权限和角色的授予与回收 (GRANT, REVOKE) </p>
-</li>
-<li><p>打开与关闭审计操作 (AUDIT, NOAUDIT)</p>
-</li>
-<li><p>增加注释到数据字典 (COMMENT) </p>
-</li>
-<li><p><strong>当用户执行DDL语句时，在每一条DDL语句执行前后，Oracle都将提交当前的事务，理解这一点很重要。</strong></p>
-</li>
-</ul>
-<p><img src="1-1.png"></p>
-<h5 id="表的命名规定"><a href="#表的命名规定" class="headerlink" title="表的命名规定"></a>表的命名规定</h5><ol>
-<li><strong>必须是以字母开头。</strong></li>
-<li>1-30个字符长度</li>
-<li><strong>仅能包括A-Z，a-z，0-9，_,$,#</strong></li>
-<li>在同一个用户下表明不能重复</li>
-<li>不能是Oracle保留字</li>
-</ol>
-<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p><img src="1-2.png"></p>
-<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5><p>创建者必须具有</p>
-<ul>
-<li><p>CREATE TABLE 权限</p>
-</li>
-<li><p>一个存储区</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]tablename  </span><br><span class="line">             (columnname datatype [<span class="keyword">DEFAULT</span> expr][, 			...]);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>数据库表名</p>
-</li>
-<li><p>定义列（名称、数据类型、长度和缺省值）</p>
-</li>
-</ul>
-<h5 id="列的缺省值"><a href="#列的缺省值" class="headerlink" title="列的缺省值"></a>列的缺省值</h5><ul>
-<li>指定列的缺省值， 在以后的INSERT语句中忽略该列值时， 将此缺省值赋给该列。</li>
-<li>默认值的数据类型必须和列的数据类型匹配</li>
-<li>表达式、SQL函数和数值都是合法的值</li>
-<li>不能包括其他列和伪列的引用（ROWNUM，NEXTVAL，LEVEL和CURRVAL）</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept(</span><br><span class="line">	deptno number(<span class="number">2</span>),</span><br><span class="line">	dname varchar2(<span class="number">14</span>),</span><br><span class="line">	loc varchar2(<span class="number">13</span>));</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- Table created</span></span><br><span class="line"><span class="keyword">describe</span> dept</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NAME                NULL?       Type</span></span><br><span class="line">_____________________________________________</span><br><span class="line">DEPTNO                 <span class="keyword">NOT</span> <span class="keyword">NULL</span>     NUMBER(<span class="number">2</span>)</span><br><span class="line">DNAME                               VARCHAR2(<span class="number">14</span>)</span><br><span class="line">LOC                                 VARCHAR2(<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h5 id="使用子查询创建表"><a href="#使用子查询创建表" class="headerlink" title="使用子查询创建表"></a>使用子查询创建表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 语法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line">  	  [<span class="keyword">column</span>(, column...)]</span><br><span class="line"><span class="keyword">AS</span> subquery;</span><br><span class="line"></span><br><span class="line"><span class="comment">--------------------------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept30 </span><br><span class="line">	<span class="keyword">as</span> </span><br><span class="line">		<span class="keyword">select</span> empno, ename, sal<span class="operator">*</span><span class="number">12</span> annsal, hiredate</span><br><span class="line">		<span class="keyword">from</span> emp</span><br><span class="line">		<span class="keyword">where</span> deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="更改表"><a href="#更改表" class="headerlink" title="更改表"></a>更改表</h5><ol>
-<li><p>增加或删除列</p>
-</li>
-<li><p>增加完整性约束</p>
-</li>
-<li><p>重新定义列（数据类型、长度、缺省值）</p>
-</li>
-<li><p>修改存储参数或其它参数</p>
-</li>
-<li><p>使能、使不能或删除一完整性约束或触发器</p>
-</li>
-<li><p>显式地分配一个范围</p>
-</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">ADD</span>		   (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		   [, <span class="keyword">column</span> datatype]...);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> DEPT30</span><br><span class="line">	<span class="keyword">ADD</span> (job VARCHAR2(<span class="number">9</span>));</span><br></pre></td></tr></table></figure>
-
-<p><img src="1-3.png"></p>
-<hr>
-<h5 id="改变表名称"><a href="#改变表名称" class="headerlink" title="改变表名称"></a>改变表名称</h5><ul>
-<li><p>执行RENAME语句，将改变表、视图、序列和同义词的名称。</p>
-</li>
-<li><p>操作者必须是对象的拥有者。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">RENAME dept <span class="keyword">TO</span> department;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h5 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h5><ul>
-<li>删除表的所有数据和结构</li>
-<li>删除表的所有索引</li>
-<li>表的删除操作不能回退</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">DROP</span> <span class="keyword">TABLE</span> dept30;</span><br><span class="line"><span class="keyword">Table</span> dropped.</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>如果在要删除的表中包含有被其它表的外部码引用的主码或唯一码，并且希望在删除这个表的同时删除其它表中的相关的外部码约束，可以在DROP TABLE语句中指定CASCADE字句</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> department CASCADE CONSTRAINTS;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h5 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a>截断表</h5><ul>
-<li>删除表的所有数据</li>
-<li>释放被表使用的存储空间</li>
-<li>截断操作不能回退</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> department;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">TABLE</span> emp</span><br><span class="line">	<span class="keyword">is</span> <span class="string">&#x27;Employee Information&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="创建约束和管理约束"><a href="#创建约束和管理约束" class="headerlink" title="创建约束和管理约束"></a>创建约束和管理约束</h5><p>约束类型</p>
-<ul>
-<li>NOT NULL</li>
-<li>UNIQUE</li>
-<li>PRIMARY KEY</li>
-<li>FOREIGN KEY</li>
-<li>CHECK</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]<span class="keyword">table</span></span><br><span class="line">	    (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		[column_constraint],</span><br><span class="line">		…</span><br><span class="line">		[table_constraint]);</span><br><span class="line">		</span><br><span class="line"><span class="comment">------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">	empno NUMBER(<span class="number">4</span>),</span><br><span class="line">	ename VARCHAR2(<span class="number">10</span>),</span><br><span class="line">	deptno NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	<span class="keyword">CONSTRAINT</span> emp_empno_pk <span class="keyword">PRIMARY</span> KEY(EMPNO));</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 唯一码约束</span></span><br><span class="line"><span class="comment">-- 唯一码约束可以定义在列上或者表上(unique)</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line">  		loc	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span>(dname));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 主键约束</span></span><br><span class="line"><span class="comment">-- 主键越是可以定义在列上或者表上（PRIMARY KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line"> 		loc	  	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span> (dname),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_deptno_pk <span class="keyword">PRIMARY</span> KEY(deptno) );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 外键约束</span></span><br><span class="line"><span class="comment">-- 外键约束可以定义在列上或者表上（FOREIGN KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">    	empno 	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		ename	VARCHAR2(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  		job	VARCHAR2(<span class="number">9</span>),</span><br><span class="line">  		mgr	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		hiredate	<span class="type">DATE</span>,</span><br><span class="line">  		sal	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">   		comm	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">		deptno	NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line"> 		<span class="keyword">CONSTRAINT</span> emp_deptno_fk <span class="keyword">FOREIGN</span> KEY (deptno)</span><br><span class="line"> 			<span class="keyword">REFERENCES</span> dept (deptno));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- check约束：定义表的每一行必须满足的条件</span></span><br><span class="line">..., deptno	NUMBER(<span class="number">2</span>),</span><br><span class="line">      <span class="keyword">CONSTRAINT</span> emp_deptno_ck  </span><br><span class="line">            <span class="keyword">CHECK</span> (DEPTNO <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">AND</span> <span class="number">99</span>),...</span><br></pre></td></tr></table></figure>
-
-<p><strong>可以增加和删除约束但是不能修改约束</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	 <span class="keyword">table</span></span><br><span class="line">  <span class="keyword">ADD</span> [<span class="keyword">CONSTRAINT</span> <span class="keyword">constraint</span>] type (<span class="keyword">column</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p><strong>删除</strong>在表DEPT上的<strong>PRIMARY KEY</strong>约束并且删除在表EMP的DEPTNO列上的<strong>FOREIGN KEY</strong>约束</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>     emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk </span><br><span class="line">  <span class="number">3</span>  		<span class="keyword">FOREIGN</span> KEY(mgr) <span class="keyword">REFERENCES</span> emp(empno);</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	  emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	dept</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>禁用和启用约束</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- </span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  ENABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  DISABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-]]></content>
       <categories>
         <category>Oracle</category>
       </categories>
@@ -788,6 +788,11 @@
       </tags>
   </entry>
   <entry>
+    <title>Oracle实验1</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Oracle复习8</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/</url>
     <content><![CDATA[<h3 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h3><h4 id="IF逻辑结构"><a href="#IF逻辑结构" class="headerlink" title="IF逻辑结构"></a>IF逻辑结构</h4><ul>
@@ -988,11 +993,6 @@
         <tag>导航</tag>
         <tag>Oracle</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Oracle实验1</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>Oracle实验2</title>
