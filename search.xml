@@ -1349,7 +1349,10 @@
 <li></li>
 </ul>
 <h3 id="软件生命周期"><a href="#软件生命周期" class="headerlink" title="软件生命周期"></a>软件生命周期</h3><p><img src="1.png"></p>
-<h2 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h2><h2 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h2><h4 id="创建类的原因"><a href="#创建类的原因" class="headerlink" title="创建类的原因"></a>创建类的原因</h4><ul>
+<h2 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h2><h2 id="第三章"><a href="#第三章" class="headerlink" title="第三章"></a>第三章</h2><h4 id="低质量子程序"><a href="#低质量子程序" class="headerlink" title="低质量子程序"></a>低质量子程序</h4><p><img src="2.png"></p>
+<h4 id="高内聚低耦合"><a href="#高内聚低耦合" class="headerlink" title="高内聚低耦合"></a>高内聚低耦合</h4><p><img src="3.png"></p>
+<p><img src="4.png"></p>
+<h4 id="创建类的原因"><a href="#创建类的原因" class="headerlink" title="创建类的原因"></a>创建类的原因</h4><ul>
 <li>为现实世界中的对象建模</li>
 <li>为抽象的对象建模</li>
 <li>降低复杂度</li>
@@ -1364,20 +1367,28 @@
 <li>把相关操作包装到一起</li>
 <li>实现某种特定的重构</li>
 </ul>
+<h4 id="注释基本原则"><a href="#注释基本原则" class="headerlink" title="注释基本原则"></a><strong>注释基本原则</strong></h4><ul>
+<li>注释应该增加代码的清晰度。代码注释的目的是要使代码更易于被其他开发人员等理解</li>
+<li>避免使用装饰性内容</li>
+<li>保持注释的简洁</li>
+<li>注释信息不仅要包含代码的功能，还应给出原因</li>
+<li>不要为了注释而注释</li>
+<li>除变量定义等较短语句的注释可以使用行尾注释外，其他注释避免使用行尾注释</li>
+</ul>
 <h4 id="命名的基本原则"><a href="#命名的基本原则" class="headerlink" title="命名的基本原则"></a>命名的基本原则</h4><ul>
-<li><p>名字应能反映它所代表的实际东西，应有一定实际意义</p>
+<li><p>名字应能反映它所代表的实际东西，应有一定<strong>实际意义</strong></p>
 </li>
-<li><p>使用可以准确说明变量/字段/类/接口/包等的完整的英文描述符</p>
+<li><p>使用可以准确说明变量/字段/类/接口/包等的完整的<strong>英文描述符</strong></p>
 </li>
-<li><p>采用该领域的术语</p>
+<li><p>采用该领域的<strong>术语</strong></p>
 </li>
-<li><p>采用大小写混合，提高名字的可读性</p>
+<li><p>采用<strong>大小写混合</strong>，提高名字的可读性</p>
 </li>
-<li><p>尽量少用缩写</p>
+<li><p>尽量<strong>少用缩写</strong></p>
 </li>
-<li><p>避免使用长名字</p>
+<li><p><strong>避免</strong>使用<strong>长名字</strong></p>
 </li>
-<li><p>避免使用相似或者仅在大小写上有区别的名字</p>
+<li><p><strong>避免</strong>使用<strong>相似</strong>或者仅在大小写上有区别的名字</p>
 </li>
 </ul>
 <h4 id="四种编程命名规范"><a href="#四种编程命名规范" class="headerlink" title="四种编程命名规范"></a>四种编程命名规范</h4><ul>
