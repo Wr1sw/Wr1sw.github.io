@@ -1531,4 +1531,174 @@
         <tag>分享</tag>
       </tags>
   </entry>
+  <entry>
+    <title>多元统计分析作业1</title>
+    <url>/2021/12/02/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A1/</url>
+    <content><![CDATA[<h2 id="1-判断题"><a href="#1-判断题" class="headerlink" title="1. 判断题"></a>1. 判断题</h2><ul>
+<li>1-1 相关系数为0表明两个变量之间不存在任何关系   F </li>
+</ul>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习1</title>
+    <url>/2021/12/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A01/</url>
+    <content><![CDATA[<h2 id="第一章-概述"><a href="#第一章-概述" class="headerlink" title="第一章 概述"></a>第一章 概述</h2><h3 id="1-1-1-计算机网络的定义"><a href="#1-1-1-计算机网络的定义" class="headerlink" title="1.1.1 计算机网络的定义"></a>1.1.1 计算机网络的定义</h3><p>定义 ： 计算机网络是用通信线路将分散在不同地点并具有独立功能的多个计算机系统互相连接,按照网络协议进行<strong>数据通信</strong>,实现<strong>共享资源</strong>(资源共享)的计算机之集合。</p>
+<h3 id="1-5-2-几种不同类别的网络"><a href="#1-5-2-几种不同类别的网络" class="headerlink" title="1.5.2 几种不同类别的网络"></a>1.5.2 几种不同类别的网络</h3><h4 id="1-按照作用范围分类"><a href="#1-按照作用范围分类" class="headerlink" title="1. 按照作用范围分类"></a>1. 按照作用范围分类</h4><ul>
+<li><strong>广域网</strong> WAN (Wide Area Network) 作用范围通常为几十到几千公里</li>
+<li><strong>城域网</strong> MAN (Metropolitan Area Network) 作用距离约为5~50公里</li>
+<li>局域网 LAN (Local Area Network) 局限在较小的范围（如一公里左右）</li>
+<li><strong>个人局域网</strong> PAN (Personal Area Network) 范围很小，大约在10米左右</li>
+</ul>
+<p>tips：若中央处理机之间的距离非常近（如仅一米的数量级甚至更小），则一般就称之为<strong>多处理机系统</strong>，而不称它为计算机网络</p>
+<h4 id="2-按照网络的使用者分类"><a href="#2-按照网络的使用者分类" class="headerlink" title="2. 按照网络的使用者分类"></a>2. 按照网络的使用者分类</h4><ul>
+<li><strong>公用网</strong> (Public Network) 也称公众网</li>
+<li>专用网 (Private Network) 为特殊业务工作的需要而建设的网络，如军队、金融系统、铁路系统的内部网络</li>
+</ul>
+<h4 id="3-把用户接入到互联网的网络"><a href="#3-把用户接入到互联网的网络" class="headerlink" title="3. 把用户接入到互联网的网络"></a>3. 把用户接入到互联网的网络</h4><ul>
+<li><p><strong>接入网AN</strong> (Access Network) 它又称本地接入网或居民接入网</p>
+</li>
+<li><p>接入网是<strong>一</strong>类比较特殊的计算机网络，用于将用户接入互联网</p>
+</li>
+<li><p>接入网本身既<strong>不属于</strong>互联网的<strong>核心部分</strong>，也<strong>不属于</strong>互联网的<strong>边缘部分</strong></p>
+</li>
+<li><p>接入网是从某个用户端系统到互联网中的第一个路由器（也称为边缘路由器）之间的一种网络</p>
+</li>
+<li><p>从覆盖的范围看，很多接入网还是<strong>属于局域网</strong></p>
+</li>
+<li><p>从作用上看，接入网只是起到让用户能够与互联网连接的“桥梁”作用</p>
+</li>
+</ul>
+<h4 id="4-按拓扑结构划分"><a href="#4-按拓扑结构划分" class="headerlink" title="4. 按拓扑结构划分"></a>4. 按拓扑结构划分</h4><p><img src="1.png"></p>
+<h4 id="5-按传播技术划分"><a href="#5-按传播技术划分" class="headerlink" title="5. 按传播技术划分"></a>5. 按传播技术划分</h4><ul>
+<li>广播式网络：总线型、环形网等</li>
+</ul>
+<p>使用场合：小的、地理上处于本地的网络多采用广播方式</p>
+<ul>
+<li>点到点网络</li>
+</ul>
+<h4 id="6-按传输速率划分"><a href="#6-按传输速率划分" class="headerlink" title="6. 按传输速率划分"></a>6. 按传输速率划分</h4><ul>
+<li>低速网络 （几十至10 Kbps）</li>
+<li>中速网络 （几万至几十Mbps）</li>
+<li>高速网络 （100M至几个Gbps）</li>
+</ul>
+<h4 id="7-按传输媒体划分"><a href="#7-按传输媒体划分" class="headerlink" title="7. 按传输媒体划分"></a>7. 按传输媒体划分</h4><ul>
+<li>有线计算机网</li>
+</ul>
+<p>传输介质可以是双绞线、同轴电缆和光纤等</p>
+<ul>
+<li>无线计算机网</li>
+</ul>
+<p>传输介质有：无线电波、微波、红外线、激光等</p>
+<h4 id="8-按交换方式划分"><a href="#8-按交换方式划分" class="headerlink" title="8. 按交换方式划分"></a>8. 按交换方式划分</h4><ul>
+<li>电路交换</li>
+</ul>
+<p>如电话系统</p>
+<ul>
+<li>报文交换</li>
+</ul>
+<p>如电报</p>
+<ul>
+<li>分组交换</li>
+</ul>
+<p>如因特网、ATM网络</p>
+<h3 id="1-6-1-计算机网络的性能指标"><a href="#1-6-1-计算机网络的性能指标" class="headerlink" title="1.6.1 计算机网络的性能指标"></a>1.6.1 计算机网络的性能指标</h3><p>计算机网络的性能一般是指它的几个重要的性能指标，主要包括：</p>
+<ul>
+<li>速率</li>
+<li>带宽</li>
+<li>吞吐率</li>
+<li>时延</li>
+<li>时延带宽积</li>
+<li>往返时间RTT</li>
+<li>利用率</li>
+</ul>
+<h4 id="速率"><a href="#速率" class="headerlink" title="速率"></a>速率</h4><ul>
+<li><strong>速率</strong>是计算机网络中最重要的一个性能指标，指的是数据的传送速率，它也称为<strong>数据率</strong> (data rate) 或<strong>比特率</strong> (bit rate)。</li>
+<li>单位是bit/s、kbit/s、Mbit/s、Gbit/s 等。例如4 x 10^10bit/s = 4Gbit/s</li>
+</ul>
+<h4 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h4><ul>
+<li><strong>带宽</strong>(bandwidth)本来是指信号具有的<strong>频带宽度</strong>，其单位是赫（或千赫、兆赫、吉赫等）</li>
+<li>在计算机网络中，<strong>带宽用来表示网络中某通道传送数据的能力<em>。</em></strong>表示在单位时间内网络中的某信道所能通过的<strong>最高数据率</strong>。单位是 bit/s，即比特每秒</li>
+</ul>
+<p><img src="2.png"></p>
+<h4 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h4><ul>
+<li><strong>吞吐量</strong> (throughput) 表示在<strong>单位时间内通过某个网络（或信道、接口）的数据量</strong></li>
+<li>吞吐量更经常地用于对现实世界中的网络的一种测量，以便知道<strong>实际上到底有多少数据量能够通过网络</strong></li>
+<li><strong>吞吐量</strong>受<strong>网络的带宽</strong>或<strong>网络的额定速率</strong>的<strong>限制</strong></li>
+<li></li>
+</ul>
+<h4 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h4><ul>
+<li><strong>时延</strong> (delay 或 latency) 是指<strong>数据（一个报文或分组，甚至比特）从网络（或链路）的一端传送到另一端所需的时间。</strong></li>
+<li>有时也成为<strong>延迟</strong>或<strong>迟延</strong></li>
+</ul>
+<p>网络中的时延由以下几个不同的部分组成：</p>
+<ul>
+<li>发送时延</li>
+<li>传播时延</li>
+<li>处理时延</li>
+<li>排队时延</li>
+</ul>
+<h5 id="发送时延"><a href="#发送时延" class="headerlink" title="发送时延"></a>发送时延</h5><ul>
+<li>也称<strong>传输时延</strong>（区别于传播时延）</li>
+<li>发送数据时，数据帧<strong>从结点进入到传输媒体</strong>所需要的时间</li>
+<li>也就是从发送数据帧的第一个比特算起，到该帧的最后一个比特发送完毕所需的时间</li>
+</ul>
+<p><img src="3.png"></p>
+<h5 id="传播时延"><a href="#传播时延" class="headerlink" title="传播时延"></a>传播时延</h5><ul>
+<li>电磁波在信道中需要传播一定的距离而花费的时间</li>
+<li><strong>发送时延与传播时延有本质上的不同</strong></li>
+<li>信号<strong>发送速率</strong>和信号在信道上的<strong>传播速率</strong>是<strong>完全不同</strong>的概念</li>
+</ul>
+<p><img src="4.png"></p>
+<p><img src="5.png"></p>
+<h5 id="处理时延"><a href="#处理时延" class="headerlink" title="处理时延"></a>处理时延</h5><ul>
+<li>主机或路由器在<strong>收到分组</strong>时，为<strong>处理分组</strong>（例如分析首部、提取数据、差错检验或查找路由）所花费的时间</li>
+</ul>
+<h5 id="排队时延"><a href="#排队时延" class="headerlink" title="排队时延"></a>排队时延</h5><ul>
+<li>分组在路由器输入输出队列中<strong>排队等待处理</strong>所经历的时延</li>
+<li><strong>排队时延的长短往往取决于网络中当时的通信量</strong></li>
+</ul>
+<p><img src="6.png"></p>
+<p><img src="7.png"></p>
+<p>计算题：</p>
+<p><img src="8.png"></p>
+<p>注意点：</p>
+<ul>
+<li>对于高速网络链路，我们提高的仅仅是数据的<strong>发送速率</strong>而不是比特在链路上的<strong>传播速率</strong></li>
+<li>提高链路带宽减小了数据的发送时延</li>
+</ul>
+<p>判断： “<strong>在高速链路(或高带宽链路)上，比特会传送得更快些</strong>。” 这个说法是错误的</p>
+<h3 id="1-6-2-体系结构"><a href="#1-6-2-体系结构" class="headerlink" title="1.6.2 体系结构"></a>1.6.2 体系结构</h3><p><img src="9.png"></p>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><hr>
+<h3 id="课后习题"><a href="#课后习题" class="headerlink" title="课后习题"></a>课后习题</h3><p>1-3 试从多个方面比较电路交换、报文交换、和分组交换的主要优缺点:</p>
+<ul>
+<li><strong>电路交换：</strong>端对端通信质量因约定了通信资源获得可靠保障，对连续传送大量数据效率高。</li>
+<li><strong>报文交换：</strong>无须预约传输带宽，动态逐段利用传输带宽对突发式数据通信效率高，通信迅速。</li>
+<li><strong>分组交换：</strong>具有报文交换之高效、迅速的要点，且各分组小，路由灵活，网络生存性能好。</li>
+</ul>
+<hr>
+<p>1-17 收发两端之间的传输距离为1000km，信号在媒体上的传播速率为2×10^8^m/s。试计算以下两种情况的发送时延和传播时延：</p>
+<p>（1）数据长度为x^7^ bit,数据发送速率为100kb/s。</p>
+<p>（2）数据长度为10^3^bit,数据发送速率为1Gb/s。从上面的计算中可以得到什么样的结论？</p>
+<p><img src="10.png"></p>
+<hr>
+<p>1-19 长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。再交给网络层传送，需加上20字节的IP首部。最后交给数据链路层的以太网传送，加上首部和尾部共18字节。试求数据的传输效率。数据的传输效率是指发送的应用层数据除以所发送的总数据（即应用数据加上各种首部和尾部的额外开销）。若应用层数据长度为1000字节，数据的传输效率是多少？</p>
+<p><img src="11.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
 </search>
