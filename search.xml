@@ -1534,9 +1534,123 @@
   <entry>
     <title>多元统计分析作业1</title>
     <url>/2021/12/02/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A1/</url>
-    <content><![CDATA[<h2 id="1-判断题"><a href="#1-判断题" class="headerlink" title="1. 判断题"></a>1. 判断题</h2><ul>
-<li>1-1 相关系数为0表明两个变量之间不存在任何关系   F </li>
+    <content><![CDATA[<h2 id="1-判断题"><a href="#1-判断题" class="headerlink" title="1. 判断题"></a>1. 判断题</h2><h4 id="1-1"><a href="#1-1" class="headerlink" title="1-1"></a>1-1</h4><ul>
+<li>相关系数为0表明两个变量之间不存在任何关系   ❌</li>
 </ul>
+<p>​    相关系数为0表示两个变量间不存在线性相关</p>
+<h4 id="1-2"><a href="#1-2" class="headerlink" title="1-2"></a>1-2</h4><ul>
+<li>密度函数可以是负的   ❌</li>
+</ul>
+<p>​    密度函数的一个性质就是非负性</p>
+<h4 id="1-3"><a href="#1-3" class="headerlink" title="1-3"></a>1-3</h4><ul>
+<li>当总体G1和G2为正态总体且协方差相等时，选用马氏距离。✅</li>
+</ul>
+<h4 id="1-4"><a href="#1-4" class="headerlink" title="1-4"></a>1-4</h4><ul>
+<li>标准化随机变量的协方差阵与原变量的相关系数相同。✅</li>
+</ul>
+<h4 id="1-5"><a href="#1-5" class="headerlink" title="1-5"></a>1-5</h4><ul>
+<li>样本相关系数r∈(－1,1) ❌</li>
+</ul>
+<p>​    -1≤r≤1</p>
+<h4 id="1-6"><a href="#1-6" class="headerlink" title="1-6"></a>1-6</h4><ul>
+<li>密度函数可以是负的。❌</li>
+</ul>
+<p>​    密度函数的一个性质就是非负性</p>
+<h4 id="1-7"><a href="#1-7" class="headerlink" title="1-7"></a>1-7</h4><ul>
+<li>如果相关系数为0，则表明两个变量间不存在线性相关。✅</li>
+</ul>
+<h4 id="1-8"><a href="#1-8" class="headerlink" title="1-8"></a>1-8</h4><ul>
+<li>一个行列式中某一行（列）所有元素的公因子可以提到行列式符号的外边。✅</li>
+</ul>
+<h4 id="1-9"><a href="#1-9" class="headerlink" title="1-9"></a>1-9</h4><ul>
+<li><p>numpy中产生全1的矩阵使用的方法是empty。❌</p>
+<p>empty 方法用来创建未初始化的数组</p>
+<p>zeros  方法用来创建全0数组</p>
+<p>ones   方法用来创建全1数组</p>
+</li>
+</ul>
+<h4 id="1-10"><a href="#1-10" class="headerlink" title="1-10"></a>1-10</h4><ul>
+<li>相关关系是指变量间不确定性的依存关系。✅</li>
+</ul>
+<h4 id="1-11"><a href="#1-11" class="headerlink" title="1-11"></a>1-11</h4><ul>
+<li>pandas中head(n)的意思是获取最后的n行数据。❌</li>
+</ul>
+<p>获取的是前面的n行数据</p>
+<h4 id="1-12"><a href="#1-12" class="headerlink" title="1-12"></a>1-12</h4><ul>
+<li>Numpy的ndarray(数组)中，使用shape()来表示数组的维度尺寸。✅</li>
+</ul>
+<h4 id="1-13"><a href="#1-13" class="headerlink" title="1-13"></a>1-13</h4><ul>
+<li>Python语言是非开源的语言。❌</li>
+</ul>
+<p>Python是开源的</p>
+<h4 id="1-14"><a href="#1-14" class="headerlink" title="* 1-14"></a>* 1-14</h4><ul>
+<li>脸谱图是用脸部特征表达变量间的相关性。❌</li>
+</ul>
+<h4 id="1-15"><a href="#1-15" class="headerlink" title="1-15"></a>1-15</h4><ul>
+<li>通过对多变量的脸谱图分析，可以直观地对原始数据资料进行归类或比较研究 ✅</li>
+</ul>
+<h4 id="1-16"><a href="#1-16" class="headerlink" title="1-16"></a>1-16</h4><ul>
+<li>设要分析的资料共有p个变量，当p值较大时一张雷达图也可以清晰表达各观测之间的接近程度。❌</li>
+</ul>
+<p>​    当观测数比较多时，画到一张雷达图里面就不太容易看出各观测之间的接近程度</p>
+<h4 id="1-17"><a href="#1-17" class="headerlink" title="1-17"></a>1-17</h4><ul>
+<li>雷达图是目前应用较为广泛的多元资料进行作图的方法，利用雷达图可以很方便地研究个样本点之间的关系并对样品进行归类。 ✅</li>
+</ul>
+<h4 id="1-18"><a href="#1-18" class="headerlink" title="1-18"></a>1-18</h4><ul>
+<li>星图和星座图很相似，甚至有的文献把两者看成是一回事。❌</li>
+</ul>
+<p>离谱</p>
+<h4 id="1-19"><a href="#1-19" class="headerlink" title="1-19"></a>1-19</h4><ul>
+<li>利用星座图可以方便地对样本点进行分类，再星座图上比较靠近的样本点比较相似，可分为一类。✅</li>
+</ul>
+<h4 id="1-20"><a href="#1-20" class="headerlink" title="1-20"></a>1-20</h4><ul>
+<li>多变量的图表示法使资料的呈现方式更直观、更形象，可以作为定量分析的研究结果并形成结论。❌</li>
+</ul>
+<p>个人觉得定量分析是错误的</p>
+<h4 id="1-21"><a href="#1-21" class="headerlink" title="1-21"></a>1-21</h4><ul>
+<li>只要变量的指标数目不变，对应脸谱图的特征就不变。❌</li>
+</ul>
+<p>只要….就</p>
+<h4 id="1-22"><a href="#1-22" class="headerlink" title="1-22"></a>1-22</h4><ul>
+<li>马氏距离在协差阵为单位阵时退化为欧氏距离。✅</li>
+</ul>
+<h4 id="1-23"><a href="#1-23" class="headerlink" title="1-23"></a>1-23</h4><ul>
+<li>马氏距离受单位的影响。❌</li>
+</ul>
+<p>​    马氏距离的优点：它不受量纲的影响，两点之间的马氏距离与原始数据的测量单位无关</p>
+<p>​    马氏距离的缺点：它的缺点是夸大了变化微小的变量的作用</p>
+<h4 id="1-24"><a href="#1-24" class="headerlink" title="1-24"></a>1-24</h4><ul>
+<li>相关系数度量了两个随机变量之间依赖关系的强弱 ✅</li>
+</ul>
+<h4 id="1-25"><a href="#1-25" class="headerlink" title="1-25"></a>1-25</h4><ul>
+<li>Cov(X,Y)=0, 称X与Y是不相关的  ✅</li>
+</ul>
+<h4 id="1-26"><a href="#1-26" class="headerlink" title="1-26"></a>1-26</h4><ul>
+<li>随机向量X的协方差阵是对称矩阵 ✅</li>
+</ul>
+<h4 id="1-27"><a href="#1-27" class="headerlink" title="* 1-27"></a>* 1-27</h4><ul>
+<li>若p维随机向量X的协方差阵存在,且每个分量的方差大于零，则X的相关阵的元素计算公式为:r_ij=(cov(X_i,X_j))/(D(X_i)D(X_j)),i,j=1,2,…,p。❌</li>
+</ul>
+<h4 id="1-28"><a href="#1-28" class="headerlink" title="1-28"></a>1-28</h4><ul>
+<li>设两个随机向量X和Y是相互独立的，F(x,y)为(X,Y)的联合分布函数，G(x)和H(y)分别为X和Y的分布函数，则F(x,y)=G(x)H(y)✅</li>
+</ul>
+<h4 id="1-29"><a href="#1-29" class="headerlink" title="1-29"></a>1-29</h4><p>设两个随机向量X和Y是相互独立的，f(x,y)为(X,Y)的密度函数，g(x)和h(y)分别为X和Y的密度函数，则f(x,y)=g(x)+h(y)。❌</p>
+<p>肯定是乘呀</p>
+<h4 id="1-30"><a href="#1-30" class="headerlink" title="1-30"></a>1-30</h4><p>正态分布的条件分布仍为条件分布 ✅</p>
+<h4 id="1-31"><a href="#1-31" class="headerlink" title="1-31"></a>1-31</h4><p>相关关系数不会取负值 ❌</p>
+<h4 id="1-32"><a href="#1-32" class="headerlink" title="1-32"></a>1-32</h4><p>相关系数的绝对值不会大于1✅</p>
+<h4 id="1-33"><a href="#1-33" class="headerlink" title="1-33"></a>1-33</h4><p>若A是退化矩阵，则A-1一定存在❌</p>
+<p><img src="1.png"></p>
+<h4 id="1-34"><a href="#1-34" class="headerlink" title="1-34"></a>1-34</h4><p>若A为p阶对称矩阵，则存在正交矩阵T和对角矩阵Λ=diag(λ_1,λ_2,⋯λ_p)，使得A=TΛT’。✅</p>
+<h4 id="1-35"><a href="#1-35" class="headerlink" title="1-35"></a>1-35</h4><p>若向量x和y的内积为0，则说明向量x和y垂直 ✅</p>
+<h4 id="1-36"><a href="#1-36" class="headerlink" title="1-36"></a>1-36</h4><p>若A是一个正交矩阵，则A的行列式为1❌</p>
+<p>设A’为A的转置矩阵，因为A为正交矩阵，则有A’A=I，<br>得 |A’A|=|I|=1，即|A’||A|=|A|^2=1<br>所以 |A|=+-1</p>
+<h4 id="1-37"><a href="#1-37" class="headerlink" title="1-37"></a>1-37</h4><p>若A和B均为p阶方阵，则|AB|=|A||B|✅</p>
+<hr>
+<h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><h4 id="2-1"><a href="#2-1" class="headerlink" title="2-1"></a>2-1</h4><p>关于 Python 语言的特点，以下选项中描述错误的是    <strong>A</strong></p>
+<p>A. Python 语言是非开源语言        B.Python 语言是跨平台语言</p>
+<p>C. Python 语言是多模型语言        D.Python 语言是脚本语言</p>
+<h4 id="2-2"><a href="#2-2" class="headerlink" title="2-2"></a>2-2</h4><p>使用pandas时需要导入下面哪个？</p>
 ]]></content>
       <categories>
         <category>机器学习</category>
@@ -1691,6 +1805,61 @@
 <hr>
 <p>1-19 长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。再交给网络层传送，需加上20字节的IP首部。最后交给数据链路层的以太网传送，加上首部和尾部共18字节。试求数据的传输效率。数据的传输效率是指发送的应用层数据除以所发送的总数据（即应用数据加上各种首部和尾部的额外开销）。若应用层数据长度为1000字节，数据的传输效率是多少？</p>
 <p><img src="11.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习2</title>
+    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
+    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
+<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
+<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
+<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
+</ul>
+<p><img src="1.png"></p>
+<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
+<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
+</ul>
+<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
+<li>频分多路复用 FDM </li>
+<li>时分多路复用 TDM</li>
+<li>波分多路复用 WDM</li>
+<li>码分复用 CDMA</li>
+</ul>
+<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
+<li>常用于载波电话系统、电视等</li>
+</ul>
+<p><img src="2.png"></p>
+<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
+<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
+<li>按需分配媒体资源，提高了传输媒体的利用率</li>
+</ul>
+<p><img src="4.png"></p>
+<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
+<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
+<li>密集波分复用是一种支持巨大数量信道的系统</li>
+<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
+</ul>
+<p><img src="5.png"></p>
+<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
+<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
+<ul>
+<li>数据分为：模拟数据和数字数据</li>
+<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
+<li>数字数据：只能取离散数值的数据</li>
+<li>信号分为：模拟信号和数字信号</li>
+<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
+</ul>
+<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
+<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
+<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
