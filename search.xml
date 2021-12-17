@@ -995,15 +995,17 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>Oracle实验2</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
-    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
+    <title>Oracle实验3</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C3/</url>
+    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- (1）创建“添加教师信息”的匿名块，将输入信息插入教师信息表。</span></span><br><span class="line"><span class="comment">-- （2）“添加教师信息”的匿名块的程序框架如下：</span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">  <span class="comment">-- 定义接受每个字段数据的变量									</span></span><br><span class="line">  <span class="comment">-- 定义NOTNULL字段输入为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义输入系部代码在部门信息表中不存在时抛出的用户自定义异常变量</span></span><br><span class="line">   <span class="comment">-- 定义其他临时变量</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果NOTNULL字段输入为null，抛出用户自定义异常			 </span></span><br><span class="line">  <span class="comment">-- 查询输入系部代码在部门信息表中的记录数；如果记录数为0，抛出用户自定义异常</span></span><br><span class="line"><span class="comment">-- 检查性别是不是男/女，不是则输出提示信息&#x27;性别不正确！&#x27;，是则继续。</span></span><br><span class="line">  <span class="comment">-- insert语句插入教师信息记录									 </span></span><br><span class="line">  <span class="comment">-- 输出提示信息&#x27;教师信息添加成功！&#x27;</span></span><br><span class="line">EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理NOTNULL字段输入为null的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理系部代码不存在的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理教师编号已经存在产生的系统预定义异常，输出提示信息  </span></span><br><span class="line">    <span class="comment">-- 处理其他异常，输出提示信息</span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherCountbyProfess，统计各个职称级别的教师人数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherCountbyProfess;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherCountbyProfess <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) &quot;教师人数&quot; , decode(profess,<span class="string">&#x27;教授&#x27;</span>,<span class="string">&#x27;1-教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;副教授&#x27;</span>,<span class="string">&#x27;2-副教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;讲师&#x27;</span>,<span class="string">&#x27;3-讲师&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;助教&#x27;</span>,<span class="string">&#x27;4-助教&#x27;</span>) &quot;职称级别&quot; <span class="keyword">from</span> teacher <span class="keyword">group</span> <span class="keyword">by</span> profess <span class="keyword">order</span> <span class="keyword">by</span> &quot;职称级别&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherCountbyProfess;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">set</span> serveroutput <span class="keyword">on</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建“添加教师信息”的匿名块，将输入信息插入教师信息表。 </span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">v_id teacher.teacher_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师编号&#x27;</span>;</span><br><span class="line">v_name teacher.tname<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师姓名&#x27;</span>;</span><br><span class="line">v_sex teacher.tsex<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师性别&#x27;</span>;</span><br><span class="line">v_birth teacher.tbirth<span class="operator">%</span>type :<span class="operator">=</span> to_date(<span class="string">&#x27;&amp;教师出生日期&#x27;</span>,<span class="string">&#x27;YYYY-MM-DD&#x27;</span>);</span><br><span class="line">v_educ teacher.educ<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师学历&#x27;</span>;</span><br><span class="line">v_profess teacher.profess<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师职称&#x27;</span>;</span><br><span class="line">v_dept_id teacher.dept_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;系部代码&#x27;</span>;</span><br><span class="line">ex_null exception;</span><br><span class="line">ex_dept_no_exist exception;</span><br><span class="line">v_count number;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if <span class="built_in">trim</span>(v_id) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_name) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_sex)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_birth) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_educ) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_profess)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_dept_id)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_null ;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> v_count <span class="keyword">from</span> dept <span class="keyword">where</span> dept_id <span class="operator">=</span> v_dept_id;</span><br><span class="line">    if v_count <span class="operator">=</span> <span class="number">0</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_dept_no_exist;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    if v_sex <span class="operator">!=</span> <span class="string">&#x27;男&#x27;</span> <span class="keyword">and</span> v_sex<span class="operator">!=</span><span class="string">&#x27;女&#x27;</span> <span class="keyword">then</span> </span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;性别不正确！&#x27;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">insert</span> <span class="keyword">into</span> teacher <span class="keyword">values</span>(v_id, v_name, v_sex, v_birth, v_educ, v_profess, v_dept_id);</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;教师信息添加成功！&#x27;</span>);</span><br><span class="line">      <span class="keyword">commit</span>;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    exception</span><br><span class="line">      <span class="keyword">when</span> ex_null <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;输入不能为空噢！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> ex_dept_no_exist <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;系部代码不存在！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> dup_val_on_index <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;该教师已存在&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> others <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;未知异常!&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试1：输入参数为null</span></span><br><span class="line"><span class="comment">-- 测试2：系部代码不存在</span></span><br><span class="line"><span class="comment">-- 测试3：输入已存在的教师</span></span><br><span class="line"><span class="comment">-- 测试4：未知异常</span></span><br><span class="line"><span class="comment">-- 测试5：性别输入不正确</span></span><br><span class="line"><span class="comment">-- 测试6：正常执行</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountbyTeacher，统计任课表中各教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountbyTeacher;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountbyTeacher <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span> (<span class="operator">*</span>) &quot;课程数&quot;, teacher_id &quot;教师编号&quot;,(<span class="keyword">select</span> tname <span class="keyword">from</span> teacher <span class="keyword">where</span> teacher.teacher_id <span class="operator">=</span> tc.teacher_id)&quot;教师姓名&quot; <span class="keyword">from</span> tc </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span>  tc.teacher_id; </span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountbyTeacher;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountForAllTeachers，统计所有教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountForAllTeachers;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountForAllTeachers</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> a.<span class="operator">*</span>,b.c &quot;授课数&quot; <span class="keyword">from</span> teacher a,</span><br><span class="line">(<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) c,teacher_id <span class="keyword">from</span> tc <span class="keyword">group</span> <span class="keyword">by</span> teacher_id) b</span><br><span class="line"><span class="keyword">where</span> a.teacher_id<span class="operator">=</span> b.teacher_id(<span class="operator">+</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountForAllTeachers;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建存储过程pro_StudentsNotUpToStandar</span></span><br><span class="line"><span class="comment">-- 存储过程pro_StudentsNotUpToStandar的程序框架如下：</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2,p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">  <span class="comment">-- 定义形参为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据形参部门代码查询指定系部所有学生信息的游标1;		</span></span><br><span class="line">  <span class="comment">-- 定义保存学生所有学分的变量	</span></span><br><span class="line">  <span class="comment">-- 定义保存当前学生编号变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据当前学生编号查询学生所有选修课程信息及学生成绩的游标2;</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果形参有为null的情况，</span></span><br><span class="line">  			<span class="comment">-- 抛出用户自定义异常；</span></span><br><span class="line">  <span class="comment">-- 循环遍历游标1，完成以下任务：</span></span><br><span class="line">		<span class="comment">-- 查询当前学生获得的所有学分；</span></span><br><span class="line">		<span class="comment">-- 如果学生的总学分小于形参给出的达标学分，就完成以下任务：</span></span><br><span class="line">			<span class="comment">-- 首先输出学生的信息；</span></span><br><span class="line">			<span class="comment">-- 然后遍历游标2 </span></span><br><span class="line">				<span class="comment">-- 输出学生选修的所有课程信息</span></span><br><span class="line">  EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理用户自定义异常 </span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2, p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">null_error exception;</span><br><span class="line"><span class="keyword">cursor</span> c1 <span class="keyword">is</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> students <span class="keyword">where</span> dept_id <span class="operator">=</span> p_deptID;</span><br><span class="line">total_credit number(<span class="number">3</span>);</span><br><span class="line">temp_cur_stuid varchar2(<span class="number">20</span>);</span><br><span class="line"><span class="keyword">cursor</span> c2 <span class="keyword">is</span> <span class="keyword">select</span> courses.<span class="operator">*</span>,sc.grade <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.student_id <span class="operator">=</span> temp_cur_stuid;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if p_deptID <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> p_standerCredit <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise null_error; </span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> c1 loop</span><br><span class="line">      <span class="keyword">select</span> i.student_id <span class="keyword">into</span> temp_cur_stuid <span class="keyword">from</span> dual;</span><br><span class="line">      <span class="keyword">select</span> <span class="built_in">sum</span>(courses.credits) <span class="keyword">into</span> total_credit <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.grade <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">and</span> sc.student_id <span class="operator">=</span> i.student_id;</span><br><span class="line">      if total_credit <span class="operator">&lt;</span> p_standerCredit <span class="keyword">then</span></span><br><span class="line">          dbms_output.put_line(i.student_id <span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.ssex<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sbirth<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.nationality<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.class_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.dept_id);</span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> c2 loop</span><br><span class="line">        dbms_output.put_line(i.course_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.cname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.credits<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.grade);</span><br><span class="line">      <span class="keyword">end</span> loop;</span><br><span class="line">      <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> loop;</span><br><span class="line">    exception </span><br><span class="line">      <span class="keyword">when</span> null_error <span class="keyword">then</span> dbms_output.put_line(<span class="string">&#x27;过程输入参数均不能为空！&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"><span class="comment">-- 测试1：当学分为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="keyword">null</span>);</span><br><span class="line"><span class="comment">-- 测试2：指定系部为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="keyword">null</span>,<span class="number">20</span>);</span><br><span class="line"><span class="comment">-- 测试3：正常输入</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -1016,17 +1018,15 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle实验3</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C3/</url>
-    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- (1）创建“添加教师信息”的匿名块，将输入信息插入教师信息表。</span></span><br><span class="line"><span class="comment">-- （2）“添加教师信息”的匿名块的程序框架如下：</span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">  <span class="comment">-- 定义接受每个字段数据的变量									</span></span><br><span class="line">  <span class="comment">-- 定义NOTNULL字段输入为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义输入系部代码在部门信息表中不存在时抛出的用户自定义异常变量</span></span><br><span class="line">   <span class="comment">-- 定义其他临时变量</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果NOTNULL字段输入为null，抛出用户自定义异常			 </span></span><br><span class="line">  <span class="comment">-- 查询输入系部代码在部门信息表中的记录数；如果记录数为0，抛出用户自定义异常</span></span><br><span class="line"><span class="comment">-- 检查性别是不是男/女，不是则输出提示信息&#x27;性别不正确！&#x27;，是则继续。</span></span><br><span class="line">  <span class="comment">-- insert语句插入教师信息记录									 </span></span><br><span class="line">  <span class="comment">-- 输出提示信息&#x27;教师信息添加成功！&#x27;</span></span><br><span class="line">EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理NOTNULL字段输入为null的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理系部代码不存在的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理教师编号已经存在产生的系统预定义异常，输出提示信息  </span></span><br><span class="line">    <span class="comment">-- 处理其他异常，输出提示信息</span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    <title>Oracle实验2</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
+    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">set</span> serveroutput <span class="keyword">on</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建“添加教师信息”的匿名块，将输入信息插入教师信息表。 </span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">v_id teacher.teacher_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师编号&#x27;</span>;</span><br><span class="line">v_name teacher.tname<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师姓名&#x27;</span>;</span><br><span class="line">v_sex teacher.tsex<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师性别&#x27;</span>;</span><br><span class="line">v_birth teacher.tbirth<span class="operator">%</span>type :<span class="operator">=</span> to_date(<span class="string">&#x27;&amp;教师出生日期&#x27;</span>,<span class="string">&#x27;YYYY-MM-DD&#x27;</span>);</span><br><span class="line">v_educ teacher.educ<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师学历&#x27;</span>;</span><br><span class="line">v_profess teacher.profess<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师职称&#x27;</span>;</span><br><span class="line">v_dept_id teacher.dept_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;系部代码&#x27;</span>;</span><br><span class="line">ex_null exception;</span><br><span class="line">ex_dept_no_exist exception;</span><br><span class="line">v_count number;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if <span class="built_in">trim</span>(v_id) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_name) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_sex)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_birth) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_educ) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_profess)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_dept_id)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_null ;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> v_count <span class="keyword">from</span> dept <span class="keyword">where</span> dept_id <span class="operator">=</span> v_dept_id;</span><br><span class="line">    if v_count <span class="operator">=</span> <span class="number">0</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_dept_no_exist;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    if v_sex <span class="operator">!=</span> <span class="string">&#x27;男&#x27;</span> <span class="keyword">and</span> v_sex<span class="operator">!=</span><span class="string">&#x27;女&#x27;</span> <span class="keyword">then</span> </span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;性别不正确！&#x27;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">insert</span> <span class="keyword">into</span> teacher <span class="keyword">values</span>(v_id, v_name, v_sex, v_birth, v_educ, v_profess, v_dept_id);</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;教师信息添加成功！&#x27;</span>);</span><br><span class="line">      <span class="keyword">commit</span>;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    exception</span><br><span class="line">      <span class="keyword">when</span> ex_null <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;输入不能为空噢！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> ex_dept_no_exist <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;系部代码不存在！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> dup_val_on_index <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;该教师已存在&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> others <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;未知异常!&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试1：输入参数为null</span></span><br><span class="line"><span class="comment">-- 测试2：系部代码不存在</span></span><br><span class="line"><span class="comment">-- 测试3：输入已存在的教师</span></span><br><span class="line"><span class="comment">-- 测试4：未知异常</span></span><br><span class="line"><span class="comment">-- 测试5：性别输入不正确</span></span><br><span class="line"><span class="comment">-- 测试6：正常执行</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherCountbyProfess，统计各个职称级别的教师人数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherCountbyProfess;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherCountbyProfess <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) &quot;教师人数&quot; , decode(profess,<span class="string">&#x27;教授&#x27;</span>,<span class="string">&#x27;1-教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;副教授&#x27;</span>,<span class="string">&#x27;2-副教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;讲师&#x27;</span>,<span class="string">&#x27;3-讲师&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;助教&#x27;</span>,<span class="string">&#x27;4-助教&#x27;</span>) &quot;职称级别&quot; <span class="keyword">from</span> teacher <span class="keyword">group</span> <span class="keyword">by</span> profess <span class="keyword">order</span> <span class="keyword">by</span> &quot;职称级别&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherCountbyProfess;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountbyTeacher，统计任课表中各教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountbyTeacher;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountbyTeacher <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span> (<span class="operator">*</span>) &quot;课程数&quot;, teacher_id &quot;教师编号&quot;,(<span class="keyword">select</span> tname <span class="keyword">from</span> teacher <span class="keyword">where</span> teacher.teacher_id <span class="operator">=</span> tc.teacher_id)&quot;教师姓名&quot; <span class="keyword">from</span> tc </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span>  tc.teacher_id; </span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountbyTeacher;</span><br></pre></td></tr></table></figure>
 
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建存储过程pro_StudentsNotUpToStandar</span></span><br><span class="line"><span class="comment">-- 存储过程pro_StudentsNotUpToStandar的程序框架如下：</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2,p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">  <span class="comment">-- 定义形参为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据形参部门代码查询指定系部所有学生信息的游标1;		</span></span><br><span class="line">  <span class="comment">-- 定义保存学生所有学分的变量	</span></span><br><span class="line">  <span class="comment">-- 定义保存当前学生编号变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据当前学生编号查询学生所有选修课程信息及学生成绩的游标2;</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果形参有为null的情况，</span></span><br><span class="line">  			<span class="comment">-- 抛出用户自定义异常；</span></span><br><span class="line">  <span class="comment">-- 循环遍历游标1，完成以下任务：</span></span><br><span class="line">		<span class="comment">-- 查询当前学生获得的所有学分；</span></span><br><span class="line">		<span class="comment">-- 如果学生的总学分小于形参给出的达标学分，就完成以下任务：</span></span><br><span class="line">			<span class="comment">-- 首先输出学生的信息；</span></span><br><span class="line">			<span class="comment">-- 然后遍历游标2 </span></span><br><span class="line">				<span class="comment">-- 输出学生选修的所有课程信息</span></span><br><span class="line">  EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理用户自定义异常 </span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2, p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">null_error exception;</span><br><span class="line"><span class="keyword">cursor</span> c1 <span class="keyword">is</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> students <span class="keyword">where</span> dept_id <span class="operator">=</span> p_deptID;</span><br><span class="line">total_credit number(<span class="number">3</span>);</span><br><span class="line">temp_cur_stuid varchar2(<span class="number">20</span>);</span><br><span class="line"><span class="keyword">cursor</span> c2 <span class="keyword">is</span> <span class="keyword">select</span> courses.<span class="operator">*</span>,sc.grade <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.student_id <span class="operator">=</span> temp_cur_stuid;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if p_deptID <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> p_standerCredit <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise null_error; </span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> c1 loop</span><br><span class="line">      <span class="keyword">select</span> i.student_id <span class="keyword">into</span> temp_cur_stuid <span class="keyword">from</span> dual;</span><br><span class="line">      <span class="keyword">select</span> <span class="built_in">sum</span>(courses.credits) <span class="keyword">into</span> total_credit <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.grade <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">and</span> sc.student_id <span class="operator">=</span> i.student_id;</span><br><span class="line">      if total_credit <span class="operator">&lt;</span> p_standerCredit <span class="keyword">then</span></span><br><span class="line">          dbms_output.put_line(i.student_id <span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.ssex<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sbirth<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.nationality<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.class_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.dept_id);</span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> c2 loop</span><br><span class="line">        dbms_output.put_line(i.course_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.cname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.credits<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.grade);</span><br><span class="line">      <span class="keyword">end</span> loop;</span><br><span class="line">      <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> loop;</span><br><span class="line">    exception </span><br><span class="line">      <span class="keyword">when</span> null_error <span class="keyword">then</span> dbms_output.put_line(<span class="string">&#x27;过程输入参数均不能为空！&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"><span class="comment">-- 测试1：当学分为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="keyword">null</span>);</span><br><span class="line"><span class="comment">-- 测试2：指定系部为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="keyword">null</span>,<span class="number">20</span>);</span><br><span class="line"><span class="comment">-- 测试3：正常输入</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountForAllTeachers，统计所有教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountForAllTeachers;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountForAllTeachers</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> a.<span class="operator">*</span>,b.c &quot;授课数&quot; <span class="keyword">from</span> teacher a,</span><br><span class="line">(<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) c,teacher_id <span class="keyword">from</span> tc <span class="keyword">group</span> <span class="keyword">by</span> teacher_id) b</span><br><span class="line"><span class="keyword">where</span> a.teacher_id<span class="operator">=</span> b.teacher_id(<span class="operator">+</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountForAllTeachers;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -1435,6 +1435,12 @@
       </tags>
   </entry>
   <entry>
+    <title>孤独</title>
+    <url>/2021/10/21/%E5%AD%A4%E7%8B%AC/</url>
+    <content><![CDATA[<h3 id="什么是孤独？"><a href="#什么是孤独？" class="headerlink" title="什么是孤独？"></a>什么是孤独？</h3><p>什么是孤独呢？可能就是离2021/10/22日还剩下3分钟了，而你还没回复我的消息；<br>-礼物已经买好，礼物已经送到，但是缺了一个主人。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>结束啦</title>
     <url>/2021/10/22/%E7%BB%93%E6%9D%9F%E5%95%A6/</url>
     <content><![CDATA[<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>纠结了很久，还是决定在你生日那天挣扎一下；估计你也能从一些空间的小细节能看出来吧；仔细想来，长那么大，第一次收到真正意义上的好人卡，感觉还是有点奇怪；<br>脸，会很热会热；心，真的会跳的蛮快的；脑子，确实是有那么一点点蒙蒙的感觉。可能，对这个结果早就预想到了，并没有多难受吧；刚才打开的是王道考研的视频，一直都没下定决心要不要考研。可能，这也是冥冥之中自有天意吧。</p>
@@ -1442,15 +1448,241 @@
 ]]></content>
   </entry>
   <entry>
-    <title>孤独</title>
-    <url>/2021/10/21/%E5%AD%A4%E7%8B%AC/</url>
-    <content><![CDATA[<h3 id="什么是孤独？"><a href="#什么是孤独？" class="headerlink" title="什么是孤独？"></a>什么是孤独？</h3><p>什么是孤独呢？可能就是离2021/10/22日还剩下3分钟了，而你还没回复我的消息；<br>-礼物已经买好，礼物已经送到，但是缺了一个主人。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>老坛酸菜</title>
     <url>/2021/10/23/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C/</url>
     <content><![CDATA[<h4 id="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"><a href="#有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；" class="headerlink" title="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"></a>有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；</h4>]]></content>
+  </entry>
+  <entry>
+    <title>英语作文模板</title>
+    <url>/2021/12/17/%E8%8B%B1%E8%AF%AD%E4%BD%9C%E6%96%87%E6%A8%A1%E6%9D%BF/</url>
+    <content><![CDATA[<h4 id="三八大盖"><a href="#三八大盖" class="headerlink" title="三八大盖"></a>三八大盖</h4><h5 id="现象-问题描述功能段"><a href="#现象-问题描述功能段" class="headerlink" title="现象/问题描述功能段"></a>现象/问题描述功能段</h5><ol>
+<li><p>In recent years, … is becoming increasingly popular/prevalent at an amazing rate.</p>
+<p>中文：近年来，…越来越流行。（现象描述功能句）</p>
+<p><strong>套用练习：</strong></p>
+<p>In recent years, Internet is becoming increasingly prevalent at an amazing rate.</p>
+</li>
+<li><p>Along with the development of society, more and more problems are brought to our attention, one of the most serious problems is that …</p>
+<p>中文：随着社会的发展，越来越多的问题已经得到关注，其中最严重的是…（问题描述功能句）</p>
+<p><strong>套用练习：</strong></p>
+<p>Along with the development of society, more and more problems are brought to our attention, one of the most serious problem is the shortage of global water.</p>
+</li>
+<li><p>…， which has attracted extensive attention of the society, which can be found in TV programs, newspapers, university classes and many aspect of our everyday life.</p>
+<p>中文：当今，…得到了大家的广泛关注，并可以在…被发现.（现象描述功能句）</p>
+<p><strong>套用练习：</strong></p>
+<p>​    Over package has attracted extensive attention of the society, which can be found in TV programs, newspapers, university classes and many aspect of our everyday life.</p>
+</li>
+</ol>
+<p>​    </p>
+<p>​    </p>
+<h5 id="原因分析功能段"><a href="#原因分析功能段" class="headerlink" title="原因分析功能段"></a>原因分析功能段</h5><h6 id="总原因的阐述"><a href="#总原因的阐述" class="headerlink" title="总原因的阐述"></a>总原因的阐述</h6><ol>
+<li><p>A number of factors are accountable for this situation.</p>
+</li>
+<li><p>A number of factors might contribute to/account for the phenomenon/problem.</p>
+</li>
+<li><p>Answer to this problem involves many factors.</p>
+</li>
+</ol>
+<p>  中文：许多原因导致这个问题、现象。</p>
+<h6 id="分原因的阐述-原因数量决定"><a href="#分原因的阐述-原因数量决定" class="headerlink" title="分原因的阐述(原因数量决定)"></a>分原因的阐述(原因数量决定)</h6><ol start="4">
+<li><p>One of the most common factor is that…</p>
+</li>
+<li><p>Another contributing cause is …</p>
+</li>
+<li><p>Perhaps the primary reason is that…</p>
+</li>
+<li><p>But the fundamental element is that …</p>
+<p>中文：第一个原因是..; 第二个原因是…; 第三个原因是…；最后一个原因是…</p>
+</li>
+</ol>
+<h5 id="问题解决功能段"><a href="#问题解决功能段" class="headerlink" title="问题解决功能段"></a>问题解决功能段</h5><h6 id="措施主题句"><a href="#措施主题句" class="headerlink" title="措施主题句"></a>措施主题句</h6><ol>
+<li><p>___has been playing an increasingly important role in our day-to-day life, which has brought us a lot of benefits but has created some serious problems as well </p>
+<p>…在日常生活中发挥着越来越重要的作用，它给我们带来了很多好处，同时也给我们带来了一些问题</p>
+</li>
+</ol>
+<h6 id="分措施"><a href="#分措施" class="headerlink" title="分措施"></a>分措施</h6><ol>
+<li><p>First and foremost, government should establish some regulations to …</p>
+</li>
+<li><p>What’s more, people should get ready to…</p>
+</li>
+<li><p>After all, it is necessary to advocate the whole society to…</p>
+<p>首先，政府需要建立规则…，老百姓需要做…， 整个社会需要做…</p>
+</li>
+</ol>
+<h6 id="解决问题总结句-字够就不用"><a href="#解决问题总结句-字够就不用" class="headerlink" title="解决问题总结句(字够就不用)"></a>解决问题总结句(字够就不用)</h6><ol>
+<li><p>All in all, we must keep highly alert of the problems evoked by it, because one the harmful influence accumulates to a certain degree, it will surely threaten the development of the whole society.</p>
+<p>中文：总之，我们一定要警惕它给我们带来更多的问题，因为这个负面影响积聚到一定的程度，它一定会威胁我们社会的发展</p>
+</li>
+</ol>
+<hr>
+<h5 id="观点阐述功能段（总分总）"><a href="#观点阐述功能段（总分总）" class="headerlink" title="观点阐述功能段（总分总）"></a>观点阐述功能段（总分总）</h5><h6 id="观点主旨句-选择之一"><a href="#观点主旨句-选择之一" class="headerlink" title="观点主旨句(选择之一)"></a>观点主旨句(选择之一)</h6><ol>
+<li><p>People have (take, adopt, assume) different attitudes towards sth.</p>
+</li>
+<li><p>People have different opinions on this problem.</p>
+</li>
+<li><p>People take different views of (on) the question.</p>
+<p>中文：不同的人有不同的观点。</p>
+<p><strong>套用练习：</strong></p>
+<p>People have (take, adopt, assume) different attitudes towards the cancelation of Spring Festival Gala. </p>
+</li>
+</ol>
+<h6 id="观点一"><a href="#观点一" class="headerlink" title="观点一"></a>观点一</h6><p>According to a survey, some people are in favor of the idea of doing X. They point out the factor that 支持X的第一个原因 they also argue that 支持X另一个原因。（如果写完第一理由字数不够才写第二个理由）</p>
+<p>中文：根据调查，一些人支持…,他们认为…,他们还认为…</p>
+<h6 id="两个观点之间的衔接句-2选一"><a href="#两个观点之间的衔接句-2选一" class="headerlink" title="两个观点之间的衔接句(2选一)"></a>两个观点之间的衔接句(2选一)</h6><ol>
+<li><p>There is a grain of truth in these statements, but they ignore a more important fact.</p>
+<p>中文：上述阐述有很多正确性，但是他们忽略了一个重要的事实。</p>
+</li>
+<li><p>A close examination would reveal how ridiculous the statement is.</p>
+<p>中文：最近的调查会显示出这个观点有多么的荒谬。</p>
+</li>
+</ol>
+<h6 id="观点2"><a href="#观点2" class="headerlink" title="观点2"></a>观点2</h6><ol>
+<li><p><strong>Other people who stand on a different ground consider that …, they firmly point out + 反对X的第一理由。</strong>(到这字数够了就不用后面的例子) An example can give the details of this argument:例子</p>
+<p>中文：然而，其他的人有相反的观点，他们认为…</p>
+</li>
+</ol>
+<h5 id="观点结论功能段-选一"><a href="#观点结论功能段-选一" class="headerlink" title="观点结论功能段(选一)"></a>观点结论功能段(选一)</h5><p><strong>1.</strong> From what has been discussed above, we may safely draw the conclusion that…</p>
+<p>中文：综上所述，我们可以得出下面的结论。</p>
+<p><strong>2.</strong> It is difficult to say whether… is good or not in general as it depends very much on the situation of…. However, from a personal point of view.</p>
+<p>中文：我们很难说…是好还是坏，因为它取决于…。然而，在我看来。</p>
+<p><strong>套用练习：</strong></p>
+<p>From what has been discussed above, we may safely draw the conclusion that college students should have the awareness of cultivating stand-alone capability.</p>
+<h5 id="引语解释功能段"><a href="#引语解释功能段" class="headerlink" title="引语解释功能段"></a>引语解释功能段</h5><p><strong>1.</strong> There is an old saying____. It’s the experience of our forefathers, however, it is correct in many cases even today.  </p>
+<p>中文：古话说：“…”，但是现今仍然是准确的。</p>
+<p><strong>套用练习：</strong></p>
+<p>There is an old saying “It’s unwise to judge a person by the appearance.”. It’s the experience of our forefathers, however, it is correct in many cases even today. </p>
+<h5 id="未来展望功能段-选1"><a href="#未来展望功能段-选1" class="headerlink" title="未来展望功能段(选1)"></a>未来展望功能段(选1)</h5><p><strong>1.</strong> ….is crucial for every individual. With its seemingly magic power, it can not only…, but serve as an efficient instrument for individuals to …</p>
+<p>中文：…对每个人来说都是重要的，有了它的神奇力量，它不仅…还可以…</p>
+<p><strong>2.</strong> It can directly promote the rapid progress of the organization and indirectly spurs continuous development of the individuals. And eventually brings economic prosperity and social harmony.</p>
+<p>中文：它可以直接促进… 还可以带来…</p>
+<h5 id="漫画-图表描述功能段"><a href="#漫画-图表描述功能段" class="headerlink" title="漫画/图表描述功能段"></a>漫画/图表描述功能段</h5><p><strong>1.</strong> According to the figure/ number/statistics/percentages in the /chart/bar graph/line/graph, it can be seen that…</p>
+<p><strong>2.</strong> As is vividly shown/described/depicted in the cartoon/picture, …</p>
+<p>中文：如图所示…</p>
+<h3 id="四级作文的三段论"><a href="#四级作文的三段论" class="headerlink" title="四级作文的三段论"></a>四级作文的三段论</h3><p>当我们拿到一篇作文的时候，作文单纯的是一个现象但是<strong>没有解决</strong>的事:现象解释题</p>
+<h4 id="1-现象解释题"><a href="#1-现象解释题" class="headerlink" title="(1) 现象解释题"></a>(1) 现象解释题</h4><p>第一段：描述现象，引出话题</p>
+<p>第二段：阐述<strong>正反观点</strong></p>
+<p>第三段：观点<strong>结论</strong></p>
+<p>对应三八大盖中 1 4 5</p>
+<h4 id="2-问题解决型"><a href="#2-问题解决型" class="headerlink" title="(2) 问题解决型"></a>(2) 问题解决型</h4><p>第一段：问题描述</p>
+<p>第二段：解决问题的原因</p>
+<p>第三段：解决问题的<strong>措施</strong></p>
+<p>对应三八大盖中 1 2 3</p>
+<h4 id="3-对比观点型"><a href="#3-对比观点型" class="headerlink" title="(3) 对比观点型"></a>(3) 对比观点型</h4><p>① 正方观点+理由</p>
+<p>② 反方观点+理由</p>
+<p>③ 我的观点</p>
+<h4 id="4-应用文-书信-告示"><a href="#4-应用文-书信-告示" class="headerlink" title="(4) 应用文(书信+告示)"></a>(4) 应用文(书信+告示)</h4><p>① 写作目的</p>
+<p>② 写信内容</p>
+<h4 id="5-引语类"><a href="#5-引语类" class="headerlink" title="(5) 引语类"></a>(5) 引语类</h4><p>第一段：引语的解释+表明主题</p>
+<p>第二段：分析引语现象的原因/阐述漫画现象不同观点</p>
+<p>第三段：展望未来/解决方法</p>
+<h4 id="6-漫画-图表类"><a href="#6-漫画-图表类" class="headerlink" title="(6) 漫画/图表类"></a>(6) 漫画/图表类</h4><p>第一段：描述漫画内容 + 过渡引申含义</p>
+<p>第二段：分析漫画现象的原因/阐述漫画现象的不同观点</p>
+<p>第三段：展望未来/解决方法</p>
+<h3 id="单词替换"><a href="#单词替换" class="headerlink" title="单词替换"></a>单词替换</h3><h4 id="1-firstly"><a href="#1-firstly" class="headerlink" title="1. firstly"></a>1. firstly</h4><ol>
+<li>previously, beforehand, initially, originally, principally, essentially, <strong>basically</strong>, generally, commonly</li>
+<li>on the whole, to begin with, to start with, first of all, at the outset</li>
+</ol>
+<h4 id="2-second"><a href="#2-second" class="headerlink" title="2. second"></a>2. second</h4><p>subsequently      what’s more       afterward    </p>
+<p>furthermore        thereafter           after   that</p>
+<h4 id="3-lastly"><a href="#3-lastly" class="headerlink" title="3. lastly"></a>3. lastly</h4><p><strong>ultimately</strong>           as a final point    eventually</p>
+<p>last of all             in conclusion       last but not least</p>
+<h4 id="4-so"><a href="#4-so" class="headerlink" title="4. so"></a>4. so</h4><p>consequently        accordingly       <strong>as a result</strong></p>
+<p><strong>hence</strong>        that’s why …</p>
+<h4 id="5-important"><a href="#5-important" class="headerlink" title="5. important"></a>5. important</h4><p>essential        indispensable        significant        requisite</p>
+<p>vital                critical        profound        primary</p>
+<h4 id="6-because"><a href="#6-because" class="headerlink" title="6. because"></a>6. because</h4><p>on account  of</p>
+<p>as a result of</p>
+<p>by virtue of</p>
+<p>in light of</p>
+<h4 id="7-because-of"><a href="#7-because-of" class="headerlink" title="7. because of"></a>7. because of</h4><p><strong>in that</strong> </p>
+<p>for the reason that,</p>
+<p>considering that</p>
+<h4 id="8-many"><a href="#8-many" class="headerlink" title="8. many"></a>8. many</h4><p><strong>an army of</strong></p>
+<p>an ocean of</p>
+<p>a sea of,</p>
+<p>a host of</p>
+<p><strong>a large amount of</strong></p>
+<h4 id="9-pay-attention-to"><a href="#9-pay-attention-to" class="headerlink" title="9. pay attention to"></a>9. pay attention to</h4><p>focus on</p>
+<p>concentrate on</p>
+<p>attach importance to</p>
+<p>give priority to</p>
+<h4 id="10-归因于"><a href="#10-归因于" class="headerlink" title="10. 归因于"></a>10. 归因于</h4><p>ascribe to</p>
+<p>arise from</p>
+<p>attribute to</p>
+<p>derive from</p>
+<p>result from</p>
+<h4 id="11-导致"><a href="#11-导致" class="headerlink" title="11. 导致"></a>11. 导致</h4><p>contribute to</p>
+<p>lead to</p>
+<p>result in</p>
+<h4 id="12-think"><a href="#12-think" class="headerlink" title="12.think"></a>12.think</h4><p><strong>assume</strong></p>
+<p>deem</p>
+<h4 id="13-I-think"><a href="#13-I-think" class="headerlink" title="13. I think"></a>13. I think</h4><p>to my knowledge</p>
+<p>from my angle</p>
+<p>from my personal perspective</p>
+<h4 id="14-difficult"><a href="#14-difficult" class="headerlink" title="14. difficult"></a>14. difficult</h4><p>tricky, complicated, complex</p>
+]]></content>
+      <categories>
+        <category>英语</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>英语</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习2</title>
+    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
+    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
+<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
+<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
+<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
+</ul>
+<p><img src="1.png"></p>
+<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
+<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
+</ul>
+<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
+<li>频分多路复用 FDM </li>
+<li>时分多路复用 TDM</li>
+<li>波分多路复用 WDM</li>
+<li>码分复用 CDMA</li>
+</ul>
+<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
+<li>常用于载波电话系统、电视等</li>
+</ul>
+<p><img src="2.png"></p>
+<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
+<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
+<li>按需分配媒体资源，提高了传输媒体的利用率</li>
+</ul>
+<p><img src="4.png"></p>
+<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
+<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
+<li>密集波分复用是一种支持巨大数量信道的系统</li>
+<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
+</ul>
+<p><img src="5.png"></p>
+<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
+<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
+<ul>
+<li>数据分为：模拟数据和数字数据</li>
+<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
+<li>数字数据：只能取离散数值的数据</li>
+<li>信号分为：模拟信号和数字信号</li>
+<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
+</ul>
+<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
+<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
+<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
   </entry>
   <entry>
     <title>计算机网络复习1</title>
@@ -1596,61 +1828,6 @@
 <hr>
 <p>1-19 长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。再交给网络层传送，需加上20字节的IP首部。最后交给数据链路层的以太网传送，加上首部和尾部共18字节。试求数据的传输效率。数据的传输效率是指发送的应用层数据除以所发送的总数据（即应用数据加上各种首部和尾部的额外开销）。若应用层数据长度为1000字节，数据的传输效率是多少？</p>
 <p><img src="11.png"></p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>计算机网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机网络复习2</title>
-    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
-    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
-<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
-<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
-<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
-</ul>
-<p><img src="1.png"></p>
-<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
-<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
-</ul>
-<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
-<li>频分多路复用 FDM </li>
-<li>时分多路复用 TDM</li>
-<li>波分多路复用 WDM</li>
-<li>码分复用 CDMA</li>
-</ul>
-<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
-<li>常用于载波电话系统、电视等</li>
-</ul>
-<p><img src="2.png"></p>
-<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
-<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
-<li>按需分配媒体资源，提高了传输媒体的利用率</li>
-</ul>
-<p><img src="4.png"></p>
-<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
-<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
-<li>密集波分复用是一种支持巨大数量信道的系统</li>
-<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
-</ul>
-<p><img src="5.png"></p>
-<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
-<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
-<ul>
-<li>数据分为：模拟数据和数字数据</li>
-<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
-<li>数字数据：只能取离散数值的数据</li>
-<li>信号分为：模拟信号和数字信号</li>
-<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
-</ul>
-<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
-<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
-<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
