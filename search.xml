@@ -1,6 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Oracle复习3</title>
+    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A03/</url>
+    <content><![CDATA[<h3 id="表"><a href="#表" class="headerlink" title="表"></a>表</h3><h5 id="Oracle-SQL种类"><a href="#Oracle-SQL种类" class="headerlink" title="Oracle SQL种类"></a>Oracle SQL种类</h5><ul>
+<li><p><strong>数据定义语言 Data Definition Language Statements（DDL）</strong></p>
+</li>
+<li><p><strong>数据操纵语言 Data Manipulation Language（DML） Statements</strong></p>
+</li>
+<li><p>事务控制 Transaction Control Statements </p>
+</li>
+<li><p>会话控制 Session Control Statements </p>
+</li>
+<li><p>系统控制 System Control Statements </p>
+</li>
+<li><p>嵌入SQL Embedded SQL Statements</p>
+</li>
+</ul>
+<h5 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h5><ul>
+<li><p>Create、alter和drop方案对象与数据库结构 (CREATE, ALTER, DROP)</p>
+</li>
+<li><p>改变方案对象名称 (RENAME) </p>
+</li>
+<li><p>TRUNCATE</p>
+</li>
+<li><p>权限和角色的授予与回收 (GRANT, REVOKE) </p>
+</li>
+<li><p>打开与关闭审计操作 (AUDIT, NOAUDIT)</p>
+</li>
+<li><p>增加注释到数据字典 (COMMENT) </p>
+</li>
+<li><p><strong>当用户执行DDL语句时，在每一条DDL语句执行前后，Oracle都将提交当前的事务，理解这一点很重要。</strong></p>
+</li>
+</ul>
+<p><img src="1-1.png"></p>
+<h5 id="表的命名规定"><a href="#表的命名规定" class="headerlink" title="表的命名规定"></a>表的命名规定</h5><ol>
+<li><strong>必须是以字母开头。</strong></li>
+<li>1-30个字符长度</li>
+<li><strong>仅能包括A-Z，a-z，0-9，_,$,#</strong></li>
+<li>在同一个用户下表明不能重复</li>
+<li>不能是Oracle保留字</li>
+</ol>
+<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p><img src="1-2.png"></p>
+<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5><p>创建者必须具有</p>
+<ul>
+<li><p>CREATE TABLE 权限</p>
+</li>
+<li><p>一个存储区</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]tablename  </span><br><span class="line">             (columnname datatype [<span class="keyword">DEFAULT</span> expr][, 			...]);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>数据库表名</p>
+</li>
+<li><p>定义列（名称、数据类型、长度和缺省值）</p>
+</li>
+</ul>
+<h5 id="列的缺省值"><a href="#列的缺省值" class="headerlink" title="列的缺省值"></a>列的缺省值</h5><ul>
+<li>指定列的缺省值， 在以后的INSERT语句中忽略该列值时， 将此缺省值赋给该列。</li>
+<li>默认值的数据类型必须和列的数据类型匹配</li>
+<li>表达式、SQL函数和数值都是合法的值</li>
+<li>不能包括其他列和伪列的引用（ROWNUM，NEXTVAL，LEVEL和CURRVAL）</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept(</span><br><span class="line">	deptno number(<span class="number">2</span>),</span><br><span class="line">	dname varchar2(<span class="number">14</span>),</span><br><span class="line">	loc varchar2(<span class="number">13</span>));</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- Table created</span></span><br><span class="line"><span class="keyword">describe</span> dept</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NAME                NULL?       Type</span></span><br><span class="line">_____________________________________________</span><br><span class="line">DEPTNO                 <span class="keyword">NOT</span> <span class="keyword">NULL</span>     NUMBER(<span class="number">2</span>)</span><br><span class="line">DNAME                               VARCHAR2(<span class="number">14</span>)</span><br><span class="line">LOC                                 VARCHAR2(<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="使用子查询创建表"><a href="#使用子查询创建表" class="headerlink" title="使用子查询创建表"></a>使用子查询创建表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 语法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line">  	  [<span class="keyword">column</span>(, column...)]</span><br><span class="line"><span class="keyword">AS</span> subquery;</span><br><span class="line"></span><br><span class="line"><span class="comment">--------------------------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept30 </span><br><span class="line">	<span class="keyword">as</span> </span><br><span class="line">		<span class="keyword">select</span> empno, ename, sal<span class="operator">*</span><span class="number">12</span> annsal, hiredate</span><br><span class="line">		<span class="keyword">from</span> emp</span><br><span class="line">		<span class="keyword">where</span> deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="更改表"><a href="#更改表" class="headerlink" title="更改表"></a>更改表</h5><ol>
+<li><p>增加或删除列</p>
+</li>
+<li><p>增加完整性约束</p>
+</li>
+<li><p>重新定义列（数据类型、长度、缺省值）</p>
+</li>
+<li><p>修改存储参数或其它参数</p>
+</li>
+<li><p>使能、使不能或删除一完整性约束或触发器</p>
+</li>
+<li><p>显式地分配一个范围</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">ADD</span>		   (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		   [, <span class="keyword">column</span> datatype]...);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> DEPT30</span><br><span class="line">	<span class="keyword">ADD</span> (job VARCHAR2(<span class="number">9</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="1-3.png"></p>
+<hr>
+<h5 id="改变表名称"><a href="#改变表名称" class="headerlink" title="改变表名称"></a>改变表名称</h5><ul>
+<li><p>执行RENAME语句，将改变表、视图、序列和同义词的名称。</p>
+</li>
+<li><p>操作者必须是对象的拥有者。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">RENAME dept <span class="keyword">TO</span> department;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h5 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h5><ul>
+<li>删除表的所有数据和结构</li>
+<li>删除表的所有索引</li>
+<li>表的删除操作不能回退</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">DROP</span> <span class="keyword">TABLE</span> dept30;</span><br><span class="line"><span class="keyword">Table</span> dropped.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>如果在要删除的表中包含有被其它表的外部码引用的主码或唯一码，并且希望在删除这个表的同时删除其它表中的相关的外部码约束，可以在DROP TABLE语句中指定CASCADE字句</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> department CASCADE CONSTRAINTS;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h5 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a>截断表</h5><ul>
+<li>删除表的所有数据</li>
+<li>释放被表使用的存储空间</li>
+<li>截断操作不能回退</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> department;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">TABLE</span> emp</span><br><span class="line">	<span class="keyword">is</span> <span class="string">&#x27;Employee Information&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="创建约束和管理约束"><a href="#创建约束和管理约束" class="headerlink" title="创建约束和管理约束"></a>创建约束和管理约束</h5><p>约束类型</p>
+<ul>
+<li>NOT NULL</li>
+<li>UNIQUE</li>
+<li>PRIMARY KEY</li>
+<li>FOREIGN KEY</li>
+<li>CHECK</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]<span class="keyword">table</span></span><br><span class="line">	    (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		[column_constraint],</span><br><span class="line">		…</span><br><span class="line">		[table_constraint]);</span><br><span class="line">		</span><br><span class="line"><span class="comment">------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">	empno NUMBER(<span class="number">4</span>),</span><br><span class="line">	ename VARCHAR2(<span class="number">10</span>),</span><br><span class="line">	deptno NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	<span class="keyword">CONSTRAINT</span> emp_empno_pk <span class="keyword">PRIMARY</span> KEY(EMPNO));</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 唯一码约束</span></span><br><span class="line"><span class="comment">-- 唯一码约束可以定义在列上或者表上(unique)</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line">  		loc	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span>(dname));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 主键约束</span></span><br><span class="line"><span class="comment">-- 主键越是可以定义在列上或者表上（PRIMARY KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line"> 		loc	  	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span> (dname),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_deptno_pk <span class="keyword">PRIMARY</span> KEY(deptno) );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 外键约束</span></span><br><span class="line"><span class="comment">-- 外键约束可以定义在列上或者表上（FOREIGN KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">    	empno 	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		ename	VARCHAR2(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  		job	VARCHAR2(<span class="number">9</span>),</span><br><span class="line">  		mgr	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		hiredate	<span class="type">DATE</span>,</span><br><span class="line">  		sal	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">   		comm	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">		deptno	NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line"> 		<span class="keyword">CONSTRAINT</span> emp_deptno_fk <span class="keyword">FOREIGN</span> KEY (deptno)</span><br><span class="line"> 			<span class="keyword">REFERENCES</span> dept (deptno));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- check约束：定义表的每一行必须满足的条件</span></span><br><span class="line">..., deptno	NUMBER(<span class="number">2</span>),</span><br><span class="line">      <span class="keyword">CONSTRAINT</span> emp_deptno_ck  </span><br><span class="line">            <span class="keyword">CHECK</span> (DEPTNO <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">AND</span> <span class="number">99</span>),...</span><br></pre></td></tr></table></figure>
+
+<p><strong>可以增加和删除约束但是不能修改约束</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	 <span class="keyword">table</span></span><br><span class="line">  <span class="keyword">ADD</span> [<span class="keyword">CONSTRAINT</span> <span class="keyword">constraint</span>] type (<span class="keyword">column</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>删除</strong>在表DEPT上的<strong>PRIMARY KEY</strong>约束并且删除在表EMP的DEPTNO列上的<strong>FOREIGN KEY</strong>约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>     emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk </span><br><span class="line">  <span class="number">3</span>  		<span class="keyword">FOREIGN</span> KEY(mgr) <span class="keyword">REFERENCES</span> emp(empno);</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	  emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	dept</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>禁用和启用约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- </span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  ENABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  DISABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Oracle复习2</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A02/</url>
     <content><![CDATA[<h3 id="数据库对象——简介"><a href="#数据库对象——简介" class="headerlink" title="数据库对象——简介"></a>数据库对象——简介</h3><h4 id="1-1-Oracle服务器的方案对象和非方案对象的概念"><a href="#1-1-Oracle服务器的方案对象和非方案对象的概念" class="headerlink" title="1.1 Oracle服务器的方案对象和非方案对象的概念"></a>1.1 Oracle服务器的方案对象和非方案对象的概念</h4><h5 id="1-1-1-方案"><a href="#1-1-1-方案" class="headerlink" title="1.1.1 方案"></a>1.1.1 方案</h5><p>​    Oracle通过方案来组织和维护表、视图、索引、等数据库对象</p>
@@ -154,167 +315,6 @@
 
 
 <h5 id="1-3-数据库对象在数据库中的存储结构"><a href="#1-3-数据库对象在数据库中的存储结构" class="headerlink" title="1.3 数据库对象在数据库中的存储结构"></a>1.3 数据库对象在数据库中的存储结构</h5>]]></content>
-      <categories>
-        <category>Oracle</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>Oracle</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Oracle复习3</title>
-    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A03/</url>
-    <content><![CDATA[<h3 id="表"><a href="#表" class="headerlink" title="表"></a>表</h3><h5 id="Oracle-SQL种类"><a href="#Oracle-SQL种类" class="headerlink" title="Oracle SQL种类"></a>Oracle SQL种类</h5><ul>
-<li><p><strong>数据定义语言 Data Definition Language Statements（DDL）</strong></p>
-</li>
-<li><p><strong>数据操纵语言 Data Manipulation Language（DML） Statements</strong></p>
-</li>
-<li><p>事务控制 Transaction Control Statements </p>
-</li>
-<li><p>会话控制 Session Control Statements </p>
-</li>
-<li><p>系统控制 System Control Statements </p>
-</li>
-<li><p>嵌入SQL Embedded SQL Statements</p>
-</li>
-</ul>
-<h5 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h5><ul>
-<li><p>Create、alter和drop方案对象与数据库结构 (CREATE, ALTER, DROP)</p>
-</li>
-<li><p>改变方案对象名称 (RENAME) </p>
-</li>
-<li><p>TRUNCATE</p>
-</li>
-<li><p>权限和角色的授予与回收 (GRANT, REVOKE) </p>
-</li>
-<li><p>打开与关闭审计操作 (AUDIT, NOAUDIT)</p>
-</li>
-<li><p>增加注释到数据字典 (COMMENT) </p>
-</li>
-<li><p><strong>当用户执行DDL语句时，在每一条DDL语句执行前后，Oracle都将提交当前的事务，理解这一点很重要。</strong></p>
-</li>
-</ul>
-<p><img src="1-1.png"></p>
-<h5 id="表的命名规定"><a href="#表的命名规定" class="headerlink" title="表的命名规定"></a>表的命名规定</h5><ol>
-<li><strong>必须是以字母开头。</strong></li>
-<li>1-30个字符长度</li>
-<li><strong>仅能包括A-Z，a-z，0-9，_,$,#</strong></li>
-<li>在同一个用户下表明不能重复</li>
-<li>不能是Oracle保留字</li>
-</ol>
-<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p><img src="1-2.png"></p>
-<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5><p>创建者必须具有</p>
-<ul>
-<li><p>CREATE TABLE 权限</p>
-</li>
-<li><p>一个存储区</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]tablename  </span><br><span class="line">             (columnname datatype [<span class="keyword">DEFAULT</span> expr][, 			...]);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>数据库表名</p>
-</li>
-<li><p>定义列（名称、数据类型、长度和缺省值）</p>
-</li>
-</ul>
-<h5 id="列的缺省值"><a href="#列的缺省值" class="headerlink" title="列的缺省值"></a>列的缺省值</h5><ul>
-<li>指定列的缺省值， 在以后的INSERT语句中忽略该列值时， 将此缺省值赋给该列。</li>
-<li>默认值的数据类型必须和列的数据类型匹配</li>
-<li>表达式、SQL函数和数值都是合法的值</li>
-<li>不能包括其他列和伪列的引用（ROWNUM，NEXTVAL，LEVEL和CURRVAL）</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept(</span><br><span class="line">	deptno number(<span class="number">2</span>),</span><br><span class="line">	dname varchar2(<span class="number">14</span>),</span><br><span class="line">	loc varchar2(<span class="number">13</span>));</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- Table created</span></span><br><span class="line"><span class="keyword">describe</span> dept</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NAME                NULL?       Type</span></span><br><span class="line">_____________________________________________</span><br><span class="line">DEPTNO                 <span class="keyword">NOT</span> <span class="keyword">NULL</span>     NUMBER(<span class="number">2</span>)</span><br><span class="line">DNAME                               VARCHAR2(<span class="number">14</span>)</span><br><span class="line">LOC                                 VARCHAR2(<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h5 id="使用子查询创建表"><a href="#使用子查询创建表" class="headerlink" title="使用子查询创建表"></a>使用子查询创建表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 语法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line">  	  [<span class="keyword">column</span>(, column...)]</span><br><span class="line"><span class="keyword">AS</span> subquery;</span><br><span class="line"></span><br><span class="line"><span class="comment">--------------------------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept30 </span><br><span class="line">	<span class="keyword">as</span> </span><br><span class="line">		<span class="keyword">select</span> empno, ename, sal<span class="operator">*</span><span class="number">12</span> annsal, hiredate</span><br><span class="line">		<span class="keyword">from</span> emp</span><br><span class="line">		<span class="keyword">where</span> deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="更改表"><a href="#更改表" class="headerlink" title="更改表"></a>更改表</h5><ol>
-<li><p>增加或删除列</p>
-</li>
-<li><p>增加完整性约束</p>
-</li>
-<li><p>重新定义列（数据类型、长度、缺省值）</p>
-</li>
-<li><p>修改存储参数或其它参数</p>
-</li>
-<li><p>使能、使不能或删除一完整性约束或触发器</p>
-</li>
-<li><p>显式地分配一个范围</p>
-</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">ADD</span>		   (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		   [, <span class="keyword">column</span> datatype]...);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> DEPT30</span><br><span class="line">	<span class="keyword">ADD</span> (job VARCHAR2(<span class="number">9</span>));</span><br></pre></td></tr></table></figure>
-
-<p><img src="1-3.png"></p>
-<hr>
-<h5 id="改变表名称"><a href="#改变表名称" class="headerlink" title="改变表名称"></a>改变表名称</h5><ul>
-<li><p>执行RENAME语句，将改变表、视图、序列和同义词的名称。</p>
-</li>
-<li><p>操作者必须是对象的拥有者。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">RENAME dept <span class="keyword">TO</span> department;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h5 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h5><ul>
-<li>删除表的所有数据和结构</li>
-<li>删除表的所有索引</li>
-<li>表的删除操作不能回退</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">DROP</span> <span class="keyword">TABLE</span> dept30;</span><br><span class="line"><span class="keyword">Table</span> dropped.</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>如果在要删除的表中包含有被其它表的外部码引用的主码或唯一码，并且希望在删除这个表的同时删除其它表中的相关的外部码约束，可以在DROP TABLE语句中指定CASCADE字句</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> department CASCADE CONSTRAINTS;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h5 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a>截断表</h5><ul>
-<li>删除表的所有数据</li>
-<li>释放被表使用的存储空间</li>
-<li>截断操作不能回退</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> department;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">TABLE</span> emp</span><br><span class="line">	<span class="keyword">is</span> <span class="string">&#x27;Employee Information&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="创建约束和管理约束"><a href="#创建约束和管理约束" class="headerlink" title="创建约束和管理约束"></a>创建约束和管理约束</h5><p>约束类型</p>
-<ul>
-<li>NOT NULL</li>
-<li>UNIQUE</li>
-<li>PRIMARY KEY</li>
-<li>FOREIGN KEY</li>
-<li>CHECK</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]<span class="keyword">table</span></span><br><span class="line">	    (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		[column_constraint],</span><br><span class="line">		…</span><br><span class="line">		[table_constraint]);</span><br><span class="line">		</span><br><span class="line"><span class="comment">------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">	empno NUMBER(<span class="number">4</span>),</span><br><span class="line">	ename VARCHAR2(<span class="number">10</span>),</span><br><span class="line">	deptno NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	<span class="keyword">CONSTRAINT</span> emp_empno_pk <span class="keyword">PRIMARY</span> KEY(EMPNO));</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 唯一码约束</span></span><br><span class="line"><span class="comment">-- 唯一码约束可以定义在列上或者表上(unique)</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line">  		loc	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span>(dname));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 主键约束</span></span><br><span class="line"><span class="comment">-- 主键越是可以定义在列上或者表上（PRIMARY KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line"> 		loc	  	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span> (dname),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_deptno_pk <span class="keyword">PRIMARY</span> KEY(deptno) );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 外键约束</span></span><br><span class="line"><span class="comment">-- 外键约束可以定义在列上或者表上（FOREIGN KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">    	empno 	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		ename	VARCHAR2(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  		job	VARCHAR2(<span class="number">9</span>),</span><br><span class="line">  		mgr	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		hiredate	<span class="type">DATE</span>,</span><br><span class="line">  		sal	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">   		comm	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">		deptno	NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line"> 		<span class="keyword">CONSTRAINT</span> emp_deptno_fk <span class="keyword">FOREIGN</span> KEY (deptno)</span><br><span class="line"> 			<span class="keyword">REFERENCES</span> dept (deptno));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- check约束：定义表的每一行必须满足的条件</span></span><br><span class="line">..., deptno	NUMBER(<span class="number">2</span>),</span><br><span class="line">      <span class="keyword">CONSTRAINT</span> emp_deptno_ck  </span><br><span class="line">            <span class="keyword">CHECK</span> (DEPTNO <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">AND</span> <span class="number">99</span>),...</span><br></pre></td></tr></table></figure>
-
-<p><strong>可以增加和删除约束但是不能修改约束</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	 <span class="keyword">table</span></span><br><span class="line">  <span class="keyword">ADD</span> [<span class="keyword">CONSTRAINT</span> <span class="keyword">constraint</span>] type (<span class="keyword">column</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p><strong>删除</strong>在表DEPT上的<strong>PRIMARY KEY</strong>约束并且删除在表EMP的DEPTNO列上的<strong>FOREIGN KEY</strong>约束</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>     emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk </span><br><span class="line">  <span class="number">3</span>  		<span class="keyword">FOREIGN</span> KEY(mgr) <span class="keyword">REFERENCES</span> emp(empno);</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	  emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	dept</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>禁用和启用约束</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- </span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  ENABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  DISABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-]]></content>
       <categories>
         <category>Oracle</category>
       </categories>
@@ -995,17 +995,15 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>Oracle实验3</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C3/</url>
-    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- (1）创建“添加教师信息”的匿名块，将输入信息插入教师信息表。</span></span><br><span class="line"><span class="comment">-- （2）“添加教师信息”的匿名块的程序框架如下：</span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">  <span class="comment">-- 定义接受每个字段数据的变量									</span></span><br><span class="line">  <span class="comment">-- 定义NOTNULL字段输入为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义输入系部代码在部门信息表中不存在时抛出的用户自定义异常变量</span></span><br><span class="line">   <span class="comment">-- 定义其他临时变量</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果NOTNULL字段输入为null，抛出用户自定义异常			 </span></span><br><span class="line">  <span class="comment">-- 查询输入系部代码在部门信息表中的记录数；如果记录数为0，抛出用户自定义异常</span></span><br><span class="line"><span class="comment">-- 检查性别是不是男/女，不是则输出提示信息&#x27;性别不正确！&#x27;，是则继续。</span></span><br><span class="line">  <span class="comment">-- insert语句插入教师信息记录									 </span></span><br><span class="line">  <span class="comment">-- 输出提示信息&#x27;教师信息添加成功！&#x27;</span></span><br><span class="line">EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理NOTNULL字段输入为null的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理系部代码不存在的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理教师编号已经存在产生的系统预定义异常，输出提示信息  </span></span><br><span class="line">    <span class="comment">-- 处理其他异常，输出提示信息</span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    <title>Oracle实验2</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
+    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">set</span> serveroutput <span class="keyword">on</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建“添加教师信息”的匿名块，将输入信息插入教师信息表。 </span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">v_id teacher.teacher_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师编号&#x27;</span>;</span><br><span class="line">v_name teacher.tname<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师姓名&#x27;</span>;</span><br><span class="line">v_sex teacher.tsex<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师性别&#x27;</span>;</span><br><span class="line">v_birth teacher.tbirth<span class="operator">%</span>type :<span class="operator">=</span> to_date(<span class="string">&#x27;&amp;教师出生日期&#x27;</span>,<span class="string">&#x27;YYYY-MM-DD&#x27;</span>);</span><br><span class="line">v_educ teacher.educ<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师学历&#x27;</span>;</span><br><span class="line">v_profess teacher.profess<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师职称&#x27;</span>;</span><br><span class="line">v_dept_id teacher.dept_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;系部代码&#x27;</span>;</span><br><span class="line">ex_null exception;</span><br><span class="line">ex_dept_no_exist exception;</span><br><span class="line">v_count number;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if <span class="built_in">trim</span>(v_id) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_name) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_sex)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_birth) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_educ) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_profess)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_dept_id)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_null ;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> v_count <span class="keyword">from</span> dept <span class="keyword">where</span> dept_id <span class="operator">=</span> v_dept_id;</span><br><span class="line">    if v_count <span class="operator">=</span> <span class="number">0</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_dept_no_exist;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    if v_sex <span class="operator">!=</span> <span class="string">&#x27;男&#x27;</span> <span class="keyword">and</span> v_sex<span class="operator">!=</span><span class="string">&#x27;女&#x27;</span> <span class="keyword">then</span> </span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;性别不正确！&#x27;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">insert</span> <span class="keyword">into</span> teacher <span class="keyword">values</span>(v_id, v_name, v_sex, v_birth, v_educ, v_profess, v_dept_id);</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;教师信息添加成功！&#x27;</span>);</span><br><span class="line">      <span class="keyword">commit</span>;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    exception</span><br><span class="line">      <span class="keyword">when</span> ex_null <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;输入不能为空噢！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> ex_dept_no_exist <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;系部代码不存在！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> dup_val_on_index <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;该教师已存在&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> others <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;未知异常!&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试1：输入参数为null</span></span><br><span class="line"><span class="comment">-- 测试2：系部代码不存在</span></span><br><span class="line"><span class="comment">-- 测试3：输入已存在的教师</span></span><br><span class="line"><span class="comment">-- 测试4：未知异常</span></span><br><span class="line"><span class="comment">-- 测试5：性别输入不正确</span></span><br><span class="line"><span class="comment">-- 测试6：正常执行</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherCountbyProfess，统计各个职称级别的教师人数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherCountbyProfess;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherCountbyProfess <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) &quot;教师人数&quot; , decode(profess,<span class="string">&#x27;教授&#x27;</span>,<span class="string">&#x27;1-教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;副教授&#x27;</span>,<span class="string">&#x27;2-副教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;讲师&#x27;</span>,<span class="string">&#x27;3-讲师&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;助教&#x27;</span>,<span class="string">&#x27;4-助教&#x27;</span>) &quot;职称级别&quot; <span class="keyword">from</span> teacher <span class="keyword">group</span> <span class="keyword">by</span> profess <span class="keyword">order</span> <span class="keyword">by</span> &quot;职称级别&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherCountbyProfess;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountbyTeacher，统计任课表中各教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountbyTeacher;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountbyTeacher <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span> (<span class="operator">*</span>) &quot;课程数&quot;, teacher_id &quot;教师编号&quot;,(<span class="keyword">select</span> tname <span class="keyword">from</span> teacher <span class="keyword">where</span> teacher.teacher_id <span class="operator">=</span> tc.teacher_id)&quot;教师姓名&quot; <span class="keyword">from</span> tc </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span>  tc.teacher_id; </span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountbyTeacher;</span><br></pre></td></tr></table></figure>
 
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建存储过程pro_StudentsNotUpToStandar</span></span><br><span class="line"><span class="comment">-- 存储过程pro_StudentsNotUpToStandar的程序框架如下：</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2,p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">  <span class="comment">-- 定义形参为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据形参部门代码查询指定系部所有学生信息的游标1;		</span></span><br><span class="line">  <span class="comment">-- 定义保存学生所有学分的变量	</span></span><br><span class="line">  <span class="comment">-- 定义保存当前学生编号变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据当前学生编号查询学生所有选修课程信息及学生成绩的游标2;</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果形参有为null的情况，</span></span><br><span class="line">  			<span class="comment">-- 抛出用户自定义异常；</span></span><br><span class="line">  <span class="comment">-- 循环遍历游标1，完成以下任务：</span></span><br><span class="line">		<span class="comment">-- 查询当前学生获得的所有学分；</span></span><br><span class="line">		<span class="comment">-- 如果学生的总学分小于形参给出的达标学分，就完成以下任务：</span></span><br><span class="line">			<span class="comment">-- 首先输出学生的信息；</span></span><br><span class="line">			<span class="comment">-- 然后遍历游标2 </span></span><br><span class="line">				<span class="comment">-- 输出学生选修的所有课程信息</span></span><br><span class="line">  EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理用户自定义异常 </span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2, p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">null_error exception;</span><br><span class="line"><span class="keyword">cursor</span> c1 <span class="keyword">is</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> students <span class="keyword">where</span> dept_id <span class="operator">=</span> p_deptID;</span><br><span class="line">total_credit number(<span class="number">3</span>);</span><br><span class="line">temp_cur_stuid varchar2(<span class="number">20</span>);</span><br><span class="line"><span class="keyword">cursor</span> c2 <span class="keyword">is</span> <span class="keyword">select</span> courses.<span class="operator">*</span>,sc.grade <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.student_id <span class="operator">=</span> temp_cur_stuid;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if p_deptID <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> p_standerCredit <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise null_error; </span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> c1 loop</span><br><span class="line">      <span class="keyword">select</span> i.student_id <span class="keyword">into</span> temp_cur_stuid <span class="keyword">from</span> dual;</span><br><span class="line">      <span class="keyword">select</span> <span class="built_in">sum</span>(courses.credits) <span class="keyword">into</span> total_credit <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.grade <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">and</span> sc.student_id <span class="operator">=</span> i.student_id;</span><br><span class="line">      if total_credit <span class="operator">&lt;</span> p_standerCredit <span class="keyword">then</span></span><br><span class="line">          dbms_output.put_line(i.student_id <span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.ssex<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sbirth<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.nationality<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.class_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.dept_id);</span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> c2 loop</span><br><span class="line">        dbms_output.put_line(i.course_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.cname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.credits<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.grade);</span><br><span class="line">      <span class="keyword">end</span> loop;</span><br><span class="line">      <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> loop;</span><br><span class="line">    exception </span><br><span class="line">      <span class="keyword">when</span> null_error <span class="keyword">then</span> dbms_output.put_line(<span class="string">&#x27;过程输入参数均不能为空！&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"><span class="comment">-- 测试1：当学分为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="keyword">null</span>);</span><br><span class="line"><span class="comment">-- 测试2：指定系部为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="keyword">null</span>,<span class="number">20</span>);</span><br><span class="line"><span class="comment">-- 测试3：正常输入</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountForAllTeachers，统计所有教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountForAllTeachers;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountForAllTeachers</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> a.<span class="operator">*</span>,b.c &quot;授课数&quot; <span class="keyword">from</span> teacher a,</span><br><span class="line">(<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) c,teacher_id <span class="keyword">from</span> tc <span class="keyword">group</span> <span class="keyword">by</span> teacher_id) b</span><br><span class="line"><span class="keyword">where</span> a.teacher_id<span class="operator">=</span> b.teacher_id(<span class="operator">+</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountForAllTeachers;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -1018,15 +1016,17 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle实验2</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
-    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
+    <title>Oracle实验3</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C3/</url>
+    <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- (1）创建“添加教师信息”的匿名块，将输入信息插入教师信息表。</span></span><br><span class="line"><span class="comment">-- （2）“添加教师信息”的匿名块的程序框架如下：</span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">  <span class="comment">-- 定义接受每个字段数据的变量									</span></span><br><span class="line">  <span class="comment">-- 定义NOTNULL字段输入为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义输入系部代码在部门信息表中不存在时抛出的用户自定义异常变量</span></span><br><span class="line">   <span class="comment">-- 定义其他临时变量</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果NOTNULL字段输入为null，抛出用户自定义异常			 </span></span><br><span class="line">  <span class="comment">-- 查询输入系部代码在部门信息表中的记录数；如果记录数为0，抛出用户自定义异常</span></span><br><span class="line"><span class="comment">-- 检查性别是不是男/女，不是则输出提示信息&#x27;性别不正确！&#x27;，是则继续。</span></span><br><span class="line">  <span class="comment">-- insert语句插入教师信息记录									 </span></span><br><span class="line">  <span class="comment">-- 输出提示信息&#x27;教师信息添加成功！&#x27;</span></span><br><span class="line">EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理NOTNULL字段输入为null的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理系部代码不存在的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理教师编号已经存在产生的系统预定义异常，输出提示信息  </span></span><br><span class="line">    <span class="comment">-- 处理其他异常，输出提示信息</span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherCountbyProfess，统计各个职称级别的教师人数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherCountbyProfess;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherCountbyProfess <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) &quot;教师人数&quot; , decode(profess,<span class="string">&#x27;教授&#x27;</span>,<span class="string">&#x27;1-教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;副教授&#x27;</span>,<span class="string">&#x27;2-副教授&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;讲师&#x27;</span>,<span class="string">&#x27;3-讲师&#x27;</span>,</span><br><span class="line">                         <span class="string">&#x27;助教&#x27;</span>,<span class="string">&#x27;4-助教&#x27;</span>) &quot;职称级别&quot; <span class="keyword">from</span> teacher <span class="keyword">group</span> <span class="keyword">by</span> profess <span class="keyword">order</span> <span class="keyword">by</span> &quot;职称级别&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherCountbyProfess;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">set</span> serveroutput <span class="keyword">on</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建“添加教师信息”的匿名块，将输入信息插入教师信息表。 </span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">v_id teacher.teacher_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师编号&#x27;</span>;</span><br><span class="line">v_name teacher.tname<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师姓名&#x27;</span>;</span><br><span class="line">v_sex teacher.tsex<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师性别&#x27;</span>;</span><br><span class="line">v_birth teacher.tbirth<span class="operator">%</span>type :<span class="operator">=</span> to_date(<span class="string">&#x27;&amp;教师出生日期&#x27;</span>,<span class="string">&#x27;YYYY-MM-DD&#x27;</span>);</span><br><span class="line">v_educ teacher.educ<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师学历&#x27;</span>;</span><br><span class="line">v_profess teacher.profess<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;教师职称&#x27;</span>;</span><br><span class="line">v_dept_id teacher.dept_id<span class="operator">%</span>type :<span class="operator">=</span> <span class="string">&#x27;&amp;系部代码&#x27;</span>;</span><br><span class="line">ex_null exception;</span><br><span class="line">ex_dept_no_exist exception;</span><br><span class="line">v_count number;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if <span class="built_in">trim</span>(v_id) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_name) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_sex)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_birth) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_educ) <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_profess)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> <span class="built_in">trim</span>(v_dept_id)<span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_null ;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> v_count <span class="keyword">from</span> dept <span class="keyword">where</span> dept_id <span class="operator">=</span> v_dept_id;</span><br><span class="line">    if v_count <span class="operator">=</span> <span class="number">0</span> <span class="keyword">then</span> </span><br><span class="line">      raise ex_dept_no_exist;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    if v_sex <span class="operator">!=</span> <span class="string">&#x27;男&#x27;</span> <span class="keyword">and</span> v_sex<span class="operator">!=</span><span class="string">&#x27;女&#x27;</span> <span class="keyword">then</span> </span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;性别不正确！&#x27;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">insert</span> <span class="keyword">into</span> teacher <span class="keyword">values</span>(v_id, v_name, v_sex, v_birth, v_educ, v_profess, v_dept_id);</span><br><span class="line">      dbms_output.put_line(<span class="string">&#x27;教师信息添加成功！&#x27;</span>);</span><br><span class="line">      <span class="keyword">commit</span>;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    exception</span><br><span class="line">      <span class="keyword">when</span> ex_null <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;输入不能为空噢！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> ex_dept_no_exist <span class="keyword">then</span> </span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;系部代码不存在！&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> dup_val_on_index <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;该教师已存在&#x27;</span>);</span><br><span class="line">      <span class="keyword">when</span> others <span class="keyword">then</span></span><br><span class="line">        dbms_output.put_line(<span class="string">&#x27;未知异常!&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试1：输入参数为null</span></span><br><span class="line"><span class="comment">-- 测试2：系部代码不存在</span></span><br><span class="line"><span class="comment">-- 测试3：输入已存在的教师</span></span><br><span class="line"><span class="comment">-- 测试4：未知异常</span></span><br><span class="line"><span class="comment">-- 测试5：性别输入不正确</span></span><br><span class="line"><span class="comment">-- 测试6：正常执行</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountbyTeacher，统计任课表中各教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountbyTeacher;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountbyTeacher <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span> (<span class="operator">*</span>) &quot;课程数&quot;, teacher_id &quot;教师编号&quot;,(<span class="keyword">select</span> tname <span class="keyword">from</span> teacher <span class="keyword">where</span> teacher.teacher_id <span class="operator">=</span> tc.teacher_id)&quot;教师姓名&quot; <span class="keyword">from</span> tc </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span>  tc.teacher_id; </span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountbyTeacher;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getCourseCountForAllTeachers，统计所有教师的授课数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getCourseCountForAllTeachers;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getCourseCountForAllTeachers</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> a.<span class="operator">*</span>,b.c &quot;授课数&quot; <span class="keyword">from</span> teacher a,</span><br><span class="line">(<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) c,teacher_id <span class="keyword">from</span> tc <span class="keyword">group</span> <span class="keyword">by</span> teacher_id) b</span><br><span class="line"><span class="keyword">where</span> a.teacher_id<span class="operator">=</span> b.teacher_id(<span class="operator">+</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getCourseCountForAllTeachers;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建存储过程pro_StudentsNotUpToStandar</span></span><br><span class="line"><span class="comment">-- 存储过程pro_StudentsNotUpToStandar的程序框架如下：</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2,p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">  <span class="comment">-- 定义形参为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据形参部门代码查询指定系部所有学生信息的游标1;		</span></span><br><span class="line">  <span class="comment">-- 定义保存学生所有学分的变量	</span></span><br><span class="line">  <span class="comment">-- 定义保存当前学生编号变量	</span></span><br><span class="line">  <span class="comment">-- 定义根据当前学生编号查询学生所有选修课程信息及学生成绩的游标2;</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果形参有为null的情况，</span></span><br><span class="line">  			<span class="comment">-- 抛出用户自定义异常；</span></span><br><span class="line">  <span class="comment">-- 循环遍历游标1，完成以下任务：</span></span><br><span class="line">		<span class="comment">-- 查询当前学生获得的所有学分；</span></span><br><span class="line">		<span class="comment">-- 如果学生的总学分小于形参给出的达标学分，就完成以下任务：</span></span><br><span class="line">			<span class="comment">-- 首先输出学生的信息；</span></span><br><span class="line">			<span class="comment">-- 然后遍历游标2 </span></span><br><span class="line">				<span class="comment">-- 输出学生选修的所有课程信息</span></span><br><span class="line">  EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理用户自定义异常 </span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- lab2</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">procedure</span> pro_StudentsNotUpToStandar</span><br><span class="line">(p_deptID varchar2, p_standerCredit number)</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">null_error exception;</span><br><span class="line"><span class="keyword">cursor</span> c1 <span class="keyword">is</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> students <span class="keyword">where</span> dept_id <span class="operator">=</span> p_deptID;</span><br><span class="line">total_credit number(<span class="number">3</span>);</span><br><span class="line">temp_cur_stuid varchar2(<span class="number">20</span>);</span><br><span class="line"><span class="keyword">cursor</span> c2 <span class="keyword">is</span> <span class="keyword">select</span> courses.<span class="operator">*</span>,sc.grade <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.student_id <span class="operator">=</span> temp_cur_stuid;</span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> </span><br><span class="line">    if p_deptID <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">or</span> p_standerCredit <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span> </span><br><span class="line">      raise null_error; </span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> c1 loop</span><br><span class="line">      <span class="keyword">select</span> i.student_id <span class="keyword">into</span> temp_cur_stuid <span class="keyword">from</span> dual;</span><br><span class="line">      <span class="keyword">select</span> <span class="built_in">sum</span>(courses.credits) <span class="keyword">into</span> total_credit <span class="keyword">from</span> sc,courses <span class="keyword">where</span> sc.course_id <span class="operator">=</span> courses.course_id <span class="keyword">and</span> sc.grade <span class="operator">&gt;=</span> <span class="number">60</span> <span class="keyword">and</span> sc.student_id <span class="operator">=</span> i.student_id;</span><br><span class="line">      if total_credit <span class="operator">&lt;</span> p_standerCredit <span class="keyword">then</span></span><br><span class="line">          dbms_output.put_line(i.student_id <span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.ssex<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.sbirth<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.nationality<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.class_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.dept_id);</span><br><span class="line">      <span class="keyword">for</span> i <span class="keyword">in</span> c2 loop</span><br><span class="line">        dbms_output.put_line(i.course_id<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.cname<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.credits<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>i.grade);</span><br><span class="line">      <span class="keyword">end</span> loop;</span><br><span class="line">      <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> loop;</span><br><span class="line">    exception </span><br><span class="line">      <span class="keyword">when</span> null_error <span class="keyword">then</span> dbms_output.put_line(<span class="string">&#x27;过程输入参数均不能为空！&#x27;</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"><span class="comment">-- 测试1：当学分为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="keyword">null</span>);</span><br><span class="line"><span class="comment">-- 测试2：指定系部为null</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="keyword">null</span>,<span class="number">20</span>);</span><br><span class="line"><span class="comment">-- 测试3：正常输入</span></span><br><span class="line"><span class="keyword">call</span> pro_StudentsNotUpToStandar(<span class="string">&#x27;081&#x27;</span>,<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -1305,6 +1305,12 @@
       </tags>
   </entry>
   <entry>
+    <title>孤独</title>
+    <url>/2021/10/21/%E5%AD%A4%E7%8B%AC/</url>
+    <content><![CDATA[<h3 id="什么是孤独？"><a href="#什么是孤独？" class="headerlink" title="什么是孤独？"></a>什么是孤独？</h3><p>什么是孤独呢？可能就是离2021/10/22日还剩下3分钟了，而你还没回复我的消息；<br>-礼物已经买好，礼物已经送到，但是缺了一个主人。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>多元统计分析作业1</title>
     <url>/2021/12/02/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A1/</url>
     <content><![CDATA[<h2 id="1-判断题"><a href="#1-判断题" class="headerlink" title="1. 判断题"></a>1. 判断题</h2><h4 id="1-1"><a href="#1-1" class="headerlink" title="1-1"></a>1-1</h4><ul>
@@ -1435,12 +1441,6 @@
       </tags>
   </entry>
   <entry>
-    <title>孤独</title>
-    <url>/2021/10/21/%E5%AD%A4%E7%8B%AC/</url>
-    <content><![CDATA[<h3 id="什么是孤独？"><a href="#什么是孤独？" class="headerlink" title="什么是孤独？"></a>什么是孤独？</h3><p>什么是孤独呢？可能就是离2021/10/22日还剩下3分钟了，而你还没回复我的消息；<br>-礼物已经买好，礼物已经送到，但是缺了一个主人。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>结束啦</title>
     <url>/2021/10/22/%E7%BB%93%E6%9D%9F%E5%95%A6/</url>
     <content><![CDATA[<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>纠结了很久，还是决定在你生日那天挣扎一下；估计你也能从一些空间的小细节能看出来吧；仔细想来，长那么大，第一次收到真正意义上的好人卡，感觉还是有点奇怪；<br>脸，会很热会热；心，真的会跳的蛮快的；脑子，确实是有那么一点点蒙蒙的感觉。可能，对这个结果早就预想到了，并没有多难受吧；刚才打开的是王道考研的视频，一直都没下定决心要不要考研。可能，这也是冥冥之中自有天意吧。</p>
@@ -1509,7 +1509,7 @@
 </li>
 </ol>
 <h6 id="解决问题总结句-字够就不用"><a href="#解决问题总结句-字够就不用" class="headerlink" title="解决问题总结句(字够就不用)"></a>解决问题总结句(字够就不用)</h6><ol>
-<li><p>All in all, we must keep highly alert of the problems evoked by it, because one the harmful influence accumulates to a certain degree, it will surely threaten the development of the whole society.</p>
+<li><p>All in all, we must keep highly alert of the problems evoked by it, because once the harmful influence accumulates to a certain degree, it will surely threaten the development of the whole society.</p>
 <p>中文：总之，我们一定要警惕它给我们带来更多的问题，因为这个负面影响积聚到一定的程度，它一定会威胁我们社会的发展</p>
 </li>
 </ol>
@@ -1627,61 +1627,6 @@
         <tag>学习</tag>
         <tag>导航</tag>
         <tag>英语</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机网络复习2</title>
-    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
-    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
-<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
-<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
-<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
-</ul>
-<p><img src="1.png"></p>
-<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
-<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
-</ul>
-<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
-<li>频分多路复用 FDM </li>
-<li>时分多路复用 TDM</li>
-<li>波分多路复用 WDM</li>
-<li>码分复用 CDMA</li>
-</ul>
-<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
-<li>常用于载波电话系统、电视等</li>
-</ul>
-<p><img src="2.png"></p>
-<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
-<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
-<li>按需分配媒体资源，提高了传输媒体的利用率</li>
-</ul>
-<p><img src="4.png"></p>
-<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
-<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
-<li>密集波分复用是一种支持巨大数量信道的系统</li>
-<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
-</ul>
-<p><img src="5.png"></p>
-<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
-<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
-<ul>
-<li>数据分为：模拟数据和数字数据</li>
-<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
-<li>数字数据：只能取离散数值的数据</li>
-<li>信号分为：模拟信号和数字信号</li>
-<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
-</ul>
-<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
-<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
-<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>计算机网络</tag>
       </tags>
   </entry>
   <entry>
@@ -1828,6 +1773,61 @@
 <hr>
 <p>1-19 长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。再交给网络层传送，需加上20字节的IP首部。最后交给数据链路层的以太网传送，加上首部和尾部共18字节。试求数据的传输效率。数据的传输效率是指发送的应用层数据除以所发送的总数据（即应用数据加上各种首部和尾部的额外开销）。若应用层数据长度为1000字节，数据的传输效率是多少？</p>
 <p><img src="11.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习2</title>
+    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
+    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
+<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
+<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
+<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
+</ul>
+<p><img src="1.png"></p>
+<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
+<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
+</ul>
+<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
+<li>频分多路复用 FDM </li>
+<li>时分多路复用 TDM</li>
+<li>波分多路复用 WDM</li>
+<li>码分复用 CDMA</li>
+</ul>
+<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
+<li>常用于载波电话系统、电视等</li>
+</ul>
+<p><img src="2.png"></p>
+<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
+<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
+<li>按需分配媒体资源，提高了传输媒体的利用率</li>
+</ul>
+<p><img src="4.png"></p>
+<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
+<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
+<li>密集波分复用是一种支持巨大数量信道的系统</li>
+<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
+</ul>
+<p><img src="5.png"></p>
+<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
+<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
+<ul>
+<li>数据分为：模拟数据和数字数据</li>
+<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
+<li>数字数据：只能取离散数值的数据</li>
+<li>信号分为：模拟信号和数字信号</li>
+<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
+</ul>
+<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
+<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
+<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
