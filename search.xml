@@ -788,6 +788,11 @@
       </tags>
   </entry>
   <entry>
+    <title>Oracle实验1</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Oracle复习8</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/</url>
     <content><![CDATA[<h3 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h3><h4 id="IF逻辑结构"><a href="#IF逻辑结构" class="headerlink" title="IF逻辑结构"></a>IF逻辑结构</h4><ul>
@@ -990,11 +995,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle实验1</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Oracle实验2</title>
     <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
     <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
@@ -1179,8 +1179,21 @@
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot的web容器基本配置</title>
+    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</url>
+    <content><![CDATA[<p>我们都知道SpringBoot中内嵌了一个Tomcat中可以直接使用。</p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
-    <url>/2021/10/21/hello-world/</url>
+    <url>/2021/12/25/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
@@ -1195,19 +1208,6 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>SpringBoot的web容器基本配置</title>
-    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</url>
-    <content><![CDATA[<p>我们都知道SpringBoot中内嵌了一个Tomcat中可以直接使用。</p>
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-      </tags>
   </entry>
   <entry>
     <title>oracle复习1</title>
@@ -1320,6 +1320,43 @@
       <tags>
         <tag>总结</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>上天保佑</title>
+    <url>/2021/12/30/%E4%B8%8A%E5%A4%A9%E4%BF%9D%E4%BD%91/</url>
+    <content><![CDATA[<p><img src="1.png"></p>
+<p><img src="2.png"></p>
+<p><img src="3.png"></p>
+<p><img src="4.png"></p>
+<p><img src="5.png"></p>
+<p><img src="6.png"></p>
+<p><img src="7.png"></p>
+<p><img src="8.png"></p>
+<p><img src="9.png"></p>
+<p><img src="10.png"></p>
+<p><img src="11.png"></p>
+<p><img src="12.png"></p>
+<p><img src="13.png"></p>
+<p><img src="14.png"></p>
+<p><img src="15.png"></p>
+<p><img src="16.png"></p>
+<p><img src="17.png"></p>
+<p><img src="18.png"></p>
+<p><img src="19.png"></p>
+<p><img src="20.png"></p>
+<p><img src="21.png"></p>
+<p><img src="22.png"></p>
+<p><img src="23.png"></p>
+<p><img src="24.png"></p>
+<p><img src="25.png"></p>
+<p><img src="26.png"></p>
+<p><img src="27.png"></p>
+<p><img src="28.png"></p>
+<p><img src="29.png"></p>
+<p><img src="30.png"></p>
+<p><img src="31.png"></p>
+<p><img src="32.png"></p>
+]]></content>
   </entry>
   <entry>
     <title>多元统计分析作业1</title>
@@ -1647,74 +1684,19 @@
       </tags>
   </entry>
   <entry>
-    <title>计算机网络复习2</title>
-    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
-    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
-<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
-<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
-<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
-</ul>
-<p><img src="1.png"></p>
-<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
-<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
-</ul>
-<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
-<li>频分多路复用 FDM </li>
-<li>时分多路复用 TDM</li>
-<li>波分多路复用 WDM</li>
-<li>码分复用 CDMA</li>
-</ul>
-<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
-<li>常用于载波电话系统、电视等</li>
-</ul>
-<p><img src="2.png"></p>
-<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
-<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
-<li>按需分配媒体资源，提高了传输媒体的利用率</li>
-</ul>
-<p><img src="4.png"></p>
-<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
-<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
-<li>密集波分复用是一种支持巨大数量信道的系统</li>
-<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
-</ul>
-<p><img src="5.png"></p>
-<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
-<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
-<ul>
-<li>数据分为：模拟数据和数字数据</li>
-<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
-<li>数字数据：只能取离散数值的数据</li>
-<li>信号分为：模拟信号和数字信号</li>
-<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
-</ul>
-<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
-<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
-<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>计算机网络</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>计算机网络复习1</title>
     <url>/2021/12/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A01/</url>
     <content><![CDATA[<h2 id="第一章-概述"><a href="#第一章-概述" class="headerlink" title="第一章 概述"></a>第一章 概述</h2><h3 id="1-1-1-计算机网络的定义"><a href="#1-1-1-计算机网络的定义" class="headerlink" title="1.1.1 计算机网络的定义"></a>1.1.1 计算机网络的定义</h3><p>定义 ： 计算机网络是用通信线路将分散在不同地点并具有独立功能的多个计算机系统互相连接,按照网络协议进行<strong>数据通信</strong>,实现<strong>共享资源</strong>(资源共享)的计算机之集合。</p>
 <h3 id="1-5-2-几种不同类别的网络"><a href="#1-5-2-几种不同类别的网络" class="headerlink" title="1.5.2 几种不同类别的网络"></a>1.5.2 几种不同类别的网络</h3><h4 id="1-按照作用范围分类"><a href="#1-按照作用范围分类" class="headerlink" title="1. 按照作用范围分类"></a>1. 按照作用范围分类</h4><ul>
 <li><strong>广域网</strong> WAN (Wide Area Network) 作用范围通常为几十到几千公里</li>
 <li><strong>城域网</strong> MAN (Metropolitan Area Network) 作用距离约为5~50公里</li>
-<li>局域网 LAN (Local Area Network) 局限在较小的范围（如一公里左右）</li>
+<li><strong>局域网</strong> LAN (Local Area Network) 局限在较小的范围（如一公里左右）</li>
 <li><strong>个人局域网</strong> PAN (Personal Area Network) 范围很小，大约在10米左右</li>
 </ul>
 <p>tips：若中央处理机之间的距离非常近（如仅一米的数量级甚至更小），则一般就称之为<strong>多处理机系统</strong>，而不称它为计算机网络</p>
 <h4 id="2-按照网络的使用者分类"><a href="#2-按照网络的使用者分类" class="headerlink" title="2. 按照网络的使用者分类"></a>2. 按照网络的使用者分类</h4><ul>
 <li><strong>公用网</strong> (Public Network) 也称公众网</li>
-<li>专用网 (Private Network) 为特殊业务工作的需要而建设的网络，如军队、金融系统、铁路系统的内部网络</li>
+<li><strong>专用网</strong> (Private Network) 为特殊业务工作的需要而建设的网络，如军队、金融系统、铁路系统的内部网络</li>
 </ul>
 <h4 id="3-把用户接入到互联网的网络"><a href="#3-把用户接入到互联网的网络" class="headerlink" title="3. 把用户接入到互联网的网络"></a>3. 把用户接入到互联网的网络</h4><ul>
 <li><p><strong>接入网AN</strong> (Access Network) 它又称本地接入网或居民接入网</p>
@@ -1783,10 +1765,12 @@
 </ul>
 <p><img src="2.png"></p>
 <h4 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h4><ul>
-<li><strong>吞吐量</strong> (throughput) 表示在<strong>单位时间内通过某个网络（或信道、接口）的数据量</strong></li>
-<li>吞吐量更经常地用于对现实世界中的网络的一种测量，以便知道<strong>实际上到底有多少数据量能够通过网络</strong></li>
-<li><strong>吞吐量</strong>受<strong>网络的带宽</strong>或<strong>网络的额定速率</strong>的<strong>限制</strong></li>
-<li></li>
+<li><p><strong>吞吐量</strong> (throughput) 表示在<strong>单位时间内通过某个网络（或信道、接口）的数据量</strong></p>
+</li>
+<li><p>吞吐量更经常地用于对现实世界中的网络的一种测量，以便知道<strong>实际上到底有多少数据量能够通过网络</strong></p>
+</li>
+<li><p><strong>吞吐量</strong>受<strong>网络的带宽</strong>或<strong>网络的额定速率</strong>的<strong>限制</strong></p>
+</li>
 </ul>
 <h4 id="时延"><a href="#时延" class="headerlink" title="时延"></a>时延</h4><ul>
 <li><strong>时延</strong> (delay 或 latency) 是指<strong>数据（一个报文或分组，甚至比特）从网络（或链路）的一端传送到另一端所需的时间。</strong></li>
@@ -1845,6 +1829,134 @@
 <hr>
 <p>1-19 长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。再交给网络层传送，需加上20字节的IP首部。最后交给数据链路层的以太网传送，加上首部和尾部共18字节。试求数据的传输效率。数据的传输效率是指发送的应用层数据除以所发送的总数据（即应用数据加上各种首部和尾部的额外开销）。若应用层数据长度为1000字节，数据的传输效率是多少？</p>
 <p><img src="11.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习2</title>
+    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
+    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
+<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
+<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
+<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
+</ul>
+<p><img src="1.png"></p>
+<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
+<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
+</ul>
+<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
+<li>频分多路复用 FDM </li>
+<li>时分多路复用 TDM</li>
+<li>波分多路复用 WDM</li>
+<li>码分复用 CDMA</li>
+</ul>
+<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
+<li>常用于载波电话系统、电视等</li>
+</ul>
+<p><img src="2.png"></p>
+<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
+<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
+<li>按需分配媒体资源，提高了传输媒体的利用率</li>
+</ul>
+<p><img src="4.png"></p>
+<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
+<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
+<li>密集波分复用是一种支持巨大数量信道的系统</li>
+<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
+</ul>
+<p><img src="5.png"></p>
+<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
+<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
+<ul>
+<li>数据分为：模拟数据和数字数据</li>
+<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
+<li>数字数据：只能取离散数值的数据</li>
+<li>信号分为：模拟信号和数字信号</li>
+<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
+</ul>
+<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
+<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
+<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习3</title>
+    <url>/2021/12/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A03/</url>
+    <content><![CDATA[<h3 id="使用点对点信道的数据链路层"><a href="#使用点对点信道的数据链路层" class="headerlink" title="使用点对点信道的数据链路层"></a>使用点对点信道的数据链路层</h3><p><img src="1.png"></p>
+<h3 id="三个基本问题"><a href="#三个基本问题" class="headerlink" title="三个基本问题"></a>三个基本问题</h3><h4 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h4><ul>
+<li>封装成帧就是在一段数据的前后分别添加首部和尾部，然后就构成了一个帧</li>
+<li>首部和尾部的一个重要作用就是进行<strong>帧定界</strong>。首部和尾部还包含控制信息</li>
+</ul>
+<p><img src="2.png"></p>
+<h4 id="透明传输"><a href="#透明传输" class="headerlink" title="透明传输"></a>透明传输</h4><ul>
+<li>如果数据中的某个字节的二进制代码恰好和SOH或EOT一样，数据链路层就会错误地找到帧的边界</li>
+</ul>
+<p><img src="3.png"></p>
+<ul>
+<li>解决方法：字节填充或字符填充</li>
+<li>发送端的数据链路层在数据中出现控制字符“SOH”或“EOT”的前面插入一个转义字符“ESC”（其十六进制编码是1B）</li>
+<li>接收端的数据链路层在讲数据送往网络层之前删除插入的转义字符</li>
+<li>如果转义字符也出现在数据当中，那么应在转义字符前面插入一个转义字符ESC。当接收端收到连续的两个转义字符时，就删除其中前面的一个</li>
+</ul>
+<p><img src="4.png"></p>
+<h4 id="差错检验"><a href="#差错检验" class="headerlink" title="差错检验"></a>差错检验</h4><ul>
+<li><p>在数据链路层传输的帧中，广泛使用了循环冗余检验CRC(Cyclic Redundancy Check)的检错计数</p>
+<p><img src="5.png"></p>
+</li>
+</ul>
+<p><img src="6.png"></p>
+<p><img src="7.png"></p>
+<p><img src="8.png"></p>
+<p><img src="9.png"></p>
+<h3 id="PPP协议"><a href="#PPP协议" class="headerlink" title="PPP协议"></a>PPP协议</h3><ul>
+<li>首部<strong>4字节</strong>，尾部<strong>2字节</strong></li>
+</ul>
+<p><img src="10.png"></p>
+<ul>
+<li>PPP用在<strong>异步传输</strong>时，就是用一种特殊的<strong>字符填充法</strong></li>
+<li>PPP用在<strong>同步传输</strong>链路时，协议规定采用硬件来完成<strong>比特填充</strong></li>
+</ul>
+<p>字符填充法</p>
+<p><img src="12.png"></p>
+<p><strong>零比特填充</strong></p>
+<p><img src="11.png"></p>
+<h4 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h4><h5 id="练习1"><a href="#练习1" class="headerlink" title="练习1"></a>练习1</h5><p><img src="13.png"></p>
+<p><img src="14.png"></p>
+<p><img src="15.png"></p>
+<p><img src="16.png"></p>
+<p><img src="17.png"></p>
+<h5 id="练习2"><a href="#练习2" class="headerlink" title="练习2"></a>练习2</h5><p><img src="18.png"></p>
+<h5 id="练习3"><a href="#练习3" class="headerlink" title="练习3"></a>练习3</h5><p><img src="19.png"></p>
+<h3 id="未定义"><a href="#未定义" class="headerlink" title="未定义"></a>未定义</h3><h4 id="10-BASE-T"><a href="#10-BASE-T" class="headerlink" title="10 BASE-T"></a>10 BASE-T</h4><p><img src="18.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习5</title>
+    <url>/2021/12/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A05/</url>
+    <content><![CDATA[<p><img src="1.png"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
