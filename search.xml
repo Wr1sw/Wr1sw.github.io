@@ -788,11 +788,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle实验1</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Oracle复习8</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/</url>
     <content><![CDATA[<h3 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h3><h4 id="IF逻辑结构"><a href="#IF逻辑结构" class="headerlink" title="IF逻辑结构"></a>IF逻辑结构</h4><ul>
@@ -993,6 +988,11 @@
         <tag>导航</tag>
         <tag>Oracle</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Oracle实验1</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>Oracle实验2</title>
@@ -1208,6 +1208,50 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>leetcode刷题日记</title>
+    <url>/2022/02/28/leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0/</url>
+    <content><![CDATA[<h5 id="day1"><a href="#day1" class="headerlink" title="day1"></a>day1</h5><p><a href="https://leetcode-cn.com/problems/binary-search/"> #704 二分查找</a></p>
+<p><a href="https://leetcode-cn.com/problems/search-insert-position/"> #35 搜索插入位置</a></p>
+<p><a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/"> #34 在排序数组中查找元素的第一个和最后一个位置</a></p>
+<p><a href="https://leetcode-cn.com/problems/sqrtx/">#69 x 的平方根</a></p>
+<p><a href="https://leetcode-cn.com/problems/valid-perfect-square/">#367 有效的完全平方数</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-element/"> #27 移除元素</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/">#26 删除有序数组中的重复项</a></p>
+<p><a href="https://leetcode-cn.com/problems/move-zeroes/"> #283 移动零</a></p>
+<p><a href="https://leetcode-cn.com/problems/backspace-string-compare/">#844 比较含退格的字符串</a></p>
+<h5 id="day2"><a href="#day2" class="headerlink" title="day2"></a>day2</h5><p><a href="https://leetcode-cn.com/problems/squares-of-a-sorted-array/">#977 有序数组的平方</a></p>
+<h5 id="day3"><a href="#day3" class="headerlink" title="day3"></a>day3</h5><p><a href="https://leetcode-cn.com/problems/minimum-size-subarray-sum/">#209 长度最小的子数组</a></p>
+<p><a href="https://leetcode-cn.com/problems/fruit-into-baskets/">#904 水果成篮</a></p>
+<h5 id="day4"><a href="#day4" class="headerlink" title="day4"></a>day4</h5><p><a href="https://leetcode-cn.com/problems/minimum-window-substring/"> #76 最小覆盖子串</a></p>
+<p><a href="https://leetcode-cn.com/problems/spiral-matrix-ii/"> #59 螺旋矩阵 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/spiral-matrix/">#54 螺旋矩阵</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-linked-list-elements/">#203 移除链表元素</a></p>
+<p><a href="https://leetcode-cn.com/problems/design-linked-list/">#707 设计链表</a></p>
+<p><a href="https://leetcode-cn.com/problems/reverse-linked-list/"> #206 反转链表</a></p>
+<h5 id="day5"><a href="#day5" class="headerlink" title="day5"></a>day5</h5><p><a href="https://leetcode-cn.com/problems/swap-nodes-in-pairs/">#24 两两交换链表中的节点</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/">#19 删除链表的倒数第 N 个结点</a></p>
+<p><a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists-lcci/">#面试题 02.07 链表相交</a></p>
+<p><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/"> #142 环形链表 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/valid-anagram/">#242 有效的字母异位词</a></p>
+<p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays/">#349 两个数组的交集</a></p>
+<p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/">#350 两个数组的交集 II</a></p>
+<h5 id="day6"><a href="#day6" class="headerlink" title="day6"></a>day6</h5><p><a href="https://leetcode-cn.com/problems/happy-number/">#202 快乐数</a></p>
+<p><a href="https://leetcode-cn.com/problems/two-sum/"> #1 两数之和</a></p>
+<p><a href="https://leetcode-cn.com/problems/4sum-ii/">#454 四数相加 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/ransom-note/">#383 赎金信</a></p>
+<p><a href="https://leetcode-cn.com/problems/3sum/"> #15 三数之和</a></p>
+<p><a href="https://leetcode-cn.com/problems/4sum/">#18 四数之和</a></p>
+]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>leetcode</tag>
+      </tags>
   </entry>
   <entry>
     <title>oracle复习1</title>
