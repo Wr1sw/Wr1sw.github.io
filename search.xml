@@ -451,82 +451,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle复习5</title>
-    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A05/</url>
-    <content><![CDATA[<h3 id="单行函数"><a href="#单行函数" class="headerlink" title="单行函数"></a>单行函数</h3><p>单行函数分类</p>
-<p><img src="1-1.png"></p>
-<h4 id="字符函数"><a href="#字符函数" class="headerlink" title="字符函数"></a>字符函数</h4><p>字符函数的分类</p>
-<p><img src="1-2.png"></p>
-<p>常用函数列表</p>
-<p><img src="1-3.png"></p>
-<h5 id="用例"><a href="#用例" class="headerlink" title="用例"></a>用例</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> ename, CONCAT (ename, job), LENGTH(ename),</span><br><span class="line">   <span class="number">2</span> 	INSTR(ename, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">   <span class="number">3</span> <span class="keyword">FROM</span>   emp</span><br><span class="line">   <span class="number">4</span> <span class="keyword">WHERE</span></span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   ENAME      CONCAT(ENAME,JOB)   LENGTH(ENAME) INSTR(ENAME,<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="comment">---------- ------------------- ------------- ----------------</span></span><br><span class="line">MARTIN     MARTINSALESMAN                  <span class="number">6</span>                <span class="number">2</span></span><br><span class="line">ALLEN      ALLENSALESMAN                   <span class="number">5</span>                <span class="number">1</span></span><br><span class="line">TURNER     TURNERSALESMAN                  <span class="number">6</span>                <span class="number">0</span></span><br><span class="line">WARD       WARDSALESMAN                    <span class="number">4</span>                <span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="数值函数"><a href="#数值函数" class="headerlink" title="数值函数"></a>数值函数</h4><p><img src="1-4.png"></p>
-<h5 id="ROUND函数"><a href="#ROUND函数" class="headerlink" title="ROUND函数"></a>ROUND函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> ROUND(<span class="number">45.923</span>,<span class="number">2</span>), ROUND(<span class="number">45.923</span>,<span class="number">0</span>),</span><br><span class="line">  <span class="number">2</span>  		ROUND(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">FROM</span>   DUAL;</span><br><span class="line">  </span><br><span class="line">  ROUND(<span class="number">45.923</span>,<span class="number">2</span>) ROUND(<span class="number">45.923</span>,<span class="number">0</span>) ROUND(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="comment">--------------- -------------- -----------------</span></span><br><span class="line">          <span class="number">45.92</span>             <span class="number">46</span>                <span class="number">50</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="TRUNC函数"><a href="#TRUNC函数" class="headerlink" title="TRUNC函数"></a>TRUNC函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> 	TRUNC(<span class="number">45.923</span>,<span class="number">2</span>), TRUNC(<span class="number">45.923</span>),</span><br><span class="line">  <span class="number">2</span>  		TRUNC(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">FROM</span>   DUAL;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  TRUNC(<span class="number">45.923</span>,<span class="number">2</span>) TRUNC(<span class="number">45.923</span>) TRUNC(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="comment">--------------- ------------- ---------------</span></span><br><span class="line">          <span class="number">45.92</span>            <span class="number">45</span>              <span class="number">40</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="MOD函数"><a href="#MOD函数" class="headerlink" title="MOD函数"></a>MOD函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>	ename, sal, comm, <span class="built_in">MOD</span>(sal, comm)</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>	emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">WHERE</span>	job <span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>;</span><br><span class="line"></span><br><span class="line">ENAME            SAL      COMM <span class="built_in">MOD</span>(SAL,COMM)</span><br><span class="line"><span class="comment">---------- --------- --------- -------------</span></span><br><span class="line">MARTIN          <span class="number">1250</span>      <span class="number">1400</span>          <span class="number">1250</span></span><br><span class="line">ALLEN           <span class="number">1600</span>       <span class="number">300</span>           <span class="number">100</span></span><br><span class="line">TURNER          <span class="number">1500</span>         <span class="number">0</span>          <span class="number">1500</span></span><br><span class="line">WARD            <span class="number">1250</span>       <span class="number">500</span>           <span class="number">250</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h4><h5 id="日期类型"><a href="#日期类型" class="headerlink" title="日期类型"></a>日期类型</h5><ul>
-<li>Oracle是用数字来存储日期信息，数字的整数部分代表与Julian Calendar（罗马儒略历，公历）相距的天数 （由公元前4712年1月1日开始），而小数部分代表时、分和秒。</li>
-<li>Oracle默认日期格式：<strong>DD-MON-YY</strong></li>
-<li>SYSDATE函数返回系统当前的日期和时间。</li>
-<li>DUAL是Oracle内置的虚拟表，只有一行一列。</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  SYSDATE  <span class="keyword">FROM</span>  DUAL;</span><br><span class="line"><span class="keyword">SELECT</span>  TO_CHAR(SYSDATE,<span class="string">&#x27;YYYY-MM-DD HH24:MI:SS&#x27;</span>) <span class="keyword">FROM</span> DUAL;</span><br></pre></td></tr></table></figure>
-
-<h5 id="日期运算"><a href="#日期运算" class="headerlink" title="日期运算"></a>日期运算</h5><ul>
-<li><strong>不允许日期加日期</strong></li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> ename, (SYSDATE<span class="operator">-</span>hiredate)<span class="operator">/</span><span class="number">7</span> WEEKS</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>   emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">WHERE</span>  deptno <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ENAME          WEEKS</span><br><span class="line"><span class="comment">---------- ---------</span></span><br><span class="line">KING       <span class="number">830.93709</span></span><br><span class="line">CLARK      <span class="number">853.93709</span></span><br><span class="line">MILLER     <span class="number">821.36566</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="1-5.png"></p>
-<h5 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h5><p><img src="1-6.png"></p>
-<h4 id="转换函数"><a href="#转换函数" class="headerlink" title="转换函数"></a>转换函数</h4><h5 id="隐式转换"><a href="#隐式转换" class="headerlink" title="隐式转换"></a>隐式转换</h5><p><img src="1-7.png"></p>
-<h5 id="显示转换"><a href="#显示转换" class="headerlink" title="显示转换"></a>显示转换</h5><p><img src="1-8.png"></p>
-<h5 id="TO-CHAR（日期）函数"><a href="#TO-CHAR（日期）函数" class="headerlink" title="TO_CHAR（日期）函数"></a>TO_CHAR（日期）函数</h5><p><img src="1-9.png"></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>	ename, 	</span><br><span class="line">  <span class="number">2</span>    	TO_CHAR(hiredate, ‘DD <span class="keyword">Month</span> YYYY<span class="string">&#x27;) HIREDATE</span></span><br><span class="line"><span class="string">  3  FROM  	emp;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">          ENAME      HIREDATE</span></span><br><span class="line"><span class="string">---------- -----------------</span></span><br><span class="line"><span class="string">KING       17 November 1981</span></span><br><span class="line"><span class="string">BLAKE      1 May 1981</span></span><br><span class="line"><span class="string">CLARK      9 June 1981</span></span><br><span class="line"><span class="string">JONES      2 April 1981</span></span><br><span class="line"><span class="string">MARTIN     28 September 1981</span></span><br><span class="line"><span class="string">ALLEN      20 February 1981</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">14 rows selected.</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
-
-<h5 id="TO-CHAR（数值）函数"><a href="#TO-CHAR（数值）函数" class="headerlink" title="TO_CHAR（数值）函数"></a>TO_CHAR（数值）函数</h5><p><img src="1-10.png"></p>
-<p><img src="1-11.png"></p>
-<h5 id="空值置换函数"><a href="#空值置换函数" class="headerlink" title="空值置换函数"></a>空值置换函数</h5><ol>
-<li>NVL (expr1, expr2)</li>
-</ol>
-<ul>
-<li>空值置换函数<strong>NVL</strong> ：如果表达式expr1为NULL ，就返回expr2的值.否则，函数就返回表达式expr1的值</li>
-</ul>
-<ol start="2">
-<li>NVL2 (expr1, expr2, expr3)</li>
-</ol>
-<ul>
-<li>空值置换函数<strong>NVL2</strong> ：<strong>如果表达式expr1为NULL</strong> ，就返回expr3的值.否则，函数就返回表达式expr2的值。</li>
-</ul>
-<p><img src="1-12.png"></p>
-<h4 id="条件表达式"><a href="#条件表达式" class="headerlink" title="条件表达式"></a>条件表达式</h4><ul>
-<li><strong>条件表达式</strong>：在SQL语句内，提供的IF-THEN-ELSE逻辑表达式。有两种方法:<ul>
-<li>CASE表达式</li>
-<li>DECODE函数</li>
-</ul>
-</li>
-</ul>
-<p><img src="1-13.png"></p>
-<p><img src="1-14.png"></p>
-<p><img src="1-15.png"></p>
-]]></content>
-      <categories>
-        <category>Oracle</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>Oracle</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Oracle复习6</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A06/</url>
     <content><![CDATA[<h3 id="连接查询"><a href="#连接查询" class="headerlink" title="连接查询"></a>连接查询</h3><h4 id="相等连接"><a href="#相等连接" class="headerlink" title="相等连接"></a>相等连接</h4><p><img src="1-1.png"></p>
@@ -644,6 +568,82 @@
 
 <h5 id="多行子查询IN应用举例："><a href="#多行子查询IN应用举例：" class="headerlink" title="多行子查询IN应用举例："></a>多行子查询IN应用举例：</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  e.empno, e.ename</span><br><span class="line"><span class="keyword">FROM</span>    emp e</span><br><span class="line"><span class="keyword">WHERE</span>   e.deptno <span class="keyword">in</span> (<span class="keyword">SELECT</span> d.deptno</span><br><span class="line">		<span class="keyword">FROM</span>  dept d</span><br><span class="line">		<span class="keyword">WHERE</span>  d.loc<span class="operator">=</span> <span class="string">&#x27;NEW YORK&#x27;</span> </span><br><span class="line">				<span class="keyword">or</span> d.loc<span class="operator">=</span> <span class="string">&#x27;CHICAGO&#x27;</span>);</span><br><span class="line">				</span><br><span class="line">				</span><br><span class="line"><span class="keyword">SELECT</span>  e.empno, e.ename,d.loc</span><br><span class="line"><span class="keyword">FROM</span>    emp e,</span><br><span class="line">   (<span class="keyword">SELECT</span> deptno,loc <span class="keyword">FROM</span>  dept </span><br><span class="line">    <span class="keyword">WHERE</span>  loc<span class="operator">=</span> ‘<span class="keyword">NEW</span> YORK’ <span class="keyword">or</span> loc<span class="operator">=</span> <span class="string">&#x27;CHICAGO&#x27;</span>) d</span><br><span class="line"><span class="keyword">WHERE</span>   e.deptno <span class="operator">=</span>d.deptno;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Oracle复习5</title>
+    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A05/</url>
+    <content><![CDATA[<h3 id="单行函数"><a href="#单行函数" class="headerlink" title="单行函数"></a>单行函数</h3><p>单行函数分类</p>
+<p><img src="1-1.png"></p>
+<h4 id="字符函数"><a href="#字符函数" class="headerlink" title="字符函数"></a>字符函数</h4><p>字符函数的分类</p>
+<p><img src="1-2.png"></p>
+<p>常用函数列表</p>
+<p><img src="1-3.png"></p>
+<h5 id="用例"><a href="#用例" class="headerlink" title="用例"></a>用例</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> ename, CONCAT (ename, job), LENGTH(ename),</span><br><span class="line">   <span class="number">2</span> 	INSTR(ename, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">   <span class="number">3</span> <span class="keyword">FROM</span>   emp</span><br><span class="line">   <span class="number">4</span> <span class="keyword">WHERE</span></span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   ENAME      CONCAT(ENAME,JOB)   LENGTH(ENAME) INSTR(ENAME,<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="comment">---------- ------------------- ------------- ----------------</span></span><br><span class="line">MARTIN     MARTINSALESMAN                  <span class="number">6</span>                <span class="number">2</span></span><br><span class="line">ALLEN      ALLENSALESMAN                   <span class="number">5</span>                <span class="number">1</span></span><br><span class="line">TURNER     TURNERSALESMAN                  <span class="number">6</span>                <span class="number">0</span></span><br><span class="line">WARD       WARDSALESMAN                    <span class="number">4</span>                <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="数值函数"><a href="#数值函数" class="headerlink" title="数值函数"></a>数值函数</h4><p><img src="1-4.png"></p>
+<h5 id="ROUND函数"><a href="#ROUND函数" class="headerlink" title="ROUND函数"></a>ROUND函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> ROUND(<span class="number">45.923</span>,<span class="number">2</span>), ROUND(<span class="number">45.923</span>,<span class="number">0</span>),</span><br><span class="line">  <span class="number">2</span>  		ROUND(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">FROM</span>   DUAL;</span><br><span class="line">  </span><br><span class="line">  ROUND(<span class="number">45.923</span>,<span class="number">2</span>) ROUND(<span class="number">45.923</span>,<span class="number">0</span>) ROUND(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="comment">--------------- -------------- -----------------</span></span><br><span class="line">          <span class="number">45.92</span>             <span class="number">46</span>                <span class="number">50</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="TRUNC函数"><a href="#TRUNC函数" class="headerlink" title="TRUNC函数"></a>TRUNC函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> 	TRUNC(<span class="number">45.923</span>,<span class="number">2</span>), TRUNC(<span class="number">45.923</span>),</span><br><span class="line">  <span class="number">2</span>  		TRUNC(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">FROM</span>   DUAL;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  TRUNC(<span class="number">45.923</span>,<span class="number">2</span>) TRUNC(<span class="number">45.923</span>) TRUNC(<span class="number">45.923</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="comment">--------------- ------------- ---------------</span></span><br><span class="line">          <span class="number">45.92</span>            <span class="number">45</span>              <span class="number">40</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="MOD函数"><a href="#MOD函数" class="headerlink" title="MOD函数"></a>MOD函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>	ename, sal, comm, <span class="built_in">MOD</span>(sal, comm)</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>	emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">WHERE</span>	job <span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>;</span><br><span class="line"></span><br><span class="line">ENAME            SAL      COMM <span class="built_in">MOD</span>(SAL,COMM)</span><br><span class="line"><span class="comment">---------- --------- --------- -------------</span></span><br><span class="line">MARTIN          <span class="number">1250</span>      <span class="number">1400</span>          <span class="number">1250</span></span><br><span class="line">ALLEN           <span class="number">1600</span>       <span class="number">300</span>           <span class="number">100</span></span><br><span class="line">TURNER          <span class="number">1500</span>         <span class="number">0</span>          <span class="number">1500</span></span><br><span class="line">WARD            <span class="number">1250</span>       <span class="number">500</span>           <span class="number">250</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h4><h5 id="日期类型"><a href="#日期类型" class="headerlink" title="日期类型"></a>日期类型</h5><ul>
+<li>Oracle是用数字来存储日期信息，数字的整数部分代表与Julian Calendar（罗马儒略历，公历）相距的天数 （由公元前4712年1月1日开始），而小数部分代表时、分和秒。</li>
+<li>Oracle默认日期格式：<strong>DD-MON-YY</strong></li>
+<li>SYSDATE函数返回系统当前的日期和时间。</li>
+<li>DUAL是Oracle内置的虚拟表，只有一行一列。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  SYSDATE  <span class="keyword">FROM</span>  DUAL;</span><br><span class="line"><span class="keyword">SELECT</span>  TO_CHAR(SYSDATE,<span class="string">&#x27;YYYY-MM-DD HH24:MI:SS&#x27;</span>) <span class="keyword">FROM</span> DUAL;</span><br></pre></td></tr></table></figure>
+
+<h5 id="日期运算"><a href="#日期运算" class="headerlink" title="日期运算"></a>日期运算</h5><ul>
+<li><strong>不允许日期加日期</strong></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> ename, (SYSDATE<span class="operator">-</span>hiredate)<span class="operator">/</span><span class="number">7</span> WEEKS</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>   emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">WHERE</span>  deptno <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ENAME          WEEKS</span><br><span class="line"><span class="comment">---------- ---------</span></span><br><span class="line">KING       <span class="number">830.93709</span></span><br><span class="line">CLARK      <span class="number">853.93709</span></span><br><span class="line">MILLER     <span class="number">821.36566</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="1-5.png"></p>
+<h5 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h5><p><img src="1-6.png"></p>
+<h4 id="转换函数"><a href="#转换函数" class="headerlink" title="转换函数"></a>转换函数</h4><h5 id="隐式转换"><a href="#隐式转换" class="headerlink" title="隐式转换"></a>隐式转换</h5><p><img src="1-7.png"></p>
+<h5 id="显示转换"><a href="#显示转换" class="headerlink" title="显示转换"></a>显示转换</h5><p><img src="1-8.png"></p>
+<h5 id="TO-CHAR（日期）函数"><a href="#TO-CHAR（日期）函数" class="headerlink" title="TO_CHAR（日期）函数"></a>TO_CHAR（日期）函数</h5><p><img src="1-9.png"></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>	ename, 	</span><br><span class="line">  <span class="number">2</span>    	TO_CHAR(hiredate, ‘DD <span class="keyword">Month</span> YYYY<span class="string">&#x27;) HIREDATE</span></span><br><span class="line"><span class="string">  3  FROM  	emp;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">          ENAME      HIREDATE</span></span><br><span class="line"><span class="string">---------- -----------------</span></span><br><span class="line"><span class="string">KING       17 November 1981</span></span><br><span class="line"><span class="string">BLAKE      1 May 1981</span></span><br><span class="line"><span class="string">CLARK      9 June 1981</span></span><br><span class="line"><span class="string">JONES      2 April 1981</span></span><br><span class="line"><span class="string">MARTIN     28 September 1981</span></span><br><span class="line"><span class="string">ALLEN      20 February 1981</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">14 rows selected.</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<h5 id="TO-CHAR（数值）函数"><a href="#TO-CHAR（数值）函数" class="headerlink" title="TO_CHAR（数值）函数"></a>TO_CHAR（数值）函数</h5><p><img src="1-10.png"></p>
+<p><img src="1-11.png"></p>
+<h5 id="空值置换函数"><a href="#空值置换函数" class="headerlink" title="空值置换函数"></a>空值置换函数</h5><ol>
+<li>NVL (expr1, expr2)</li>
+</ol>
+<ul>
+<li>空值置换函数<strong>NVL</strong> ：如果表达式expr1为NULL ，就返回expr2的值.否则，函数就返回表达式expr1的值</li>
+</ul>
+<ol start="2">
+<li>NVL2 (expr1, expr2, expr3)</li>
+</ol>
+<ul>
+<li>空值置换函数<strong>NVL2</strong> ：<strong>如果表达式expr1为NULL</strong> ，就返回expr3的值.否则，函数就返回表达式expr2的值。</li>
+</ul>
+<p><img src="1-12.png"></p>
+<h4 id="条件表达式"><a href="#条件表达式" class="headerlink" title="条件表达式"></a>条件表达式</h4><ul>
+<li><strong>条件表达式</strong>：在SQL语句内，提供的IF-THEN-ELSE逻辑表达式。有两种方法:<ul>
+<li>CASE表达式</li>
+<li>DECODE函数</li>
+</ul>
+</li>
+</ul>
+<p><img src="1-13.png"></p>
+<p><img src="1-14.png"></p>
+<p><img src="1-15.png"></p>
 ]]></content>
       <categories>
         <category>Oracle</category>
@@ -990,6 +990,11 @@
       </tags>
   </entry>
   <entry>
+    <title>Oracle实验1</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Oracle实验2</title>
     <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
     <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
@@ -1009,11 +1014,6 @@
         <tag>导航</tag>
         <tag>Oracle</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Oracle实验1</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>Oracle实验3</title>
@@ -1146,6 +1146,24 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2021/12/25/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Spring Boot 项目中的 parent</title>
     <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</url>
     <content><![CDATA[<p>以下是学习松哥的SpringBoot的学习笔记</p>
@@ -1177,24 +1195,6 @@
         <tag>学习</tag>
         <tag>导航</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/12/25/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>SpringBoot的web容器基本配置</title>
@@ -1251,6 +1251,23 @@
         <tag>学习</tag>
         <tag>导航</tag>
         <tag>leetcode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一点仪式感都没有的20岁</title>
+    <url>/2021/12/19/%E4%B8%80%E7%82%B9%E4%BB%AA%E5%BC%8F%E6%84%9F%E9%83%BD%E6%B2%A1%E6%9C%89%E7%9A%8420%E5%B2%81/</url>
+    <content><![CDATA[<p>大学以来，遇到了各种各样的困难。特别是大一那会打算法比赛的时候，真的是一点都不会，无论怎么积极学都学不懂，一度怀疑自己真的智商有点问题(可能真的有问题)。如果当时没遇到疫情，顺利的跟着学校参加训练可能现在的结局就完全不一样了。虽然嘲讽了CUIT两年多，但是还是十分庆幸自己在CUIT，没有太多约束，成绩不好也不会太为难自己。优秀的人很多，关于绩点这件事总是有人不能如愿的（还是很烦关于自己德育分没80领不了三等奖学金——可能大学四年唯一一次能拿的奖学金就这次了，cjl好强啊呜呜呜呜呜，天天打比赛还能这么高绩点）。</p>
+<p>来到成都有段时间了，外出旅游的机会几乎没有，要么是疫情影响，要么就是自己太自闭了哎。绝大部分原因还是跟自己有关吧，真的太废物了。想到大佬们参加各种区域赛去旅游，可能这就是梦中的人生规划吧，可惜自己太菜。大二那会，原本想着自己走不了算法的路线，加一个实验室跟着学校混奖项，最气的是，到现在都大三上结束了，实验室还没进去。笑死，根本没有途径进去，完全没有听说过有实验室招新的通知。上次问岳老师的团队的人她们是怎么加入实验室的，笑死，原来岳老师是她们的班导，直接给机会进去学习。想想我们的班导就忍不住烦啊。上个学期末加的那个实验室的群，到现在群里面一点消息都没有，:(。暑假跟着曹老师的团队做了那个科研项目(数据)管理系统，哇，怎么会有人用这种技术栈开发项目啊。大二还远程实习了一个傻逼公司，除了自学go语言得到了一点收获之外几乎毫无作用，要不要把这个实习经历写在简历上都要考虑考虑hh，都不知道这个公司倒闭了没hh。这么神奇的公司是怎么招到这么多985和海外高校的实习生的，好离谱啊。不过接触到了这么多学霸，也见识到了自己跟她们的差距。</p>
+<p>刚大一的时候的计划路线是：大一打acm一直打到大三，然后去实验室做项目。后来算法没打成。想直接去实验室做项目，走大一班导ckl的路线，结果实验室也没途经进去，问了也是满人了不收。想着现在大三上都结束了。看了好多大佬的本科路线，几乎所有人大三上结束都有好多奖项，然后大三下进大厂实习。哎，到目前为止自己有什么奖项呢？一个都没有。现在离20岁还剩下一个小时，真的是对前途一片迷茫。接下来路该怎么走呢，随波逐流去考研嘛？昨天刚考完四级，听力前五个全错，阅读得分才160，作文还写离题了，哎，这样的废物真的能去考研嘛，大概率当分母啊。想到这感觉wsy真的好强，各种奖学金三好学生拿个遍，四六级都是秒过。人无完人，哎。自己数学又很好嘛？高中这么多次考试都没几次有高分吧，不会真有人把学校那水的离谱的高数和线代还有概率论来证明自己吧。408自己学的很好嘛？操作系统才70多分，笑死，还以为自己操作系统多牛逼呢，课听了不少，公众号水了不少，面经也背了不少，不还是这样。自己到底适不适合考研呢，可能我自己都不知道吧。自己又能静得下来学习嘛，在宿舍周末都会睡到12点起床，考研生物钟自己又能适应嘛，宿舍都是混子没人考研，自己又能静得下心学习吗，哎。一边是不考研就几乎去不了大厂，一遍是去考研了大概率会白给充当分母。到底该怎么选啊！真的能有前途吗，最后的结局真的不是随便去一个公司混日子，然后一直等待35岁的到来吗。都说人会触底反弹，每天在宿舍无所事事，敲着毫无作用的代码，没有一个项目能写进简历。都是一些简单的小demo或者小课设，有什么用啊！</p>
+<p>关于自己写下来的路该怎么走。先暂时这样吧：这一个星期一定学完计网可能有离散数学。接下来寒假一定不能水，先学CS61B和刷算法题，刷完之后寒假一定要注意一下大厂的春招提前批消息，无论能不能面得上（95%不可以）都一定要试一试，看看自己的水平到底如何，万一真的有机会出现呢。寒假的时候还需要考虑一下考研的问题，可以先接触一下408和英语，因为无论考不考研，408的知识和四六级还是要过的。如果可以的话，尝试的写一些项目（这里告诫一下之后的自己，不要写商城之类的水项目了）。如果可以可以把那个GRPC项目和仿QQ项目学一下。或者接着把CS系列的课程往下学。acwing基础班刷完并且开提高班，acwing的每日一题一定要跟。leetcode也要开始刷起来了。如果可以，寒假少熬夜吧。</p>
+<p>发布这篇文章的时候应该是20岁了吧，20年母胎solo，也要考虑一下自己的爱情问题了。希望自己看淡自己的身高，不要过度焦虑，相信自己一定可以找到属于自己的另一半，主动起来，无论是否有结果，一定要试一试才能成功，听了盛老师的爱情讲座，发现自己最缺的就是主动的勇气和社交。小学xxx，初中xxx，xxx，高中xx，xxx。大学xxx，xxx。相信自己，一定可以！</p>
+<p>来不及去超市买属于自己的生日蛋糕口味的奥利奥了，这次生日的感觉和高中那次晚上一人孤独吃生日蛋糕口味奥利奥的感觉是一样的。还是有很多人爱着我的呀，一定要乐观起来啊wr1sw，小学初中别人给你的印象就是乐观、幽默啊，一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！</p>
+]]></content>
+      <categories>
+        <category>总结</category>
+      </categories>
+      <tags>
+        <tag>总结</tag>
       </tags>
   </entry>
   <entry>
@@ -1346,23 +1363,6 @@
         <tag>学习</tag>
         <tag>导航</tag>
         <tag>Oracle</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一点仪式感都没有的20岁</title>
-    <url>/2021/12/19/%E4%B8%80%E7%82%B9%E4%BB%AA%E5%BC%8F%E6%84%9F%E9%83%BD%E6%B2%A1%E6%9C%89%E7%9A%8420%E5%B2%81/</url>
-    <content><![CDATA[<p>大学以来，遇到了各种各样的困难。特别是大一那会打算法比赛的时候，真的是一点都不会，无论怎么积极学都学不懂，一度怀疑自己真的智商有点问题(可能真的有问题)。如果当时没遇到疫情，顺利的跟着学校参加训练可能现在的结局就完全不一样了。虽然嘲讽了CUIT两年多，但是还是十分庆幸自己在CUIT，没有太多约束，成绩不好也不会太为难自己。优秀的人很多，关于绩点这件事总是有人不能如愿的（还是很烦关于自己德育分没80领不了三等奖学金——可能大学四年唯一一次能拿的奖学金就这次了，cjl好强啊呜呜呜呜呜，天天打比赛还能这么高绩点）。</p>
-<p>来到成都有段时间了，外出旅游的机会几乎没有，要么是疫情影响，要么就是自己太自闭了哎。绝大部分原因还是跟自己有关吧，真的太废物了。想到大佬们参加各种区域赛去旅游，可能这就是梦中的人生规划吧，可惜自己太菜。大二那会，原本想着自己走不了算法的路线，加一个实验室跟着学校混奖项，最气的是，到现在都大三上结束了，实验室还没进去。笑死，根本没有途径进去，完全没有听说过有实验室招新的通知。上次问岳老师的团队的人她们是怎么加入实验室的，笑死，原来岳老师是她们的班导，直接给机会进去学习。想想我们的班导就忍不住烦啊。上个学期末加的那个实验室的群，到现在群里面一点消息都没有，:(。暑假跟着曹老师的团队做了那个科研项目(数据)管理系统，哇，怎么会有人用这种技术栈开发项目啊。大二还远程实习了一个傻逼公司，除了自学go语言得到了一点收获之外几乎毫无作用，要不要把这个实习经历写在简历上都要考虑考虑hh，都不知道这个公司倒闭了没hh。这么神奇的公司是怎么招到这么多985和海外高校的实习生的，好离谱啊。不过接触到了这么多学霸，也见识到了自己跟她们的差距。</p>
-<p>刚大一的时候的计划路线是：大一打acm一直打到大三，然后去实验室做项目。后来算法没打成。想直接去实验室做项目，走大一班导ckl的路线，结果实验室也没途经进去，问了也是满人了不收。想着现在大三上都结束了。看了好多大佬的本科路线，几乎所有人大三上结束都有好多奖项，然后大三下进大厂实习。哎，到目前为止自己有什么奖项呢？一个都没有。现在离20岁还剩下一个小时，真的是对前途一片迷茫。接下来路该怎么走呢，随波逐流去考研嘛？昨天刚考完四级，听力前五个全错，阅读得分才160，作文还写离题了，哎，这样的废物真的能去考研嘛，大概率当分母啊。想到这感觉wsy真的好强，各种奖学金三好学生拿个遍，四六级都是秒过。人无完人，哎。自己数学又很好嘛？高中这么多次考试都没几次有高分吧，不会真有人把学校那水的离谱的高数和线代还有概率论来证明自己吧。408自己学的很好嘛？操作系统才70多分，笑死，还以为自己操作系统多牛逼呢，课听了不少，公众号水了不少，面经也背了不少，不还是这样。自己到底适不适合考研呢，可能我自己都不知道吧。自己又能静得下来学习嘛，在宿舍周末都会睡到12点起床，考研生物钟自己又能适应嘛，宿舍都是混子没人考研，自己又能静得下心学习吗，哎。一边是不考研就几乎去不了大厂，一遍是去考研了大概率会白给充当分母。到底该怎么选啊！真的能有前途吗，最后的结局真的不是随便去一个公司混日子，然后一直等待35岁的到来吗。都说人会触底反弹，每天在宿舍无所事事，敲着毫无作用的代码，没有一个项目能写进简历。都是一些简单的小demo或者小课设，有什么用啊！</p>
-<p>关于自己写下来的路该怎么走。先暂时这样吧：这一个星期一定学完计网可能有离散数学。接下来寒假一定不能水，先学CS61B和刷算法题，刷完之后寒假一定要注意一下大厂的春招提前批消息，无论能不能面得上（95%不可以）都一定要试一试，看看自己的水平到底如何，万一真的有机会出现呢。寒假的时候还需要考虑一下考研的问题，可以先接触一下408和英语，因为无论考不考研，408的知识和四六级还是要过的。如果可以的话，尝试的写一些项目（这里告诫一下之后的自己，不要写商城之类的水项目了）。如果可以可以把那个GRPC项目和仿QQ项目学一下。或者接着把CS系列的课程往下学。acwing基础班刷完并且开提高班，acwing的每日一题一定要跟。leetcode也要开始刷起来了。如果可以，寒假少熬夜吧。</p>
-<p>发布这篇文章的时候应该是20岁了吧，20年母胎solo，也要考虑一下自己的爱情问题了。希望自己看淡自己的身高，不要过度焦虑，相信自己一定可以找到属于自己的另一半，主动起来，无论是否有结果，一定要试一试才能成功，听了盛老师的爱情讲座，发现自己最缺的就是主动的勇气和社交。小学xxx，初中xxx，xxx，高中xx，xxx。大学xxx，xxx。相信自己，一定可以！</p>
-<p>来不及去超市买属于自己的生日蛋糕口味的奥利奥了，这次生日的感觉和高中那次晚上一人孤独吃生日蛋糕口味奥利奥的感觉是一样的。还是有很多人爱着我的呀，一定要乐观起来啊wr1sw，小学初中别人给你的印象就是乐观、幽默啊，一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！</p>
-]]></content>
-      <categories>
-        <category>总结</category>
-      </categories>
-      <tags>
-        <tag>总结</tag>
       </tags>
   </entry>
   <entry>
