@@ -990,11 +990,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle实验1</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Oracle实验2</title>
     <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
     <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
@@ -1014,6 +1009,11 @@
         <tag>导航</tag>
         <tag>Oracle</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Oracle实验1</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>Oracle实验3</title>
