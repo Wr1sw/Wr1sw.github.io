@@ -1,164 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Oracle复习3</title>
-    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A03/</url>
-    <content><![CDATA[<h3 id="表"><a href="#表" class="headerlink" title="表"></a>表</h3><h5 id="Oracle-SQL种类"><a href="#Oracle-SQL种类" class="headerlink" title="Oracle SQL种类"></a>Oracle SQL种类</h5><ul>
-<li><p><strong>数据定义语言 Data Definition Language Statements（DDL）</strong></p>
-</li>
-<li><p><strong>数据操纵语言 Data Manipulation Language（DML） Statements</strong></p>
-</li>
-<li><p>事务控制 Transaction Control Statements </p>
-</li>
-<li><p>会话控制 Session Control Statements </p>
-</li>
-<li><p>系统控制 System Control Statements </p>
-</li>
-<li><p>嵌入SQL Embedded SQL Statements</p>
-</li>
+    <title>CS61B GITLET PROJECT</title>
+    <url>/2022/06/20/CS61B-GITLET-PROJECT/</url>
+    <content><![CDATA[<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><ul>
+<li>创建 .gitlet 目录， 并在其中新建一些文件来存储序列化信息</li>
+<li>init 会自动创建一个包含 initial commit 信息的Commit 开始</li>
 </ul>
-<h5 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h5><ul>
-<li><p>Create、alter和drop方案对象与数据库结构 (CREATE, ALTER, DROP)</p>
-</li>
-<li><p>改变方案对象名称 (RENAME) </p>
-</li>
-<li><p>TRUNCATE</p>
-</li>
-<li><p>权限和角色的授予与回收 (GRANT, REVOKE) </p>
-</li>
-<li><p>打开与关闭审计操作 (AUDIT, NOAUDIT)</p>
-</li>
-<li><p>增加注释到数据字典 (COMMENT) </p>
-</li>
-<li><p><strong>当用户执行DDL语句时，在每一条DDL语句执行前后，Oracle都将提交当前的事务，理解这一点很重要。</strong></p>
-</li>
-</ul>
-<p><img src="1-1.png"></p>
-<h5 id="表的命名规定"><a href="#表的命名规定" class="headerlink" title="表的命名规定"></a>表的命名规定</h5><ol>
-<li><strong>必须是以字母开头。</strong></li>
-<li>1-30个字符长度</li>
-<li><strong>仅能包括A-Z，a-z，0-9，_,$,#</strong></li>
-<li>在同一个用户下表明不能重复</li>
-<li>不能是Oracle保留字</li>
+<ol>
+<li>执行 setupPersistence() 初始化方法,创建 .gitlet 目录、创建 refs 目录(创建heads子目录)、创建 objects 目录。</li>
+<li>接下来执行 setCurrentBranch() 方法初始化 当前默认分支，也就是把 HEAD 文件里面填充一句：ref: refs/heads/master。</li>
+<li>接下来 初始化首次Commit。执行FirstCommit()。这个方法主要执行三个方法 初始化Commit对象()、序列化保存首次Commit、把 SHAID 填入 refs/heads/master 文件中</li>
+<li>在Commit() 构造函数中，新建 date、message、和 fathers 以及 tracked，接下来生成 SHAID 填入 id字段中，接下来通过id前两位生成目录，其余位数作为文件名 </li>
+<li>上面第四步生成的文件还没有保存到文件中，需要执行 save() 方法保存序列化的Commit对象到文件中。</li>
 </ol>
-<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p><img src="1-2.png"></p>
-<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5><p>创建者必须具有</p>
-<ul>
-<li><p>CREATE TABLE 权限</p>
-</li>
-<li><p>一个存储区</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]tablename  </span><br><span class="line">             (columnname datatype [<span class="keyword">DEFAULT</span> expr][, 			...]);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>数据库表名</p>
-</li>
-<li><p>定义列（名称、数据类型、长度和缺省值）</p>
-</li>
-</ul>
-<h5 id="列的缺省值"><a href="#列的缺省值" class="headerlink" title="列的缺省值"></a>列的缺省值</h5><ul>
-<li>指定列的缺省值， 在以后的INSERT语句中忽略该列值时， 将此缺省值赋给该列。</li>
-<li>默认值的数据类型必须和列的数据类型匹配</li>
-<li>表达式、SQL函数和数值都是合法的值</li>
-<li>不能包括其他列和伪列的引用（ROWNUM，NEXTVAL，LEVEL和CURRVAL）</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept(</span><br><span class="line">	deptno number(<span class="number">2</span>),</span><br><span class="line">	dname varchar2(<span class="number">14</span>),</span><br><span class="line">	loc varchar2(<span class="number">13</span>));</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- Table created</span></span><br><span class="line"><span class="keyword">describe</span> dept</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NAME                NULL?       Type</span></span><br><span class="line">_____________________________________________</span><br><span class="line">DEPTNO                 <span class="keyword">NOT</span> <span class="keyword">NULL</span>     NUMBER(<span class="number">2</span>)</span><br><span class="line">DNAME                               VARCHAR2(<span class="number">14</span>)</span><br><span class="line">LOC                                 VARCHAR2(<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h5 id="使用子查询创建表"><a href="#使用子查询创建表" class="headerlink" title="使用子查询创建表"></a>使用子查询创建表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 语法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line">  	  [<span class="keyword">column</span>(, column...)]</span><br><span class="line"><span class="keyword">AS</span> subquery;</span><br><span class="line"></span><br><span class="line"><span class="comment">--------------------------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept30 </span><br><span class="line">	<span class="keyword">as</span> </span><br><span class="line">		<span class="keyword">select</span> empno, ename, sal<span class="operator">*</span><span class="number">12</span> annsal, hiredate</span><br><span class="line">		<span class="keyword">from</span> emp</span><br><span class="line">		<span class="keyword">where</span> deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="更改表"><a href="#更改表" class="headerlink" title="更改表"></a>更改表</h5><ol>
-<li><p>增加或删除列</p>
-</li>
-<li><p>增加完整性约束</p>
-</li>
-<li><p>重新定义列（数据类型、长度、缺省值）</p>
-</li>
-<li><p>修改存储参数或其它参数</p>
-</li>
-<li><p>使能、使不能或删除一完整性约束或触发器</p>
-</li>
-<li><p>显式地分配一个范围</p>
-</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">ADD</span>		   (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		   [, <span class="keyword">column</span> datatype]...);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> DEPT30</span><br><span class="line">	<span class="keyword">ADD</span> (job VARCHAR2(<span class="number">9</span>));</span><br></pre></td></tr></table></figure>
-
-<p><img src="1-3.png"></p>
-<hr>
-<h5 id="改变表名称"><a href="#改变表名称" class="headerlink" title="改变表名称"></a>改变表名称</h5><ul>
-<li><p>执行RENAME语句，将改变表、视图、序列和同义词的名称。</p>
-</li>
-<li><p>操作者必须是对象的拥有者。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">RENAME dept <span class="keyword">TO</span> department;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h5 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h5><ul>
-<li>删除表的所有数据和结构</li>
-<li>删除表的所有索引</li>
-<li>表的删除操作不能回退</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">DROP</span> <span class="keyword">TABLE</span> dept30;</span><br><span class="line"><span class="keyword">Table</span> dropped.</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>如果在要删除的表中包含有被其它表的外部码引用的主码或唯一码，并且希望在删除这个表的同时删除其它表中的相关的外部码约束，可以在DROP TABLE语句中指定CASCADE字句</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> department CASCADE CONSTRAINTS;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h5 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a>截断表</h5><ul>
-<li>删除表的所有数据</li>
-<li>释放被表使用的存储空间</li>
-<li>截断操作不能回退</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> department;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">TABLE</span> emp</span><br><span class="line">	<span class="keyword">is</span> <span class="string">&#x27;Employee Information&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h5 id="创建约束和管理约束"><a href="#创建约束和管理约束" class="headerlink" title="创建约束和管理约束"></a>创建约束和管理约束</h5><p>约束类型</p>
-<ul>
-<li>NOT NULL</li>
-<li>UNIQUE</li>
-<li>PRIMARY KEY</li>
-<li>FOREIGN KEY</li>
-<li>CHECK</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]<span class="keyword">table</span></span><br><span class="line">	    (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		[column_constraint],</span><br><span class="line">		…</span><br><span class="line">		[table_constraint]);</span><br><span class="line">		</span><br><span class="line"><span class="comment">------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">	empno NUMBER(<span class="number">4</span>),</span><br><span class="line">	ename VARCHAR2(<span class="number">10</span>),</span><br><span class="line">	deptno NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	<span class="keyword">CONSTRAINT</span> emp_empno_pk <span class="keyword">PRIMARY</span> KEY(EMPNO));</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 唯一码约束</span></span><br><span class="line"><span class="comment">-- 唯一码约束可以定义在列上或者表上(unique)</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line">  		loc	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span>(dname));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 主键约束</span></span><br><span class="line"><span class="comment">-- 主键越是可以定义在列上或者表上（PRIMARY KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line"> 		loc	  	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span> (dname),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_deptno_pk <span class="keyword">PRIMARY</span> KEY(deptno) );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 外键约束</span></span><br><span class="line"><span class="comment">-- 外键约束可以定义在列上或者表上（FOREIGN KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">    	empno 	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		ename	VARCHAR2(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  		job	VARCHAR2(<span class="number">9</span>),</span><br><span class="line">  		mgr	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		hiredate	<span class="type">DATE</span>,</span><br><span class="line">  		sal	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">   		comm	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">		deptno	NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line"> 		<span class="keyword">CONSTRAINT</span> emp_deptno_fk <span class="keyword">FOREIGN</span> KEY (deptno)</span><br><span class="line"> 			<span class="keyword">REFERENCES</span> dept (deptno));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- check约束：定义表的每一行必须满足的条件</span></span><br><span class="line">..., deptno	NUMBER(<span class="number">2</span>),</span><br><span class="line">      <span class="keyword">CONSTRAINT</span> emp_deptno_ck  </span><br><span class="line">            <span class="keyword">CHECK</span> (DEPTNO <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">AND</span> <span class="number">99</span>),...</span><br></pre></td></tr></table></figure>
-
-<p><strong>可以增加和删除约束但是不能修改约束</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	 <span class="keyword">table</span></span><br><span class="line">  <span class="keyword">ADD</span> [<span class="keyword">CONSTRAINT</span> <span class="keyword">constraint</span>] type (<span class="keyword">column</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p><strong>删除</strong>在表DEPT上的<strong>PRIMARY KEY</strong>约束并且删除在表EMP的DEPTNO列上的<strong>FOREIGN KEY</strong>约束</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>     emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk </span><br><span class="line">  <span class="number">3</span>  		<span class="keyword">FOREIGN</span> KEY(mgr) <span class="keyword">REFERENCES</span> emp(empno);</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	  emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	dept</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>禁用和启用约束</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- </span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  ENABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  DISABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
 ]]></content>
       <categories>
-        <category>Oracle</category>
+        <category>CS61B</category>
       </categories>
       <tags>
         <tag>学习</tag>
         <tag>导航</tag>
-        <tag>Oracle</tag>
+        <tag>CS61B</tag>
       </tags>
   </entry>
   <entry>
@@ -315,6 +178,167 @@
 
 
 <h5 id="1-3-数据库对象在数据库中的存储结构"><a href="#1-3-数据库对象在数据库中的存储结构" class="headerlink" title="1.3 数据库对象在数据库中的存储结构"></a>1.3 数据库对象在数据库中的存储结构</h5>]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Oracle复习3</title>
+    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A03/</url>
+    <content><![CDATA[<h3 id="表"><a href="#表" class="headerlink" title="表"></a>表</h3><h5 id="Oracle-SQL种类"><a href="#Oracle-SQL种类" class="headerlink" title="Oracle SQL种类"></a>Oracle SQL种类</h5><ul>
+<li><p><strong>数据定义语言 Data Definition Language Statements（DDL）</strong></p>
+</li>
+<li><p><strong>数据操纵语言 Data Manipulation Language（DML） Statements</strong></p>
+</li>
+<li><p>事务控制 Transaction Control Statements </p>
+</li>
+<li><p>会话控制 Session Control Statements </p>
+</li>
+<li><p>系统控制 System Control Statements </p>
+</li>
+<li><p>嵌入SQL Embedded SQL Statements</p>
+</li>
+</ul>
+<h5 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h5><ul>
+<li><p>Create、alter和drop方案对象与数据库结构 (CREATE, ALTER, DROP)</p>
+</li>
+<li><p>改变方案对象名称 (RENAME) </p>
+</li>
+<li><p>TRUNCATE</p>
+</li>
+<li><p>权限和角色的授予与回收 (GRANT, REVOKE) </p>
+</li>
+<li><p>打开与关闭审计操作 (AUDIT, NOAUDIT)</p>
+</li>
+<li><p>增加注释到数据字典 (COMMENT) </p>
+</li>
+<li><p><strong>当用户执行DDL语句时，在每一条DDL语句执行前后，Oracle都将提交当前的事务，理解这一点很重要。</strong></p>
+</li>
+</ul>
+<p><img src="1-1.png"></p>
+<h5 id="表的命名规定"><a href="#表的命名规定" class="headerlink" title="表的命名规定"></a>表的命名规定</h5><ol>
+<li><strong>必须是以字母开头。</strong></li>
+<li>1-30个字符长度</li>
+<li><strong>仅能包括A-Z，a-z，0-9，_,$,#</strong></li>
+<li>在同一个用户下表明不能重复</li>
+<li>不能是Oracle保留字</li>
+</ol>
+<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><p><img src="1-2.png"></p>
+<h5 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h5><p>创建者必须具有</p>
+<ul>
+<li><p>CREATE TABLE 权限</p>
+</li>
+<li><p>一个存储区</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]tablename  </span><br><span class="line">             (columnname datatype [<span class="keyword">DEFAULT</span> expr][, 			...]);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>数据库表名</p>
+</li>
+<li><p>定义列（名称、数据类型、长度和缺省值）</p>
+</li>
+</ul>
+<h5 id="列的缺省值"><a href="#列的缺省值" class="headerlink" title="列的缺省值"></a>列的缺省值</h5><ul>
+<li>指定列的缺省值， 在以后的INSERT语句中忽略该列值时， 将此缺省值赋给该列。</li>
+<li>默认值的数据类型必须和列的数据类型匹配</li>
+<li>表达式、SQL函数和数值都是合法的值</li>
+<li>不能包括其他列和伪列的引用（ROWNUM，NEXTVAL，LEVEL和CURRVAL）</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept(</span><br><span class="line">	deptno number(<span class="number">2</span>),</span><br><span class="line">	dname varchar2(<span class="number">14</span>),</span><br><span class="line">	loc varchar2(<span class="number">13</span>));</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- Table created</span></span><br><span class="line"><span class="keyword">describe</span> dept</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NAME                NULL?       Type</span></span><br><span class="line">_____________________________________________</span><br><span class="line">DEPTNO                 <span class="keyword">NOT</span> <span class="keyword">NULL</span>     NUMBER(<span class="number">2</span>)</span><br><span class="line">DNAME                               VARCHAR2(<span class="number">14</span>)</span><br><span class="line">LOC                                 VARCHAR2(<span class="number">13</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="使用子查询创建表"><a href="#使用子查询创建表" class="headerlink" title="使用子查询创建表"></a>使用子查询创建表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 语法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line">  	  [<span class="keyword">column</span>(, column...)]</span><br><span class="line"><span class="keyword">AS</span> subquery;</span><br><span class="line"></span><br><span class="line"><span class="comment">--------------------------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> dept30 </span><br><span class="line">	<span class="keyword">as</span> </span><br><span class="line">		<span class="keyword">select</span> empno, ename, sal<span class="operator">*</span><span class="number">12</span> annsal, hiredate</span><br><span class="line">		<span class="keyword">from</span> emp</span><br><span class="line">		<span class="keyword">where</span> deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="更改表"><a href="#更改表" class="headerlink" title="更改表"></a>更改表</h5><ol>
+<li><p>增加或删除列</p>
+</li>
+<li><p>增加完整性约束</p>
+</li>
+<li><p>重新定义列（数据类型、长度、缺省值）</p>
+</li>
+<li><p>修改存储参数或其它参数</p>
+</li>
+<li><p>使能、使不能或删除一完整性约束或触发器</p>
+</li>
+<li><p>显式地分配一个范围</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="keyword">table</span></span><br><span class="line"><span class="keyword">ADD</span>		   (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		   [, <span class="keyword">column</span> datatype]...);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> DEPT30</span><br><span class="line">	<span class="keyword">ADD</span> (job VARCHAR2(<span class="number">9</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="1-3.png"></p>
+<hr>
+<h5 id="改变表名称"><a href="#改变表名称" class="headerlink" title="改变表名称"></a>改变表名称</h5><ul>
+<li><p>执行RENAME语句，将改变表、视图、序列和同义词的名称。</p>
+</li>
+<li><p>操作者必须是对象的拥有者。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">RENAME dept <span class="keyword">TO</span> department;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h5 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h5><ul>
+<li>删除表的所有数据和结构</li>
+<li>删除表的所有索引</li>
+<li>表的删除操作不能回退</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">DROP</span> <span class="keyword">TABLE</span> dept30;</span><br><span class="line"><span class="keyword">Table</span> dropped.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>如果在要删除的表中包含有被其它表的外部码引用的主码或唯一码，并且希望在删除这个表的同时删除其它表中的相关的外部码约束，可以在DROP TABLE语句中指定CASCADE字句</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> department CASCADE CONSTRAINTS;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h5 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a>截断表</h5><ul>
+<li>删除表的所有数据</li>
+<li>释放被表使用的存储空间</li>
+<li>截断操作不能回退</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> department;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="添加注释"><a href="#添加注释" class="headerlink" title="添加注释"></a>添加注释</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">COMMENT <span class="keyword">ON</span> <span class="keyword">TABLE</span> emp</span><br><span class="line">	<span class="keyword">is</span> <span class="string">&#x27;Employee Information&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="创建约束和管理约束"><a href="#创建约束和管理约束" class="headerlink" title="创建约束和管理约束"></a>创建约束和管理约束</h5><p>约束类型</p>
+<ul>
+<li>NOT NULL</li>
+<li>UNIQUE</li>
+<li>PRIMARY KEY</li>
+<li>FOREIGN KEY</li>
+<li>CHECK</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> [schema.]<span class="keyword">table</span></span><br><span class="line">	    (<span class="keyword">column</span> datatype [<span class="keyword">DEFAULT</span> expr]</span><br><span class="line">		[column_constraint],</span><br><span class="line">		…</span><br><span class="line">		[table_constraint]);</span><br><span class="line">		</span><br><span class="line"><span class="comment">------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">	empno NUMBER(<span class="number">4</span>),</span><br><span class="line">	ename VARCHAR2(<span class="number">10</span>),</span><br><span class="line">	deptno NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>, </span><br><span class="line">	<span class="keyword">CONSTRAINT</span> emp_empno_pk <span class="keyword">PRIMARY</span> KEY(EMPNO));</span><br><span class="line">	</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 唯一码约束</span></span><br><span class="line"><span class="comment">-- 唯一码约束可以定义在列上或者表上(unique)</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line">  		loc	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span>(dname));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 主键约束</span></span><br><span class="line"><span class="comment">-- 主键越是可以定义在列上或者表上（PRIMARY KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span>   dept(</span><br><span class="line">    	deptno 	  NUMBER(<span class="number">2</span>),</span><br><span class="line">  		dname	  VARCHAR2(<span class="number">14</span>),</span><br><span class="line"> 		loc	  	  VARCHAR2(<span class="number">13</span>),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_dname_uk <span class="keyword">UNIQUE</span> (dname),</span><br><span class="line">  		<span class="keyword">CONSTRAINT</span> dept_deptno_pk <span class="keyword">PRIMARY</span> KEY(deptno) );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 外键约束</span></span><br><span class="line"><span class="comment">-- 外键约束可以定义在列上或者表上（FOREIGN KEY）</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">    	empno 	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		ename	VARCHAR2(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  		job	VARCHAR2(<span class="number">9</span>),</span><br><span class="line">  		mgr	NUMBER(<span class="number">4</span>),</span><br><span class="line">  		hiredate	<span class="type">DATE</span>,</span><br><span class="line">  		sal	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">   		comm	NUMBER(<span class="number">7</span>,<span class="number">2</span>),</span><br><span class="line">		deptno	NUMBER(<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line"> 		<span class="keyword">CONSTRAINT</span> emp_deptno_fk <span class="keyword">FOREIGN</span> KEY (deptno)</span><br><span class="line"> 			<span class="keyword">REFERENCES</span> dept (deptno));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- check约束：定义表的每一行必须满足的条件</span></span><br><span class="line">..., deptno	NUMBER(<span class="number">2</span>),</span><br><span class="line">      <span class="keyword">CONSTRAINT</span> emp_deptno_ck  </span><br><span class="line">            <span class="keyword">CHECK</span> (DEPTNO <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">AND</span> <span class="number">99</span>),...</span><br></pre></td></tr></table></figure>
+
+<p><strong>可以增加和删除约束但是不能修改约束</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	 <span class="keyword">table</span></span><br><span class="line">  <span class="keyword">ADD</span> [<span class="keyword">CONSTRAINT</span> <span class="keyword">constraint</span>] type (<span class="keyword">column</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>删除</strong>在表DEPT上的<strong>PRIMARY KEY</strong>约束并且删除在表EMP的DEPTNO列上的<strong>FOREIGN KEY</strong>约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>     emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk </span><br><span class="line">  <span class="number">3</span>  		<span class="keyword">FOREIGN</span> KEY(mgr) <span class="keyword">REFERENCES</span> emp(empno);</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	  emp</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">CONSTRAINT</span>  emp_mgr_fk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>	dept</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>禁用和启用约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- </span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  ENABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">ALTER</span> <span class="keyword">TABLE</span>		emp</span><br><span class="line">  <span class="number">2</span>  DISABLE <span class="keyword">CONSTRAINT</span>	emp_empno_pk CASCADE;</span><br><span class="line"><span class="keyword">Table</span> altered.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
       <categories>
         <category>Oracle</category>
       </categories>
@@ -788,6 +812,11 @@
       </tags>
   </entry>
   <entry>
+    <title>Oracle实验1</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Oracle复习8</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/</url>
     <content><![CDATA[<h3 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h3><h4 id="IF逻辑结构"><a href="#IF逻辑结构" class="headerlink" title="IF逻辑结构"></a>IF逻辑结构</h4><ul>
@@ -990,11 +1019,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle实验1</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Oracle实验3</title>
     <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C3/</url>
     <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- (1）创建“添加教师信息”的匿名块，将输入信息插入教师信息表。</span></span><br><span class="line"><span class="comment">-- （2）“添加教师信息”的匿名块的程序框架如下：</span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line">  <span class="comment">-- 定义接受每个字段数据的变量									</span></span><br><span class="line">  <span class="comment">-- 定义NOTNULL字段输入为null时抛出的用户自定义异常变量	</span></span><br><span class="line">  <span class="comment">-- 定义输入系部代码在部门信息表中不存在时抛出的用户自定义异常变量</span></span><br><span class="line">   <span class="comment">-- 定义其他临时变量</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="comment">-- 如果NOTNULL字段输入为null，抛出用户自定义异常			 </span></span><br><span class="line">  <span class="comment">-- 查询输入系部代码在部门信息表中的记录数；如果记录数为0，抛出用户自定义异常</span></span><br><span class="line"><span class="comment">-- 检查性别是不是男/女，不是则输出提示信息&#x27;性别不正确！&#x27;，是则继续。</span></span><br><span class="line">  <span class="comment">-- insert语句插入教师信息记录									 </span></span><br><span class="line">  <span class="comment">-- 输出提示信息&#x27;教师信息添加成功！&#x27;</span></span><br><span class="line">EXCEPTION</span><br><span class="line">    <span class="comment">-- 处理NOTNULL字段输入为null的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理系部代码不存在的用户自定义异常，输出提示信息 </span></span><br><span class="line">    <span class="comment">-- 处理教师编号已经存在产生的系统预定义异常，输出提示信息  </span></span><br><span class="line">    <span class="comment">-- 处理其他异常，输出提示信息</span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -1108,44 +1132,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Maven工程的resource结点的理解</title>
-    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</url>
-    <content><![CDATA[<p>当我们使用Mybatis的时候，mapper文件想要在包中被解析，就需要配置resource</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">      &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;$&#123;basedir&#125;/src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">          &lt;include&gt;**/application*.yml&lt;/include&gt;</span><br><span class="line">          &lt;include&gt;**/application*.yaml&lt;/include&gt;</span><br><span class="line">          &lt;include&gt;**/application*.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">      &lt;/resource&gt;</span><br><span class="line">      &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;$&#123;basedir&#125;/src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;excludes&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.yml&lt;/exclude&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.yaml&lt;/exclude&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.properties&lt;/exclude&gt;</span><br><span class="line">        &lt;/excludes&gt;</span><br><span class="line">      &lt;/resource&gt;</span><br><span class="line">    &lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>resources中可以有多个resource</li>
-<li>directory 指定资源目录</li>
-<li>includes中可以有多个include</li>
-<li>**/application*.yml中最后一个*代表通配符，因为你可能会有-dev -test等等的profile</li>
-</ul>
-<h4 id="include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？"><a href="#include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？" class="headerlink" title="include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？"></a>include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？</h4><p>上下两个配置唯一的差别就在<filtering>true</filtering>中，所以关键就在这。</p>
-<p>下面是松哥的一个简单案例</p>
-<p>新建两个properties文件,a.properties和b.properties，两个文件分别写入a.name=wr1sw和b.name=wr1sw</p>
-<p><img src="1-1.png"></p>
-<p>接下来使用maven工具package给项目打一个包，会发现classes中出现了这两个配置文件</p>
-<p>在pom.xml中定义一些变量,变量是可以在properties文件中引用的，应用方式就是${wr1sw.name},当项目在编译打包的时候会自动替换变量值</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">        &lt;wr1sw.name&gt;wr1sw&lt;/wr1sw.name&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
-
-<p>但是，直接打包的话，properties文件中的变量并没有变，这就涉及到了resource的用法了</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;!--   表示这个东西要进行过滤             --&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;a.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-<p>加上这行会发现，a.properties中的变量成功能显示了，但是b.properties缺不见了;</p>
-<p>如果你没有指定的话，resources下的配置文件都会被编译，如果你指定了，就会按照你指定的来。</p>
-<p>如果说我现在不想忽略其他文件(b.properties)，我没有必要在include中加上b.properties，因为在b.properties里面没有需要引用pom.xml里的变量。这个时候可以定义一个exclude,含义是：<br><strong>除了a.properties的文件，其他文件呢会给你保留下来，但是呢其他文件不会进行一个过滤的处理，因为其他文件里面也没有需要处理的(没有引用变量)</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;!--   表示这个东西要进行过滤             --&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line"></span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;a.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">            &lt;!--     默认就是false,这里写false是因为其他文件没有用到pom.xml的变量，没有必要过滤处理           --&gt;</span><br><span class="line">        &lt;filtering&gt;false&lt;/filtering&gt;</span><br><span class="line">        &lt;excludes&gt;</span><br><span class="line">            &lt;exclude&gt;a.properties&lt;/exclude&gt;</span><br><span class="line">        &lt;/excludes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
-
-
-]]></content>
-      <categories>
-        <category>SpringBoot</category>
-        <category>Maven</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Spring Boot 项目中的 parent</title>
     <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</url>
     <content><![CDATA[<p>以下是学习松哥的SpringBoot的学习笔记</p>
@@ -1185,6 +1171,44 @@
 ]]></content>
       <categories>
         <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Maven工程的resource结点的理解</title>
+    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02/</url>
+    <content><![CDATA[<p>当我们使用Mybatis的时候，mapper文件想要在包中被解析，就需要配置resource</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">      &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;$&#123;basedir&#125;/src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">          &lt;include&gt;**/application*.yml&lt;/include&gt;</span><br><span class="line">          &lt;include&gt;**/application*.yaml&lt;/include&gt;</span><br><span class="line">          &lt;include&gt;**/application*.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">      &lt;/resource&gt;</span><br><span class="line">      &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;$&#123;basedir&#125;/src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;excludes&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.yml&lt;/exclude&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.yaml&lt;/exclude&gt;</span><br><span class="line">          &lt;exclude&gt;**/application*.properties&lt;/exclude&gt;</span><br><span class="line">        &lt;/excludes&gt;</span><br><span class="line">      &lt;/resource&gt;</span><br><span class="line">    &lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>resources中可以有多个resource</li>
+<li>directory 指定资源目录</li>
+<li>includes中可以有多个include</li>
+<li>**/application*.yml中最后一个*代表通配符，因为你可能会有-dev -test等等的profile</li>
+</ul>
+<h4 id="include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？"><a href="#include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？" class="headerlink" title="include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？"></a>include代表需要这些文件，exclude代表除去这些文件，那你到底是想包括这些文件还是想除去这些文件呢？</h4><p>上下两个配置唯一的差别就在<filtering>true</filtering>中，所以关键就在这。</p>
+<p>下面是松哥的一个简单案例</p>
+<p>新建两个properties文件,a.properties和b.properties，两个文件分别写入a.name=wr1sw和b.name=wr1sw</p>
+<p><img src="1-1.png"></p>
+<p>接下来使用maven工具package给项目打一个包，会发现classes中出现了这两个配置文件</p>
+<p>在pom.xml中定义一些变量,变量是可以在properties文件中引用的，应用方式就是${wr1sw.name},当项目在编译打包的时候会自动替换变量值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">        &lt;wr1sw.name&gt;wr1sw&lt;/wr1sw.name&gt;</span><br><span class="line">&lt;/properties&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但是，直接打包的话，properties文件中的变量并没有变，这就涉及到了resource的用法了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;!--   表示这个东西要进行过滤             --&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;a.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+<p>加上这行会发现，a.properties中的变量成功能显示了，但是b.properties缺不见了;</p>
+<p>如果你没有指定的话，resources下的配置文件都会被编译，如果你指定了，就会按照你指定的来。</p>
+<p>如果说我现在不想忽略其他文件(b.properties)，我没有必要在include中加上b.properties，因为在b.properties里面没有需要引用pom.xml里的变量。这个时候可以定义一个exclude,含义是：<br><strong>除了a.properties的文件，其他文件呢会给你保留下来，但是呢其他文件不会进行一个过滤的处理，因为其他文件里面也没有需要处理的(没有引用变量)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;resources&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">        &lt;!--   表示这个东西要进行过滤             --&gt;</span><br><span class="line">        &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line"></span><br><span class="line">        &lt;includes&gt;</span><br><span class="line">            &lt;include&gt;a.properties&lt;/include&gt;</span><br><span class="line">        &lt;/includes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">    &lt;resource&gt;</span><br><span class="line">        &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">            &lt;!--     默认就是false,这里写false是因为其他文件没有用到pom.xml的变量，没有必要过滤处理           --&gt;</span><br><span class="line">        &lt;filtering&gt;false&lt;/filtering&gt;</span><br><span class="line">        &lt;excludes&gt;</span><br><span class="line">            &lt;exclude&gt;a.properties&lt;/exclude&gt;</span><br><span class="line">        &lt;/excludes&gt;</span><br><span class="line">    &lt;/resource&gt;</span><br><span class="line">&lt;/resources&gt;</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+        <category>Maven</category>
       </categories>
       <tags>
         <tag>学习</tag>
@@ -1337,23 +1361,6 @@
       </tags>
   </entry>
   <entry>
-    <title>一点仪式感都没有的20岁</title>
-    <url>/2021/12/19/%E4%B8%80%E7%82%B9%E4%BB%AA%E5%BC%8F%E6%84%9F%E9%83%BD%E6%B2%A1%E6%9C%89%E7%9A%8420%E5%B2%81/</url>
-    <content><![CDATA[<p>大学以来，遇到了各种各样的困难。特别是大一那会打算法比赛的时候，真的是一点都不会，无论怎么积极学都学不懂，一度怀疑自己真的智商有点问题(可能真的有问题)。如果当时没遇到疫情，顺利的跟着学校参加训练可能现在的结局就完全不一样了。虽然嘲讽了CUIT两年多，但是还是十分庆幸自己在CUIT，没有太多约束，成绩不好也不会太为难自己。优秀的人很多，关于绩点这件事总是有人不能如愿的（还是很烦关于自己德育分没80领不了三等奖学金——可能大学四年唯一一次能拿的奖学金就这次了，cjl好强啊呜呜呜呜呜，天天打比赛还能这么高绩点）。</p>
-<p>来到成都有段时间了，外出旅游的机会几乎没有，要么是疫情影响，要么就是自己太自闭了哎。绝大部分原因还是跟自己有关吧，真的太废物了。想到大佬们参加各种区域赛去旅游，可能这就是梦中的人生规划吧，可惜自己太菜。大二那会，原本想着自己走不了算法的路线，加一个实验室跟着学校混奖项，最气的是，到现在都大三上结束了，实验室还没进去。笑死，根本没有途径进去，完全没有听说过有实验室招新的通知。上次问岳老师的团队的人她们是怎么加入实验室的，笑死，原来岳老师是她们的班导，直接给机会进去学习。想想我们的班导就忍不住烦啊。上个学期末加的那个实验室的群，到现在群里面一点消息都没有，:(。暑假跟着曹老师的团队做了那个科研项目(数据)管理系统，哇，怎么会有人用这种技术栈开发项目啊。大二还远程实习了一个傻逼公司，除了自学go语言得到了一点收获之外几乎毫无作用，要不要把这个实习经历写在简历上都要考虑考虑hh，都不知道这个公司倒闭了没hh。这么神奇的公司是怎么招到这么多985和海外高校的实习生的，好离谱啊。不过接触到了这么多学霸，也见识到了自己跟她们的差距。</p>
-<p>刚大一的时候的计划路线是：大一打acm一直打到大三，然后去实验室做项目。后来算法没打成。想直接去实验室做项目，走大一班导ckl的路线，结果实验室也没途经进去，问了也是满人了不收。想着现在大三上都结束了。看了好多大佬的本科路线，几乎所有人大三上结束都有好多奖项，然后大三下进大厂实习。哎，到目前为止自己有什么奖项呢？一个都没有。现在离20岁还剩下一个小时，真的是对前途一片迷茫。接下来路该怎么走呢，随波逐流去考研嘛？昨天刚考完四级，听力前五个全错，阅读得分才160，作文还写离题了，哎，这样的废物真的能去考研嘛，大概率当分母啊。想到这感觉wsy真的好强，各种奖学金三好学生拿个遍，四六级都是秒过。人无完人，哎。自己数学又很好嘛？高中这么多次考试都没几次有高分吧，不会真有人把学校那水的离谱的高数和线代还有概率论来证明自己吧。408自己学的很好嘛？操作系统才70多分，笑死，还以为自己操作系统多牛逼呢，课听了不少，公众号水了不少，面经也背了不少，不还是这样。自己到底适不适合考研呢，可能我自己都不知道吧。自己又能静得下来学习嘛，在宿舍周末都会睡到12点起床，考研生物钟自己又能适应嘛，宿舍都是混子没人考研，自己又能静得下心学习吗，哎。一边是不考研就几乎去不了大厂，一遍是去考研了大概率会白给充当分母。到底该怎么选啊！真的能有前途吗，最后的结局真的不是随便去一个公司混日子，然后一直等待35岁的到来吗。都说人会触底反弹，每天在宿舍无所事事，敲着毫无作用的代码，没有一个项目能写进简历。都是一些简单的小demo或者小课设，有什么用啊！</p>
-<p>关于自己写下来的路该怎么走。先暂时这样吧：这一个星期一定学完计网可能有离散数学。接下来寒假一定不能水，先学CS61B和刷算法题，刷完之后寒假一定要注意一下大厂的春招提前批消息，无论能不能面得上（95%不可以）都一定要试一试，看看自己的水平到底如何，万一真的有机会出现呢。寒假的时候还需要考虑一下考研的问题，可以先接触一下408和英语，因为无论考不考研，408的知识和四六级还是要过的。如果可以的话，尝试的写一些项目（这里告诫一下之后的自己，不要写商城之类的水项目了）。如果可以可以把那个GRPC项目和仿QQ项目学一下。或者接着把CS系列的课程往下学。acwing基础班刷完并且开提高班，acwing的每日一题一定要跟。leetcode也要开始刷起来了。如果可以，寒假少熬夜吧。</p>
-<p>发布这篇文章的时候应该是20岁了吧，20年母胎solo，也要考虑一下自己的爱情问题了。希望自己看淡自己的身高，不要过度焦虑，相信自己一定可以找到属于自己的另一半，主动起来，无论是否有结果，一定要试一试才能成功，听了盛老师的爱情讲座，发现自己最缺的就是主动的勇气和社交。小学xxx，初中xxx，xxx，高中xx，xxx。大学xxx，xxx。相信自己，一定可以！</p>
-<p>来不及去超市买属于自己的生日蛋糕口味的奥利奥了，这次生日的感觉和高中那次晚上一人孤独吃生日蛋糕口味奥利奥的感觉是一样的。还是有很多人爱着我的呀，一定要乐观起来啊wr1sw，小学初中别人给你的印象就是乐观、幽默啊，一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！</p>
-]]></content>
-      <categories>
-        <category>总结</category>
-      </categories>
-      <tags>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>oracle复习1</title>
     <url>/2021/11/11/oracle%E5%A4%8D%E4%B9%A01/</url>
     <content><![CDATA[<h4 id="1-Oracle常用工具及默认用户"><a href="#1-Oracle常用工具及默认用户" class="headerlink" title="1. Oracle常用工具及默认用户"></a>1. Oracle常用工具及默认用户</h4><h4 id="1-1-常用工具"><a href="#1-1-常用工具" class="headerlink" title="1.1 常用工具"></a>1.1 常用工具</h4><h5 id="1-1-1-常用系统管理工具"><a href="#1-1-1-常用系统管理工具" class="headerlink" title="1.1.1 常用系统管理工具"></a>1.1.1 常用系统管理工具</h5><ul>
@@ -1446,6 +1453,23 @@
         <tag>学习</tag>
         <tag>导航</tag>
         <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一点仪式感都没有的20岁</title>
+    <url>/2021/12/19/%E4%B8%80%E7%82%B9%E4%BB%AA%E5%BC%8F%E6%84%9F%E9%83%BD%E6%B2%A1%E6%9C%89%E7%9A%8420%E5%B2%81/</url>
+    <content><![CDATA[<p>大学以来，遇到了各种各样的困难。特别是大一那会打算法比赛的时候，真的是一点都不会，无论怎么积极学都学不懂，一度怀疑自己真的智商有点问题(可能真的有问题)。如果当时没遇到疫情，顺利的跟着学校参加训练可能现在的结局就完全不一样了。虽然嘲讽了CUIT两年多，但是还是十分庆幸自己在CUIT，没有太多约束，成绩不好也不会太为难自己。优秀的人很多，关于绩点这件事总是有人不能如愿的（还是很烦关于自己德育分没80领不了三等奖学金——可能大学四年唯一一次能拿的奖学金就这次了，cjl好强啊呜呜呜呜呜，天天打比赛还能这么高绩点）。</p>
+<p>来到成都有段时间了，外出旅游的机会几乎没有，要么是疫情影响，要么就是自己太自闭了哎。绝大部分原因还是跟自己有关吧，真的太废物了。想到大佬们参加各种区域赛去旅游，可能这就是梦中的人生规划吧，可惜自己太菜。大二那会，原本想着自己走不了算法的路线，加一个实验室跟着学校混奖项，最气的是，到现在都大三上结束了，实验室还没进去。笑死，根本没有途径进去，完全没有听说过有实验室招新的通知。上次问岳老师的团队的人她们是怎么加入实验室的，笑死，原来岳老师是她们的班导，直接给机会进去学习。想想我们的班导就忍不住烦啊。上个学期末加的那个实验室的群，到现在群里面一点消息都没有，:(。暑假跟着曹老师的团队做了那个科研项目(数据)管理系统，哇，怎么会有人用这种技术栈开发项目啊。大二还远程实习了一个傻逼公司，除了自学go语言得到了一点收获之外几乎毫无作用，要不要把这个实习经历写在简历上都要考虑考虑hh，都不知道这个公司倒闭了没hh。这么神奇的公司是怎么招到这么多985和海外高校的实习生的，好离谱啊。不过接触到了这么多学霸，也见识到了自己跟她们的差距。</p>
+<p>刚大一的时候的计划路线是：大一打acm一直打到大三，然后去实验室做项目。后来算法没打成。想直接去实验室做项目，走大一班导ckl的路线，结果实验室也没途经进去，问了也是满人了不收。想着现在大三上都结束了。看了好多大佬的本科路线，几乎所有人大三上结束都有好多奖项，然后大三下进大厂实习。哎，到目前为止自己有什么奖项呢？一个都没有。现在离20岁还剩下一个小时，真的是对前途一片迷茫。接下来路该怎么走呢，随波逐流去考研嘛？昨天刚考完四级，听力前五个全错，阅读得分才160，作文还写离题了，哎，这样的废物真的能去考研嘛，大概率当分母啊。想到这感觉wsy真的好强，各种奖学金三好学生拿个遍，四六级都是秒过。人无完人，哎。自己数学又很好嘛？高中这么多次考试都没几次有高分吧，不会真有人把学校那水的离谱的高数和线代还有概率论来证明自己吧。408自己学的很好嘛？操作系统才70多分，笑死，还以为自己操作系统多牛逼呢，课听了不少，公众号水了不少，面经也背了不少，不还是这样。自己到底适不适合考研呢，可能我自己都不知道吧。自己又能静得下来学习嘛，在宿舍周末都会睡到12点起床，考研生物钟自己又能适应嘛，宿舍都是混子没人考研，自己又能静得下心学习吗，哎。一边是不考研就几乎去不了大厂，一遍是去考研了大概率会白给充当分母。到底该怎么选啊！真的能有前途吗，最后的结局真的不是随便去一个公司混日子，然后一直等待35岁的到来吗。都说人会触底反弹，每天在宿舍无所事事，敲着毫无作用的代码，没有一个项目能写进简历。都是一些简单的小demo或者小课设，有什么用啊！</p>
+<p>关于自己写下来的路该怎么走。先暂时这样吧：这一个星期一定学完计网可能有离散数学。接下来寒假一定不能水，先学CS61B和刷算法题，刷完之后寒假一定要注意一下大厂的春招提前批消息，无论能不能面得上（95%不可以）都一定要试一试，看看自己的水平到底如何，万一真的有机会出现呢。寒假的时候还需要考虑一下考研的问题，可以先接触一下408和英语，因为无论考不考研，408的知识和四六级还是要过的。如果可以的话，尝试的写一些项目（这里告诫一下之后的自己，不要写商城之类的水项目了）。如果可以可以把那个GRPC项目和仿QQ项目学一下。或者接着把CS系列的课程往下学。acwing基础班刷完并且开提高班，acwing的每日一题一定要跟。leetcode也要开始刷起来了。如果可以，寒假少熬夜吧。</p>
+<p>发布这篇文章的时候应该是20岁了吧，20年母胎solo，也要考虑一下自己的爱情问题了。希望自己看淡自己的身高，不要过度焦虑，相信自己一定可以找到属于自己的另一半，主动起来，无论是否有结果，一定要试一试才能成功，听了盛老师的爱情讲座，发现自己最缺的就是主动的勇气和社交。小学xxx，初中xxx，xxx，高中xx，xxx。大学xxx，xxx。相信自己，一定可以！</p>
+<p>来不及去超市买属于自己的生日蛋糕口味的奥利奥了，这次生日的感觉和高中那次晚上一人孤独吃生日蛋糕口味奥利奥的感觉是一样的。还是有很多人爱着我的呀，一定要乐观起来啊wr1sw，小学初中别人给你的印象就是乐观、幽默啊，一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！</p>
+]]></content>
+      <categories>
+        <category>总结</category>
+      </categories>
+      <tags>
+        <tag>总结</tag>
       </tags>
   </entry>
   <entry>
@@ -1622,6 +1646,13 @@
 ]]></content>
   </entry>
   <entry>
+    <title>结束啦</title>
+    <url>/2021/10/22/%E7%BB%93%E6%9D%9F%E5%95%A6/</url>
+    <content><![CDATA[<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>纠结了很久，还是决定在你生日那天挣扎一下；估计你也能从一些空间的小细节能看出来吧；仔细想来，长那么大，第一次收到真正意义上的好人卡，感觉还是有点奇怪；<br>脸，会很热会热；心，真的会跳的蛮快的；脑子，确实是有那么一点点蒙蒙的感觉。可能，对这个结果早就预想到了，并没有多难受吧；刚才打开的是王道考研的视频，一直都没下定决心要不要考研。可能，这也是冥冥之中自有天意吧。</p>
+<p>有人在骗自己，听了一晚上房东的猫；有人在骗自己，她不玩qq了看不到信息；有人在骗自己，他并没有多难受；那只熊猫就让他在北京留着吧。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>数据库路由组件开发测试bug</title>
     <url>/2022/06/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B7%AF%E7%94%B1%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E6%B5%8B%E8%AF%95bug/</url>
     <content><![CDATA[<h3 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1. 问题描述"></a>1. 问题描述</h3><p>我在学习SpringBoot中间件开发中的数据库路由组件开发的时候，讲编写好的数据库路由组件进行测试，但是测试一直报错，报错提示大概是如下代码空指针</p>
@@ -1646,11 +1677,9 @@
       </tags>
   </entry>
   <entry>
-    <title>结束啦</title>
-    <url>/2021/10/22/%E7%BB%93%E6%9D%9F%E5%95%A6/</url>
-    <content><![CDATA[<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>纠结了很久，还是决定在你生日那天挣扎一下；估计你也能从一些空间的小细节能看出来吧；仔细想来，长那么大，第一次收到真正意义上的好人卡，感觉还是有点奇怪；<br>脸，会很热会热；心，真的会跳的蛮快的；脑子，确实是有那么一点点蒙蒙的感觉。可能，对这个结果早就预想到了，并没有多难受吧；刚才打开的是王道考研的视频，一直都没下定决心要不要考研。可能，这也是冥冥之中自有天意吧。</p>
-<p>有人在骗自己，听了一晚上房东的猫；有人在骗自己，她不玩qq了看不到信息；有人在骗自己，他并没有多难受；那只熊猫就让他在北京留着吧。</p>
-]]></content>
+    <title>老坛酸菜</title>
+    <url>/2021/10/23/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C/</url>
+    <content><![CDATA[<h4 id="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"><a href="#有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；" class="headerlink" title="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"></a>有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；</h4>]]></content>
   </entry>
   <entry>
     <title>英语作文模板</title>
@@ -1828,11 +1857,6 @@
         <tag>导航</tag>
         <tag>英语</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>老坛酸菜</title>
-    <url>/2021/10/23/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C/</url>
-    <content><![CDATA[<h4 id="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"><a href="#有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；" class="headerlink" title="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"></a>有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；</h4>]]></content>
   </entry>
   <entry>
     <title>计算机网络复习1</title>
@@ -2046,6 +2070,20 @@
       </tags>
   </entry>
   <entry>
+    <title>计算机网络复习5</title>
+    <url>/2021/12/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A05/</url>
+    <content><![CDATA[<p><img src="1.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计算机网络复习3</title>
     <url>/2021/12/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A03/</url>
     <content><![CDATA[<h3 id="使用点对点信道的数据链路层"><a href="#使用点对点信道的数据链路层" class="headerlink" title="使用点对点信道的数据链路层"></a>使用点对点信道的数据链路层</h3><p><img src="1.png"></p>
@@ -2094,20 +2132,6 @@
 <h5 id="练习2"><a href="#练习2" class="headerlink" title="练习2"></a>练习2</h5><p><img src="18.png"></p>
 <h5 id="练习3"><a href="#练习3" class="headerlink" title="练习3"></a>练习3</h5><p><img src="19.png"></p>
 <h3 id="未定义"><a href="#未定义" class="headerlink" title="未定义"></a>未定义</h3><h4 id="10-BASE-T"><a href="#10-BASE-T" class="headerlink" title="10 BASE-T"></a>10 BASE-T</h4><p><img src="18.png"></p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>计算机网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计算机网络复习5</title>
-    <url>/2021/12/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A05/</url>
-    <content><![CDATA[<p><img src="1.png"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
@@ -2264,6 +2288,67 @@
         <tag>学习</tag>
         <tag>导航</tag>
         <tag>软件工程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>软件工程导论</title>
+    <url>/2021/10/21/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%AF%BC%E8%AE%BA/</url>
+    <content><![CDATA[<h5 id="1-软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）"><a href="#1-软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）" class="headerlink" title="1. 软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）"></a>1. 软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）</h5><h5 id="软件危机具体表现："><a href="#软件危机具体表现：" class="headerlink" title="软件危机具体表现："></a>软件危机具体表现：</h5><ul>
+<li>对软件开发成本和进度估计常常很不准确</li>
+<li>软件产品的质量往往靠不住</li>
+<li>软件常常是不可维护的</li>
+<li>软件通常没有适当的文档资料</li>
+<li>用户对已完成的软件系统不满意现象经常发生</li>
+<li>软件成本在计算机系统总成本中所占比例逐年上升</li>
+<li>软件开发生产率提高速度远远更不上计算机应用迅速普及深入的趋势</li>
+</ul>
+<h5 id="产生软件危机的原因："><a href="#产生软件危机的原因：" class="headerlink" title="产生软件危机的原因："></a>产生软件危机的原因：</h5><ul>
+<li>软件本身特点</li>
+<li>软件开发维护方法不正确</li>
+</ul>
+<h5 id="解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。"><a href="#解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。" class="headerlink" title="解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。"></a>解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。</h5><h5 id="软件工程的基本原理"><a href="#软件工程的基本原理" class="headerlink" title="软件工程的基本原理"></a>软件工程的基本原理</h5><ul>
+<li>用分阶段的生命周期计划严格管理</li>
+<li>坚持进行阶段评审</li>
+<li>采用严格的产品控制</li>
+<li>采用现代程序设计技术</li>
+<li>结果应能清楚的审查</li>
+<li>开发的小组成员应该少而精</li>
+<li>承认不断改进软件工程实践的必要性</li>
+</ul>
+<h5 id="方法学（范形）："><a href="#方法学（范形）：" class="headerlink" title="方法学（范形）："></a>方法学（范形）：</h5><ul>
+<li>定义：生命周期全过程使用的一整套技术方法的集合</li>
+<li>三要素：方法、工具、过程<h5 id="传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）"><a href="#传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）" class="headerlink" title="传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）"></a>传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）</h5></li>
+</ul>
+<h5 id="面向对象方法学四个要点："><a href="#面向对象方法学四个要点：" class="headerlink" title="面向对象方法学四个要点："></a>面向对象方法学四个要点：</h5><ul>
+<li>把对象作为融合了数据以及在数据上的操作行为的同意的软件构建</li>
+<li>把所有对象划分为类</li>
+<li>按照父类（基类）与子类（派生类）的关系，把若干的相关类组成一个层次结构的系统</li>
+<li>对象彼此间仅能同各国发送消息互相联系</li>
+</ul>
+<h5 id="软件生命周期："><a href="#软件生命周期：" class="headerlink" title="软件生命周期："></a>软件生命周期：</h5><p>组成：软件定义、软件开发、运行维护</p>
+<pre><code>软件定义时期三阶段：问题定义、可行性研究、需求分析
+</code></pre>
+<p>各个阶段：</p>
+<ul>
+<li>问题定义</li>
+<li>可行性研究</li>
+<li>需求分析</li>
+<li>总体设计</li>
+<li>详细设计</li>
+<li>编码和单元测试</li>
+<li>综合测试</li>
+</ul>
+<ol>
+<li></li>
+</ol>
+<p>待补充….</p>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>导航</tag>
+        <tag>分享</tag>
       </tags>
   </entry>
   <entry>
@@ -2592,67 +2677,6 @@
       </tags>
   </entry>
   <entry>
-    <title>软件工程导论</title>
-    <url>/2021/10/21/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%AF%BC%E8%AE%BA/</url>
-    <content><![CDATA[<h5 id="1-软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）"><a href="#1-软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）" class="headerlink" title="1. 软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）"></a>1. 软件工程是从管理和技术两方面研究如何更好地开发维护计算机软件的一门新兴学科。（软件工程是指导计算机软件开发和维护的一门工程学科）</h5><h5 id="软件危机具体表现："><a href="#软件危机具体表现：" class="headerlink" title="软件危机具体表现："></a>软件危机具体表现：</h5><ul>
-<li>对软件开发成本和进度估计常常很不准确</li>
-<li>软件产品的质量往往靠不住</li>
-<li>软件常常是不可维护的</li>
-<li>软件通常没有适当的文档资料</li>
-<li>用户对已完成的软件系统不满意现象经常发生</li>
-<li>软件成本在计算机系统总成本中所占比例逐年上升</li>
-<li>软件开发生产率提高速度远远更不上计算机应用迅速普及深入的趋势</li>
-</ul>
-<h5 id="产生软件危机的原因："><a href="#产生软件危机的原因：" class="headerlink" title="产生软件危机的原因："></a>产生软件危机的原因：</h5><ul>
-<li>软件本身特点</li>
-<li>软件开发维护方法不正确</li>
-</ul>
-<h5 id="解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。"><a href="#解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。" class="headerlink" title="解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。"></a>解决软件危机方法：既要有技术措施，又要有必要的组织管理措施。</h5><h5 id="软件工程的基本原理"><a href="#软件工程的基本原理" class="headerlink" title="软件工程的基本原理"></a>软件工程的基本原理</h5><ul>
-<li>用分阶段的生命周期计划严格管理</li>
-<li>坚持进行阶段评审</li>
-<li>采用严格的产品控制</li>
-<li>采用现代程序设计技术</li>
-<li>结果应能清楚的审查</li>
-<li>开发的小组成员应该少而精</li>
-<li>承认不断改进软件工程实践的必要性</li>
-</ul>
-<h5 id="方法学（范形）："><a href="#方法学（范形）：" class="headerlink" title="方法学（范形）："></a>方法学（范形）：</h5><ul>
-<li>定义：生命周期全过程使用的一整套技术方法的集合</li>
-<li>三要素：方法、工具、过程<h5 id="传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）"><a href="#传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）" class="headerlink" title="传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）"></a>传统方法学也称生命周期方法学或者结构化范型，通过结构化技术完成软件开发各任务。这种方法学把软件生命周期分成各个不同阶段，并一一完成。（对问题抽象分析开始，一个阶段一个阶段顺序开发）</h5></li>
-</ul>
-<h5 id="面向对象方法学四个要点："><a href="#面向对象方法学四个要点：" class="headerlink" title="面向对象方法学四个要点："></a>面向对象方法学四个要点：</h5><ul>
-<li>把对象作为融合了数据以及在数据上的操作行为的同意的软件构建</li>
-<li>把所有对象划分为类</li>
-<li>按照父类（基类）与子类（派生类）的关系，把若干的相关类组成一个层次结构的系统</li>
-<li>对象彼此间仅能同各国发送消息互相联系</li>
-</ul>
-<h5 id="软件生命周期："><a href="#软件生命周期：" class="headerlink" title="软件生命周期："></a>软件生命周期：</h5><p>组成：软件定义、软件开发、运行维护</p>
-<pre><code>软件定义时期三阶段：问题定义、可行性研究、需求分析
-</code></pre>
-<p>各个阶段：</p>
-<ul>
-<li>问题定义</li>
-<li>可行性研究</li>
-<li>需求分析</li>
-<li>总体设计</li>
-<li>详细设计</li>
-<li>编码和单元测试</li>
-<li>综合测试</li>
-</ul>
-<ol>
-<li></li>
-</ol>
-<p>待补充….</p>
-]]></content>
-      <categories>
-        <category>软件工程</category>
-      </categories>
-      <tags>
-        <tag>导航</tag>
-        <tag>分享</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>面经总结</title>
     <url>/2022/03/24/%E9%9D%A2%E7%BB%8F%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<p>HashMap和ConcurrentHashMap，说一下扩容过程，有什么区别。</p>
@@ -2661,29 +2685,5 @@
 <p>说一下MySQL事务隔离级别，默认的级别是什么？是否解决了幻读？如何解决？MVCC如何实现？</p>
 <p>说一下https和http区别，说一下握手过程（这里说得比较详细，从非对称加密开始讲起。。）。</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>CS61B GITLET PROJECT</title>
-    <url>/2022/06/20/CS61B-GITLET-PROJECT/</url>
-    <content><![CDATA[<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><ul>
-<li>创建 .gitlet 目录， 并在其中新建一些文件来存储序列化信息</li>
-<li>init 会自动创建一个包含 initial commit 信息的Commit 开始</li>
-</ul>
-<ol>
-<li>执行 setupPersistence() 初始化方法,创建 .gitlet 目录、创建 refs 目录(创建heads子目录)、创建 objects 目录。</li>
-<li>接下来执行 setCurrentBranch() 方法初始化 当前默认分支，也就是把 HEAD 文件里面填充一句：ref: refs/heads/master。</li>
-<li>接下来 初始化首次Commit。执行FirstCommit()。这个方法主要执行三个方法 初始化Commit对象()、序列化保存首次Commit、把 SHAID 填入 refs/heads/master 文件中</li>
-<li>在Commit() 构造函数中，新建 date、message、和 fathers 以及 tracked，接下来生成 SHAID 填入 id字段中，接下来通过id前两位生成目录，其余位数作为文件名 </li>
-<li>上面第四步生成的文件还没有保存到文件中，需要执行 save() 方法保存序列化的Commit对象到文件中。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>CS61B</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>CS61B</tag>
-      </tags>
   </entry>
 </search>
