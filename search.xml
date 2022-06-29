@@ -655,144 +655,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Oracle实验1</title>
-    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>Oracle复习7</title>
-    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/</url>
-    <content><![CDATA[<h3 id="匿名块"><a href="#匿名块" class="headerlink" title="匿名块"></a>匿名块</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> (可选)</span><br><span class="line">    定义在PL<span class="operator">/</span><span class="keyword">SQL</span>块中要使用的对象</span><br><span class="line"><span class="keyword">BEGIN</span> (必须)</span><br><span class="line">    执行语句</span><br><span class="line">EXCEPTION (可选)</span><br><span class="line">    错误处理语句</span><br><span class="line"><span class="keyword">END</span>; (必须)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>匿名块（以DECLARE或BEGIN开始）每次使用时都要进行编译。</li>
-<li>匿名块不存储在数据库中，并且它不能从其它的PL/SQL块中进行调用。</li>
-</ul>
-<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><ul>
-<li>触发器类似于过程和函数，都拥有声明、执行和异常处理过程的带名PL/SQL块。与包类似，触发器必须存储在数据库中。</li>
-<li>前面已经讲过，过程是显式地通过过程调用执行的，同时过程调用可以传递参数。与之相反，触发器是在事件发生时隐式地运行的，并且触发器不能接受参数。</li>
-<li>触发事件可以是对数据库表的DML（INSERT、UPDATE、DELETE）操作或某种视图的操作。Oracle8i把触发器功能扩展到了可以激发系统事件，如数据库的启动和关闭，以及某种DDL操作。</li>
-<li>触发器主要分为：DML触发器、替代触发器和系统触发器。本次课程主要讲述DML触发器。</li>
-<li>触发器可用来补充声明的参照完整性，强制实施复杂的业务规则</li>
-<li>触发器是一个独立的事务，被当作一个整体执行，在执行过程中如果发生错误，则整个事务会<strong>自动回滚</strong>。</li>
-</ul>
-<h4 id="DML触发器创建语法"><a href="#DML触发器创建语法" class="headerlink" title="DML触发器创建语法"></a>DML触发器创建语法</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- trigger_name是触发器名，triggering_event指定了何时激发触发器， table_reference是定义触发器的表， trigger_body是触发器</span></span><br><span class="line"><span class="comment">-- 的主要处理代码。WHEN子句的trigger_condition如果被使用的话，将首先进行求值。触发器的主体仅当此条件求值为TRUE时才被执行。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">TRIGGER</span> trigger_name</span><br><span class="line">   &#123;BEFORE <span class="operator">|</span> AFTER&#125; triggering_event <span class="keyword">ON</span> table_reference</span><br><span class="line">   [<span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span> [<span class="keyword">WHEN</span> trigger_condition]]</span><br><span class="line">trigger_body;</span><br></pre></td></tr></table></figure>
-
-<h4 id="触发器的激发顺序"><a href="#触发器的激发顺序" class="headerlink" title="触发器的激发顺序"></a>触发器的激发顺序</h4><ol>
-<li>执行BEFORE语句级触发器（如果有的话）</li>
-<li>对于受语句影响的每一行<ul>
-<li>执行BEFORE行级触发器（如果有的话）</li>
-<li>执行DML语句（系统自动执行）</li>
-<li>执行AFTER行级触发器（如果有的话）</li>
-</ul>
-</li>
-<li>执行AFTER语句级触发器（如果有的话）</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_stmBefore</span><br><span class="line">BEFORE <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;Before Statement trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_stmAfter</span><br><span class="line">after <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;After Statement trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_rowBefore</span><br><span class="line">before <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;Beore row trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_rowAfter</span><br><span class="line">after <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;After row trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="语句级触发器例子"><a href="#语句级触发器例子" class="headerlink" title="语句级触发器例子"></a>语句级触发器例子</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> secure_emp</span><br><span class="line">   BEFORE <span class="keyword">INSERT</span> <span class="keyword">ON</span> emp</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">     IF (TO_CHAR(SYSDATE, <span class="string">&#x27;DY&#x27;</span>) <span class="keyword">IN</span> (<span class="string">&#x27;星期六&#x27;</span>, <span class="string">&#x27;星期天&#x27;</span>)) </span><br><span class="line">           <span class="keyword">OR</span> (TO_CHAR(SYSDATE, <span class="string">&#x27;HH24:MI&#x27;</span>) <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="string">&#x27;08:00&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;18:00&#x27;</span>)</span><br><span class="line">     <span class="keyword">THEN</span> </span><br><span class="line">         RAISE_APPLICATION_ERROR</span><br><span class="line">			 (<span class="number">-20500</span>, <span class="string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);</span><br><span class="line">      <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emp (empno, ename,hiredate,job, sal, deptno)</span><br><span class="line">               <span class="keyword">VALUES</span> (<span class="number">300</span>,<span class="string">&#x27;Smith Rob&#x27;</span>,SYSDATE,<span class="string">&#x27;IT_PROG&#x27;</span>, <span class="number">4500</span>, <span class="number">30</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> secure_emp</span><br><span class="line">BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">OR</span> <span class="keyword">DELETE</span>  <span class="keyword">ON</span> EMP</span><br><span class="line">  <span class="keyword">BEGIN</span></span><br><span class="line">    IF (TO_CHAR(SYSDATE, <span class="string">&#x27;DY&#x27;</span>) <span class="keyword">IN</span> (<span class="string">&#x27;星期六&#x27;</span>, <span class="string">&#x27;星期天&#x27;</span>)) </span><br><span class="line">           <span class="keyword">OR</span> (TO_CHAR(SYSDATE, <span class="string">&#x27;HH24&#x27;</span>) <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="string">&#x27;08&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;18&#x27;</span>)</span><br><span class="line">    <span class="keyword">THEN</span> </span><br><span class="line">      IF DELETING <span class="keyword">THEN</span></span><br><span class="line">          RAISE_APPLICATION_ERROR (<span class="number">-20502</span>, <span class="string">&#x27;You may delete from  EMP table only during business hours.&#x27;</span>);</span><br><span class="line">       ELSIF INSERTING <span class="keyword">THEN</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20500</span>,<span class="string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);</span><br><span class="line">       ELSIF UPDATING (<span class="string">&#x27;SAL&#x27;</span>) <span class="keyword">THEN</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20503</span>,<span class="string">&#x27;You may update SAL only during business hours.&#x27;</span>);</span><br><span class="line">       <span class="keyword">ELSE</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20504</span>,<span class="string">&#x27;You may update EMP table only during normal hours.&#x27;</span>);</span><br><span class="line">       <span class="keyword">END</span> IF;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="行级触发器例子"><a href="#行级触发器例子" class="headerlink" title="行级触发器例子"></a>行级触发器例子</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> restrict_salary</span><br><span class="line">  BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">ON</span> emp</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">    <span class="keyword">BEGIN</span></span><br><span class="line">      IF <span class="keyword">NOT</span> (:NEW.job <span class="keyword">IN</span> (<span class="string">&#x27;PRESIDENT&#x27;</span>, <span class="string">&#x27;MANAGER&#x27;</span>, <span class="string">&#x27;ANALYST&#x27;</span>)) <span class="keyword">AND</span> :NEW.sal <span class="operator">&gt;</span> <span class="number">2500</span></span><br><span class="line">      <span class="keyword">THEN</span></span><br><span class="line">        RAISE_APPLICATION_ERROR (<span class="number">-20202</span>, <span class="string">&#x27;Employee cannot earn this amount&#x27;</span>);</span><br><span class="line">      <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> UPDATE emp</span><br><span class="line">              <span class="keyword">SET</span> sal <span class="number">3000</span></span><br><span class="line">              <span class="keyword">WHERE</span> ename <span class="operator">=</span> <span class="string">&#x27;SMITH&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="行级触发器——-old和-new"><a href="#行级触发器——-old和-new" class="headerlink" title="行级触发器——:old和:new"></a>行级触发器——:old和:new</h4><p><img src="1-11.png"></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> audit_emp_values</span><br><span class="line">   AFTER <span class="keyword">DELETE</span> <span class="keyword">OR</span> <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">ON</span> emp</span><br><span class="line">   <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="keyword">INSERT</span> <span class="keyword">INTO</span> audit_emp_table (user_name, <span class="type">timestamp</span>,empno,</span><br><span class="line">          old_ename, new_ename, old_job,new_job, old_sal, new_sal)</span><br><span class="line">          <span class="keyword">VALUES</span> (<span class="keyword">USER</span>, SYSDATE, :OLD.empno,:OLD.ename, :NEW.ename,</span><br><span class="line">              :OLD.job,:NEW.job, :OLD.sal, :NEW.sal );</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line">   t_oplog(<span class="keyword">user</span>,optime,opcontent)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="行级触发器——限制条件"><a href="#行级触发器——限制条件" class="headerlink" title="行级触发器——限制条件"></a>行级触发器——限制条件</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> derive_commission_pct</span><br><span class="line">    BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">OF</span> sal <span class="keyword">ON</span> emp</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">    <span class="keyword">WHEN</span> (NEW.job <span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>)</span><br><span class="line"> <span class="keyword">BEGIN</span></span><br><span class="line">    IF INSERTING  <span class="keyword">THEN</span> :NEW.comm :<span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    ELSIF :OLD.comm <span class="keyword">IS</span> <span class="keyword">NULL</span> <span class="keyword">THEN</span> :NEW.comm :<span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">ELSE</span>  :NEW.comm :<span class="operator">=</span> :NEW.sal<span class="operator">*</span><span class="number">0.10</span>;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"> <span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="行级触发器应用"><a href="#行级触发器应用" class="headerlink" title="行级触发器应用"></a>行级触发器应用</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 练习:创建序列和触发器后,给出执行下面两个insert语句后的数据记录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> SEQUENCE SEQ_EMPNO </span><br><span class="line"><span class="keyword">START</span> <span class="keyword">WITH</span> <span class="number">9000</span> </span><br><span class="line">MAXVALUE <span class="number">9999</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">---------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">TRIGGER</span> tri_insert_emp</span><br><span class="line">  BEFORE <span class="keyword">INSERT</span>  <span class="keyword">ON</span> emp</span><br><span class="line">  <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  if :new.deptno <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span></span><br><span class="line">    :new.deptno:<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">  ELSIF :new.deptno<span class="operator">=</span><span class="number">30</span> <span class="keyword">then</span></span><br><span class="line">    :new.job:<span class="operator">=</span><span class="string">&#x27;SALSEMAN&#x27;</span>;</span><br><span class="line">  <span class="keyword">end</span> if;</span><br><span class="line">  <span class="keyword">SELECT</span> seq_empno.NEXTVAL</span><br><span class="line">      <span class="keyword">INTO</span> :new.empno</span><br><span class="line">      <span class="keyword">FROM</span> dual;</span><br><span class="line"><span class="keyword">END</span> tri_insert_emp;</span><br><span class="line"><span class="comment">--------</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp (ename,sal) <span class="keyword">values</span> (‘LL<span class="string">&#x27;,2300);</span></span><br><span class="line"><span class="string">insert into emp (empno,ename,sal) values (9100,‘HH&#x27;</span>,<span class="number">2500</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="管理触发器"><a href="#管理触发器" class="headerlink" title="管理触发器"></a>管理触发器</h4><ul>
-<li><p>禁用或启用一个触发器</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span> trigger_name DISABLE <span class="operator">|</span> ENABLE</span><br></pre></td></tr></table></figure></li>
-<li><p>禁用或启用一张表的多有触发器</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name DISABLE <span class="operator">|</span> ENABLE <span class="keyword">ALL</span> TRIGGERS</span><br></pre></td></tr></table></figure></li>
-<li><p>重新编译一个触发器</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span> trigger_name COMPILE</span><br></pre></td></tr></table></figure></li>
-<li><p>删除触发器</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> trigger_name</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h3 id="子程序"><a href="#子程序" class="headerlink" title="子程序"></a>子程序</h3><ul>
-<li>子程序是带名的PL/SQL块，能够接受参数和被环境调用。在PL/SQL中两类子程序：过程和函数</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;</span>header<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span> <span class="keyword">AS</span></span><br><span class="line">    声明部分</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    执行部分</span><br><span class="line">EXCEPTION (可选)</span><br><span class="line">    异常处理部分</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>子程序说明（<em>header）决定</em>:<ul>
-<li>PL/SQL子程序的类型是过程还是函数。</li>
-<li>子程序的名称</li>
-<li>参数列表</li>
-<li>当子程序是函数时必须要有返回值(使用RETURN子句)</li>
-<li>关键字IS或AS是必须的。</li>
-</ul>
-</li>
-<li>子程序体:是一个拥有声明、执行和异常处理部分的PL/SQL块。<ul>
-<li>声明部分介于<strong>IS|AS</strong>和<strong>BEGIN</strong>之间。在匿名块中必须使用<strong>DECLARE</strong>关键字显示的指出声明部分，而在<strong>子程序中没有DECLARE关键字</strong>。</li>
-<li>执行部分介于BEGIN和END关键字之间，这部分必须存在</li>
-<li>异常处理部分介于EXCEPTION和END之间是可选的部分</li>
-</ul>
-</li>
-</ul>
-<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><h5 id="创建过程"><a href="#创建过程" class="headerlink" title="创建过程"></a>创建过程</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">PROCEDURE</span> procedure_name </span><br><span class="line">[(parameter1 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data_type , parameter2 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data­_type,…)]</span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span><span class="keyword">AS</span></span><br><span class="line">   [declaration_section;]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   executable_section;</span><br><span class="line">[EXCEPTION</span><br><span class="line">   exception_handlers;]</span><br><span class="line"><span class="keyword">END</span> [procedure_name];</span><br><span class="line"><span class="comment">-- 注意与匿名块有三点区别：</span></span><br><span class="line"><span class="comment">-- 1.无DECLARE关键字</span></span><br><span class="line"><span class="comment">-- 2.在END后面可以加过程名  作为定义结束的标志</span></span><br><span class="line"><span class="comment">-- 3.存储过程定义完成后需要调用才能执行过程内部的代码。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> display_time </span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   dbms_output.put_line(systimestamp);</span><br><span class="line"><span class="keyword">END</span> display_time;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用三种方式调用上面创建的存储过程</span></span><br><span class="line"><span class="comment">-- 方式一：使用sqlplus命令EXECUTE(简写EXEC) 调用</span></span><br><span class="line">	<span class="keyword">EXECUTE</span> display_time; </span><br><span class="line"><span class="comment">-- 方式二：使用sql命令CALL调用</span></span><br><span class="line">	<span class="keyword">CALL</span> display_time( );</span><br><span class="line"><span class="comment">-- 方式三：在PL/SQL块中调用</span></span><br><span class="line">	<span class="keyword">BEGIN</span></span><br><span class="line">		display_time;</span><br><span class="line">	<span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 形式参数(Formal parameters):在过程中声明的参数就是形式参数。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> insert_emp </span><br><span class="line">(<span class="keyword">no</span>  emp.empno<span class="operator">%</span>TYPE,			name  emp.ename<span class="operator">%</span>TYPE,</span><br><span class="line">Job  emp.job<span class="operator">%</span>TYPE,				mgr  emp.mgr<span class="operator">%</span>TYPE,</span><br><span class="line">hiredate emp.hiredate<span class="operator">%</span>TYPE ,	salary emp.sal<span class="operator">%</span>TYPE ,</span><br><span class="line">comm emp.comm<span class="operator">%</span>TYPE ,		deptno emp.deptno<span class="operator">%</span>TYPE </span><br><span class="line">)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emp <span class="keyword">VALUES</span>(<span class="keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">-- 实际参数(Actual parameters):在调用过程中作为参数传递给过程的变量或表达式就是实际参数。</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">v_no  emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="number">10000</span>,</span><br><span class="line">v_name  emp.ename<span class="operator">%</span>TYPE :<span class="operator">=</span>‘Jones’,</span><br><span class="line">v_job  emp.job<span class="operator">%</span>TYPE :<span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>,</span><br><span class="line">v_mgr  emp.mgr<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">7369</span>,</span><br><span class="line">v_hiredate emp.hiredate<span class="operator">%</span>TYPE :<span class="operator">=</span>SYSDATE,</span><br><span class="line">v_salary emp.sal<span class="operator">%</span>TYPE :<span class="operator">=</span> <span class="number">800</span>,</span><br><span class="line">v_comm emp.comm<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="keyword">NULL</span>,</span><br><span class="line">v_deptno emp.deptno<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">10</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"> insert_emp(v_no, v_name, v_job, v_mgr, v_hiredate, v_salary, v_comm, v_deptno );</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 对形式参数的约束：在过程声明中，限制CHAR和VARCHAR2参数的长度以及限制NUMBER参数的精度和/或刻度范围都是非法的。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> ParameterLength (</span><br><span class="line">  p_Parameter1 <span class="keyword">IN</span> <span class="keyword">OUT</span> VARCHAR2(<span class="number">10</span>), <span class="comment">-- 非法</span></span><br><span class="line">  p_Parameter2 <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER(<span class="number">3</span>,<span class="number">2</span>)) <span class="keyword">AS</span> <span class="comment">-- 非法</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  p_Parameter1 :<span class="operator">=</span> <span class="string">&#x27;abcdefghijklm&#x27;</span>;</span><br><span class="line">  p_Parameter2 :<span class="operator">=</span> <span class="number">12.3</span>;</span><br><span class="line"><span class="keyword">END</span> ParameterLength;</span><br><span class="line"><span class="operator">/</span></span><br><span class="line"><span class="comment">-- 过程声明非法</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="参数的模式"><a href="#参数的模式" class="headerlink" title="参数的模式"></a>参数的模式</h4><ul>
-<li>过程可以通过参数和调用环境进行数据传递</li>
-<li>有三种传递模式—<strong>IN、OUT和IN OUT</strong>。如果没有为形式参数指定模式，则使用<strong>缺省模式IN。</strong></li>
-</ul>
-<p><img src="1-12.png"></p>
-<h4 id="IN参数"><a href="#IN参数" class="headerlink" title="IN参数"></a>IN参数</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> raise_salary</span><br><span class="line">(p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE)       <span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">     UPDATE emp          <span class="keyword">SET</span> sal <span class="operator">=</span> sal <span class="operator">*</span> <span class="number">1.10</span>          <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line"><span class="keyword">END</span> raise_salary;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empno emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  raise_salary(v_empno);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="OUT参数"><a href="#OUT参数" class="headerlink" title="OUT参数"></a>OUT参数</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> query_emp</span><br><span class="line">(p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE, p_name <span class="keyword">OUT</span> emp.ename<span class="operator">%</span>TYPE,</span><br><span class="line"> p_salary <span class="keyword">OUT</span> emp.sal<span class="operator">%</span>TYPE,p_comm <span class="keyword">OUT</span> emp.comm<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SELECT</span> ename, sal, comm</span><br><span class="line">      <span class="keyword">INTO</span> p_name, p_salary, p_comm</span><br><span class="line">      <span class="keyword">FROM</span> emp  <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line"><span class="keyword">END</span> query_emp;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empno emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line">  v_name  emp.ename<span class="operator">%</span>TYPE;</span><br><span class="line">  v_salary  emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line">  v_comm  emp.comm<span class="operator">%</span>TYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  query_emp(v_empno,v_name,v_salary,v_comm);</span><br><span class="line">  dbms_output.put_line(v_empno<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_name<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_salary<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_comm);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="IN-OUT参数"><a href="#IN-OUT参数" class="headerlink" title="IN OUT参数"></a>IN OUT参数</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写程序，交换两个变量的值并输出</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> swap</span><br><span class="line">(x <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER ,y <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">z NUMBER;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	z:<span class="operator">=</span>x;</span><br><span class="line">	x:<span class="operator">=</span>y;</span><br><span class="line">	y:<span class="operator">=</span>z;</span><br><span class="line"><span class="keyword">END</span> swap;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  a NUMBER:<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">  b NUMBER:<span class="operator">=</span><span class="number">20</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;交换前a和b的值是：&#x27;</span><span class="operator">||</span>a<span class="operator">||</span><span class="string">&#x27;  &#x27;</span><span class="operator">||</span>b);</span><br><span class="line">  swap(a,b);</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;交换后a和b的值是：&#x27;</span><span class="operator">||</span>a<span class="operator">||</span><span class="string">&#x27;  &#x27;</span><span class="operator">||</span>b);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="参数的缺省值"><a href="#参数的缺省值" class="headerlink" title="参数的缺省值"></a>参数的缺省值</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例子</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> add_dept</span><br><span class="line">  (p_name <span class="keyword">IN</span> dept.dname<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="string">&#x27;unknown&#x27;</span>,</span><br><span class="line">   p_loc <span class="keyword">IN</span> dept.loc<span class="operator">%</span>TYPE  <span class="keyword">DEFAULT</span> <span class="string">&#x27;NEW YORK&#x27;</span>)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">INSERT</span> <span class="keyword">INTO</span> dept (deptno,dname, loc)</span><br><span class="line">   <span class="keyword">VALUES</span> (dept_seq.NEXTVAL, p_name, p_loc);</span><br><span class="line"><span class="keyword">END</span> add_dept;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">BEGIN</span></span><br><span class="line">               add_dept;</span><br><span class="line">               add_dept (<span class="string">&#x27;TRAINING&#x27;</span>);</span><br><span class="line">               add_dept ( p_loc <span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;BOSTON &#x27;</span>, p_name <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;EDUCATION&#x27;</span>);</span><br><span class="line">               add_dept ( p_loc <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;CHICAGO&#x27;</span>) ;</span><br><span class="line">              <span class="keyword">END</span>;     <span class="operator">/</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> dept;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例8.4  为scott.emp表创建一个能完成插入功能的存储过程insert_emp。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> insert_emp </span><br><span class="line">(<span class="keyword">no</span> <span class="keyword">IN</span> scott.emp.empno<span class="operator">%</span>TYPE,</span><br><span class="line">    name <span class="keyword">IN</span> scott.emp.ename<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    job <span class="keyword">IN</span> scott.emp.job<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="string">&#x27;SALESMAN&#x27;</span>,</span><br><span class="line">    mgr <span class="keyword">IN</span> scott.emp.mgr<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">7369</span>,</span><br><span class="line">    hiredate scott.emp.hiredate<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> SYSDATE,</span><br><span class="line">    salary scott.emp.sal<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">800</span>,</span><br><span class="line">    comm scott.emp.comm<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    deptno scott.emp.deptno<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">10</span>)   <span class="keyword">IS</span></span><br><span class="line">    e_integrity EXCEPTION;</span><br><span class="line">    PRAGMA EXCEPTION_INIT (e_integrity,<span class="number">-2291</span>);</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> scott.emp <span class="keyword">VALUES</span>(<span class="keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);</span><br><span class="line">    EXCEPTION</span><br><span class="line">        <span class="keyword">WHEN</span> DUP_VAL_ON_INDEX <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;该员工已经存在！&#x27;</span>);</span><br><span class="line">        <span class="keyword">WHEN</span> e_integrity <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;部门编号填写错误！&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">-- 注意：在参数的定义上，除了向主键字段empno插入值的变量no没有设置默认值外，其他所有的变量都给出了默认值，这样当用户调用该存储过程时，可以指定任意个数的实参。 </span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="删除过程"><a href="#删除过程" class="headerlink" title="删除过程"></a>删除过程</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> procedure_name;</span><br></pre></td></tr></table></figure>
-
-<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><h5 id="创建函数"><a href="#创建函数" class="headerlink" title="创建函数"></a>创建函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">FUNCTION</span> function_name </span><br><span class="line">[(argument1 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data_type , argument2 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data­_type,…)]</span><br><span class="line"><span class="keyword">RETURN</span> data_type</span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span><span class="keyword">AS</span></span><br><span class="line">   [declaration_section;]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   executable_section;</span><br><span class="line">   <span class="keyword">RETURN</span> expression;</span><br><span class="line">[EXCEPTION</span><br><span class="line">   exception_handlers;</span><br><span class="line"><span class="keyword">RETURN</span> expression;</span><br><span class="line"><span class="keyword">END</span> [function_name]; </span><br><span class="line"> <span class="comment">-- return_datatype是函数返回的数值的类型，不能对数据类型的SIZE进行限定。</span></span><br><span class="line"><span class="comment">-- 在PL/SQL块中，可以使用多个RETURN语句，但是必须保证至少有一条RETURN语句存在。函数每一次运行只有一个RETURN语句被执行。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h5 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例子</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> get_sal</span><br><span class="line">      (p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">RETURN</span> NUMBER</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">      v_salary emp.sal<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">     <span class="keyword">SELECT</span> sal     <span class="keyword">INTO</span> v_salary     <span class="keyword">FROM</span> emp     <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line">     <span class="keyword">RETURN</span> v_salary;</span><br><span class="line"><span class="keyword">END</span> get_sal;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h5 id="执行函数"><a href="#执行函数" class="headerlink" title="执行函数"></a>执行函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 注意：因为函数具有返回值，所以调用函数是作为一个表达式的一部分，而不能像调用过程那样作为一个独立的语句使用。 </span></span><br><span class="line"><span class="comment">-- 方式一：SQLPLUS命令使用变量接收返回值</span></span><br><span class="line">VAR salary NUMBER;</span><br><span class="line"><span class="keyword">EXEC</span> :salary:<span class="operator">=</span>get_sal(<span class="number">7369</span>);</span><br><span class="line">PRINT salary;</span><br><span class="line"><span class="comment">-- 方式二：在SQL语句中直接调用函数</span></span><br><span class="line"><span class="keyword">SELECT</span> get_sal(<span class="number">7369</span>) <span class="keyword">FROM</span> DUAL;</span><br><span class="line"><span class="comment">-- 方式三：使用DBMS_OUTPUT调用函数（表达式运算）</span></span><br><span class="line">dbms_output.put_line(<span class="string">&#x27;工资是:&#x27;</span><span class="operator">||</span> get_sal(<span class="number">7369</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h5 id="删除函数"><a href="#删除函数" class="headerlink" title="删除函数"></a>删除函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> function_name;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例  创建函数，从scott.emp表中查询指定编号职工的工资。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> select_sal</span><br><span class="line">(<span class="keyword">no</span> scott.emp.empno<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">RETURN</span> scott.emp.sal<span class="operator">%</span>TYPE</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">salary scott.emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">SELECT</span> sal <span class="keyword">INTO</span> salary <span class="keyword">FROM</span> scott.emp <span class="keyword">WHERE</span> empno<span class="operator">=</span><span class="keyword">no</span>;</span><br><span class="line"><span class="keyword">RETURN</span> salary;</span><br><span class="line">EXCEPTION</span><br><span class="line"><span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line"><span class="keyword">RETURN</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例   创建函数，从scott.emp表中查询指定员编号工的工资和姓名。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> SELECT_NAME_SAL</span><br><span class="line">(P_EMPNO <span class="keyword">IN</span> NUMBER,P_SAL <span class="keyword">OUT</span> NUMBER, P_NAME <span class="keyword">OUT</span> VARCHAR2)</span><br><span class="line"><span class="keyword">RETURN</span> NUMBER  <span class="comment">--0 表示成功 1表示异常 员工编号不存在</span></span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">V_RESULT NUMBER:<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">SELECT</span> SAL ,ENAME <span class="keyword">INTO</span> P_SAL ,P_NAME <span class="keyword">FROM</span> EMP <span class="keyword">WHERE</span> EMPNO<span class="operator">=</span> P_EMPNO;</span><br><span class="line"><span class="keyword">RETURN</span> V_RESULT;</span><br><span class="line">EXCEPTION</span><br><span class="line"><span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line">	DBMS_OUTPUT.PUT_LINE(<span class="string">&#x27;无符合要求的记录&#x27;</span>);</span><br><span class="line">  	V_RESULT:<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">	<span class="keyword">RETURN</span> V_RESULT;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Oracle</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>Oracle</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Oracle复习8</title>
     <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/</url>
     <content><![CDATA[<h3 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h3><h4 id="IF逻辑结构"><a href="#IF逻辑结构" class="headerlink" title="IF逻辑结构"></a>IF逻辑结构</h4><ul>
@@ -995,6 +857,144 @@
       </tags>
   </entry>
   <entry>
+    <title>Oracle复习7</title>
+    <url>/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/</url>
+    <content><![CDATA[<h3 id="匿名块"><a href="#匿名块" class="headerlink" title="匿名块"></a>匿名块</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> (可选)</span><br><span class="line">    定义在PL<span class="operator">/</span><span class="keyword">SQL</span>块中要使用的对象</span><br><span class="line"><span class="keyword">BEGIN</span> (必须)</span><br><span class="line">    执行语句</span><br><span class="line">EXCEPTION (可选)</span><br><span class="line">    错误处理语句</span><br><span class="line"><span class="keyword">END</span>; (必须)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>匿名块（以DECLARE或BEGIN开始）每次使用时都要进行编译。</li>
+<li>匿名块不存储在数据库中，并且它不能从其它的PL/SQL块中进行调用。</li>
+</ul>
+<h3 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h3><ul>
+<li>触发器类似于过程和函数，都拥有声明、执行和异常处理过程的带名PL/SQL块。与包类似，触发器必须存储在数据库中。</li>
+<li>前面已经讲过，过程是显式地通过过程调用执行的，同时过程调用可以传递参数。与之相反，触发器是在事件发生时隐式地运行的，并且触发器不能接受参数。</li>
+<li>触发事件可以是对数据库表的DML（INSERT、UPDATE、DELETE）操作或某种视图的操作。Oracle8i把触发器功能扩展到了可以激发系统事件，如数据库的启动和关闭，以及某种DDL操作。</li>
+<li>触发器主要分为：DML触发器、替代触发器和系统触发器。本次课程主要讲述DML触发器。</li>
+<li>触发器可用来补充声明的参照完整性，强制实施复杂的业务规则</li>
+<li>触发器是一个独立的事务，被当作一个整体执行，在执行过程中如果发生错误，则整个事务会<strong>自动回滚</strong>。</li>
+</ul>
+<h4 id="DML触发器创建语法"><a href="#DML触发器创建语法" class="headerlink" title="DML触发器创建语法"></a>DML触发器创建语法</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- trigger_name是触发器名，triggering_event指定了何时激发触发器， table_reference是定义触发器的表， trigger_body是触发器</span></span><br><span class="line"><span class="comment">-- 的主要处理代码。WHEN子句的trigger_condition如果被使用的话，将首先进行求值。触发器的主体仅当此条件求值为TRUE时才被执行。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">TRIGGER</span> trigger_name</span><br><span class="line">   &#123;BEFORE <span class="operator">|</span> AFTER&#125; triggering_event <span class="keyword">ON</span> table_reference</span><br><span class="line">   [<span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span> [<span class="keyword">WHEN</span> trigger_condition]]</span><br><span class="line">trigger_body;</span><br></pre></td></tr></table></figure>
+
+<h4 id="触发器的激发顺序"><a href="#触发器的激发顺序" class="headerlink" title="触发器的激发顺序"></a>触发器的激发顺序</h4><ol>
+<li>执行BEFORE语句级触发器（如果有的话）</li>
+<li>对于受语句影响的每一行<ul>
+<li>执行BEFORE行级触发器（如果有的话）</li>
+<li>执行DML语句（系统自动执行）</li>
+<li>执行AFTER行级触发器（如果有的话）</li>
+</ul>
+</li>
+<li>执行AFTER语句级触发器（如果有的话）</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_stmBefore</span><br><span class="line">BEFORE <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;Before Statement trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_stmAfter</span><br><span class="line">after <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;After Statement trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_rowBefore</span><br><span class="line">before <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;Beore row trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_rowAfter</span><br><span class="line">after <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;After row trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="语句级触发器例子"><a href="#语句级触发器例子" class="headerlink" title="语句级触发器例子"></a>语句级触发器例子</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> secure_emp</span><br><span class="line">   BEFORE <span class="keyword">INSERT</span> <span class="keyword">ON</span> emp</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">     IF (TO_CHAR(SYSDATE, <span class="string">&#x27;DY&#x27;</span>) <span class="keyword">IN</span> (<span class="string">&#x27;星期六&#x27;</span>, <span class="string">&#x27;星期天&#x27;</span>)) </span><br><span class="line">           <span class="keyword">OR</span> (TO_CHAR(SYSDATE, <span class="string">&#x27;HH24:MI&#x27;</span>) <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="string">&#x27;08:00&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;18:00&#x27;</span>)</span><br><span class="line">     <span class="keyword">THEN</span> </span><br><span class="line">         RAISE_APPLICATION_ERROR</span><br><span class="line">			 (<span class="number">-20500</span>, <span class="string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);</span><br><span class="line">      <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emp (empno, ename,hiredate,job, sal, deptno)</span><br><span class="line">               <span class="keyword">VALUES</span> (<span class="number">300</span>,<span class="string">&#x27;Smith Rob&#x27;</span>,SYSDATE,<span class="string">&#x27;IT_PROG&#x27;</span>, <span class="number">4500</span>, <span class="number">30</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> secure_emp</span><br><span class="line">BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">OR</span> <span class="keyword">DELETE</span>  <span class="keyword">ON</span> EMP</span><br><span class="line">  <span class="keyword">BEGIN</span></span><br><span class="line">    IF (TO_CHAR(SYSDATE, <span class="string">&#x27;DY&#x27;</span>) <span class="keyword">IN</span> (<span class="string">&#x27;星期六&#x27;</span>, <span class="string">&#x27;星期天&#x27;</span>)) </span><br><span class="line">           <span class="keyword">OR</span> (TO_CHAR(SYSDATE, <span class="string">&#x27;HH24&#x27;</span>) <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="string">&#x27;08&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;18&#x27;</span>)</span><br><span class="line">    <span class="keyword">THEN</span> </span><br><span class="line">      IF DELETING <span class="keyword">THEN</span></span><br><span class="line">          RAISE_APPLICATION_ERROR (<span class="number">-20502</span>, <span class="string">&#x27;You may delete from  EMP table only during business hours.&#x27;</span>);</span><br><span class="line">       ELSIF INSERTING <span class="keyword">THEN</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20500</span>,<span class="string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);</span><br><span class="line">       ELSIF UPDATING (<span class="string">&#x27;SAL&#x27;</span>) <span class="keyword">THEN</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20503</span>,<span class="string">&#x27;You may update SAL only during business hours.&#x27;</span>);</span><br><span class="line">       <span class="keyword">ELSE</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20504</span>,<span class="string">&#x27;You may update EMP table only during normal hours.&#x27;</span>);</span><br><span class="line">       <span class="keyword">END</span> IF;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="行级触发器例子"><a href="#行级触发器例子" class="headerlink" title="行级触发器例子"></a>行级触发器例子</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> restrict_salary</span><br><span class="line">  BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">ON</span> emp</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">    <span class="keyword">BEGIN</span></span><br><span class="line">      IF <span class="keyword">NOT</span> (:NEW.job <span class="keyword">IN</span> (<span class="string">&#x27;PRESIDENT&#x27;</span>, <span class="string">&#x27;MANAGER&#x27;</span>, <span class="string">&#x27;ANALYST&#x27;</span>)) <span class="keyword">AND</span> :NEW.sal <span class="operator">&gt;</span> <span class="number">2500</span></span><br><span class="line">      <span class="keyword">THEN</span></span><br><span class="line">        RAISE_APPLICATION_ERROR (<span class="number">-20202</span>, <span class="string">&#x27;Employee cannot earn this amount&#x27;</span>);</span><br><span class="line">      <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> UPDATE emp</span><br><span class="line">              <span class="keyword">SET</span> sal <span class="number">3000</span></span><br><span class="line">              <span class="keyword">WHERE</span> ename <span class="operator">=</span> <span class="string">&#x27;SMITH&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="行级触发器——-old和-new"><a href="#行级触发器——-old和-new" class="headerlink" title="行级触发器——:old和:new"></a>行级触发器——:old和:new</h4><p><img src="1-11.png"></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> audit_emp_values</span><br><span class="line">   AFTER <span class="keyword">DELETE</span> <span class="keyword">OR</span> <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">ON</span> emp</span><br><span class="line">   <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="keyword">INSERT</span> <span class="keyword">INTO</span> audit_emp_table (user_name, <span class="type">timestamp</span>,empno,</span><br><span class="line">          old_ename, new_ename, old_job,new_job, old_sal, new_sal)</span><br><span class="line">          <span class="keyword">VALUES</span> (<span class="keyword">USER</span>, SYSDATE, :OLD.empno,:OLD.ename, :NEW.ename,</span><br><span class="line">              :OLD.job,:NEW.job, :OLD.sal, :NEW.sal );</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line">   t_oplog(<span class="keyword">user</span>,optime,opcontent)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="行级触发器——限制条件"><a href="#行级触发器——限制条件" class="headerlink" title="行级触发器——限制条件"></a>行级触发器——限制条件</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> derive_commission_pct</span><br><span class="line">    BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">OF</span> sal <span class="keyword">ON</span> emp</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">    <span class="keyword">WHEN</span> (NEW.job <span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>)</span><br><span class="line"> <span class="keyword">BEGIN</span></span><br><span class="line">    IF INSERTING  <span class="keyword">THEN</span> :NEW.comm :<span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    ELSIF :OLD.comm <span class="keyword">IS</span> <span class="keyword">NULL</span> <span class="keyword">THEN</span> :NEW.comm :<span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">ELSE</span>  :NEW.comm :<span class="operator">=</span> :NEW.sal<span class="operator">*</span><span class="number">0.10</span>;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"> <span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="行级触发器应用"><a href="#行级触发器应用" class="headerlink" title="行级触发器应用"></a>行级触发器应用</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 练习:创建序列和触发器后,给出执行下面两个insert语句后的数据记录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> SEQUENCE SEQ_EMPNO </span><br><span class="line"><span class="keyword">START</span> <span class="keyword">WITH</span> <span class="number">9000</span> </span><br><span class="line">MAXVALUE <span class="number">9999</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">---------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">TRIGGER</span> tri_insert_emp</span><br><span class="line">  BEFORE <span class="keyword">INSERT</span>  <span class="keyword">ON</span> emp</span><br><span class="line">  <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  if :new.deptno <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span></span><br><span class="line">    :new.deptno:<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">  ELSIF :new.deptno<span class="operator">=</span><span class="number">30</span> <span class="keyword">then</span></span><br><span class="line">    :new.job:<span class="operator">=</span><span class="string">&#x27;SALSEMAN&#x27;</span>;</span><br><span class="line">  <span class="keyword">end</span> if;</span><br><span class="line">  <span class="keyword">SELECT</span> seq_empno.NEXTVAL</span><br><span class="line">      <span class="keyword">INTO</span> :new.empno</span><br><span class="line">      <span class="keyword">FROM</span> dual;</span><br><span class="line"><span class="keyword">END</span> tri_insert_emp;</span><br><span class="line"><span class="comment">--------</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp (ename,sal) <span class="keyword">values</span> (‘LL<span class="string">&#x27;,2300);</span></span><br><span class="line"><span class="string">insert into emp (empno,ename,sal) values (9100,‘HH&#x27;</span>,<span class="number">2500</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="管理触发器"><a href="#管理触发器" class="headerlink" title="管理触发器"></a>管理触发器</h4><ul>
+<li><p>禁用或启用一个触发器</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span> trigger_name DISABLE <span class="operator">|</span> ENABLE</span><br></pre></td></tr></table></figure></li>
+<li><p>禁用或启用一张表的多有触发器</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name DISABLE <span class="operator">|</span> ENABLE <span class="keyword">ALL</span> TRIGGERS</span><br></pre></td></tr></table></figure></li>
+<li><p>重新编译一个触发器</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span> trigger_name COMPILE</span><br></pre></td></tr></table></figure></li>
+<li><p>删除触发器</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> trigger_name</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="子程序"><a href="#子程序" class="headerlink" title="子程序"></a>子程序</h3><ul>
+<li>子程序是带名的PL/SQL块，能够接受参数和被环境调用。在PL/SQL中两类子程序：过程和函数</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">&lt;</span>header<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span> <span class="keyword">AS</span></span><br><span class="line">    声明部分</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    执行部分</span><br><span class="line">EXCEPTION (可选)</span><br><span class="line">    异常处理部分</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>子程序说明（<em>header）决定</em>:<ul>
+<li>PL/SQL子程序的类型是过程还是函数。</li>
+<li>子程序的名称</li>
+<li>参数列表</li>
+<li>当子程序是函数时必须要有返回值(使用RETURN子句)</li>
+<li>关键字IS或AS是必须的。</li>
+</ul>
+</li>
+<li>子程序体:是一个拥有声明、执行和异常处理部分的PL/SQL块。<ul>
+<li>声明部分介于<strong>IS|AS</strong>和<strong>BEGIN</strong>之间。在匿名块中必须使用<strong>DECLARE</strong>关键字显示的指出声明部分，而在<strong>子程序中没有DECLARE关键字</strong>。</li>
+<li>执行部分介于BEGIN和END关键字之间，这部分必须存在</li>
+<li>异常处理部分介于EXCEPTION和END之间是可选的部分</li>
+</ul>
+</li>
+</ul>
+<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><h5 id="创建过程"><a href="#创建过程" class="headerlink" title="创建过程"></a>创建过程</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">PROCEDURE</span> procedure_name </span><br><span class="line">[(parameter1 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data_type , parameter2 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data­_type,…)]</span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span><span class="keyword">AS</span></span><br><span class="line">   [declaration_section;]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   executable_section;</span><br><span class="line">[EXCEPTION</span><br><span class="line">   exception_handlers;]</span><br><span class="line"><span class="keyword">END</span> [procedure_name];</span><br><span class="line"><span class="comment">-- 注意与匿名块有三点区别：</span></span><br><span class="line"><span class="comment">-- 1.无DECLARE关键字</span></span><br><span class="line"><span class="comment">-- 2.在END后面可以加过程名  作为定义结束的标志</span></span><br><span class="line"><span class="comment">-- 3.存储过程定义完成后需要调用才能执行过程内部的代码。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> display_time </span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   dbms_output.put_line(systimestamp);</span><br><span class="line"><span class="keyword">END</span> display_time;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用三种方式调用上面创建的存储过程</span></span><br><span class="line"><span class="comment">-- 方式一：使用sqlplus命令EXECUTE(简写EXEC) 调用</span></span><br><span class="line">	<span class="keyword">EXECUTE</span> display_time; </span><br><span class="line"><span class="comment">-- 方式二：使用sql命令CALL调用</span></span><br><span class="line">	<span class="keyword">CALL</span> display_time( );</span><br><span class="line"><span class="comment">-- 方式三：在PL/SQL块中调用</span></span><br><span class="line">	<span class="keyword">BEGIN</span></span><br><span class="line">		display_time;</span><br><span class="line">	<span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 形式参数(Formal parameters):在过程中声明的参数就是形式参数。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> insert_emp </span><br><span class="line">(<span class="keyword">no</span>  emp.empno<span class="operator">%</span>TYPE,			name  emp.ename<span class="operator">%</span>TYPE,</span><br><span class="line">Job  emp.job<span class="operator">%</span>TYPE,				mgr  emp.mgr<span class="operator">%</span>TYPE,</span><br><span class="line">hiredate emp.hiredate<span class="operator">%</span>TYPE ,	salary emp.sal<span class="operator">%</span>TYPE ,</span><br><span class="line">comm emp.comm<span class="operator">%</span>TYPE ,		deptno emp.deptno<span class="operator">%</span>TYPE </span><br><span class="line">)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emp <span class="keyword">VALUES</span>(<span class="keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">-- 实际参数(Actual parameters):在调用过程中作为参数传递给过程的变量或表达式就是实际参数。</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">v_no  emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="number">10000</span>,</span><br><span class="line">v_name  emp.ename<span class="operator">%</span>TYPE :<span class="operator">=</span>‘Jones’,</span><br><span class="line">v_job  emp.job<span class="operator">%</span>TYPE :<span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>,</span><br><span class="line">v_mgr  emp.mgr<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">7369</span>,</span><br><span class="line">v_hiredate emp.hiredate<span class="operator">%</span>TYPE :<span class="operator">=</span>SYSDATE,</span><br><span class="line">v_salary emp.sal<span class="operator">%</span>TYPE :<span class="operator">=</span> <span class="number">800</span>,</span><br><span class="line">v_comm emp.comm<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="keyword">NULL</span>,</span><br><span class="line">v_deptno emp.deptno<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">10</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"> insert_emp(v_no, v_name, v_job, v_mgr, v_hiredate, v_salary, v_comm, v_deptno );</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 对形式参数的约束：在过程声明中，限制CHAR和VARCHAR2参数的长度以及限制NUMBER参数的精度和/或刻度范围都是非法的。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> ParameterLength (</span><br><span class="line">  p_Parameter1 <span class="keyword">IN</span> <span class="keyword">OUT</span> VARCHAR2(<span class="number">10</span>), <span class="comment">-- 非法</span></span><br><span class="line">  p_Parameter2 <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER(<span class="number">3</span>,<span class="number">2</span>)) <span class="keyword">AS</span> <span class="comment">-- 非法</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  p_Parameter1 :<span class="operator">=</span> <span class="string">&#x27;abcdefghijklm&#x27;</span>;</span><br><span class="line">  p_Parameter2 :<span class="operator">=</span> <span class="number">12.3</span>;</span><br><span class="line"><span class="keyword">END</span> ParameterLength;</span><br><span class="line"><span class="operator">/</span></span><br><span class="line"><span class="comment">-- 过程声明非法</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="参数的模式"><a href="#参数的模式" class="headerlink" title="参数的模式"></a>参数的模式</h4><ul>
+<li>过程可以通过参数和调用环境进行数据传递</li>
+<li>有三种传递模式—<strong>IN、OUT和IN OUT</strong>。如果没有为形式参数指定模式，则使用<strong>缺省模式IN。</strong></li>
+</ul>
+<p><img src="1-12.png"></p>
+<h4 id="IN参数"><a href="#IN参数" class="headerlink" title="IN参数"></a>IN参数</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> raise_salary</span><br><span class="line">(p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE)       <span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">     UPDATE emp          <span class="keyword">SET</span> sal <span class="operator">=</span> sal <span class="operator">*</span> <span class="number">1.10</span>          <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line"><span class="keyword">END</span> raise_salary;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empno emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  raise_salary(v_empno);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="OUT参数"><a href="#OUT参数" class="headerlink" title="OUT参数"></a>OUT参数</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> query_emp</span><br><span class="line">(p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE, p_name <span class="keyword">OUT</span> emp.ename<span class="operator">%</span>TYPE,</span><br><span class="line"> p_salary <span class="keyword">OUT</span> emp.sal<span class="operator">%</span>TYPE,p_comm <span class="keyword">OUT</span> emp.comm<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SELECT</span> ename, sal, comm</span><br><span class="line">      <span class="keyword">INTO</span> p_name, p_salary, p_comm</span><br><span class="line">      <span class="keyword">FROM</span> emp  <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line"><span class="keyword">END</span> query_emp;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empno emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line">  v_name  emp.ename<span class="operator">%</span>TYPE;</span><br><span class="line">  v_salary  emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line">  v_comm  emp.comm<span class="operator">%</span>TYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  query_emp(v_empno,v_name,v_salary,v_comm);</span><br><span class="line">  dbms_output.put_line(v_empno<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_name<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_salary<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_comm);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="IN-OUT参数"><a href="#IN-OUT参数" class="headerlink" title="IN OUT参数"></a>IN OUT参数</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写程序，交换两个变量的值并输出</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> swap</span><br><span class="line">(x <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER ,y <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">z NUMBER;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	z:<span class="operator">=</span>x;</span><br><span class="line">	x:<span class="operator">=</span>y;</span><br><span class="line">	y:<span class="operator">=</span>z;</span><br><span class="line"><span class="keyword">END</span> swap;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  a NUMBER:<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">  b NUMBER:<span class="operator">=</span><span class="number">20</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;交换前a和b的值是：&#x27;</span><span class="operator">||</span>a<span class="operator">||</span><span class="string">&#x27;  &#x27;</span><span class="operator">||</span>b);</span><br><span class="line">  swap(a,b);</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;交换后a和b的值是：&#x27;</span><span class="operator">||</span>a<span class="operator">||</span><span class="string">&#x27;  &#x27;</span><span class="operator">||</span>b);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="参数的缺省值"><a href="#参数的缺省值" class="headerlink" title="参数的缺省值"></a>参数的缺省值</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例子</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> add_dept</span><br><span class="line">  (p_name <span class="keyword">IN</span> dept.dname<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="string">&#x27;unknown&#x27;</span>,</span><br><span class="line">   p_loc <span class="keyword">IN</span> dept.loc<span class="operator">%</span>TYPE  <span class="keyword">DEFAULT</span> <span class="string">&#x27;NEW YORK&#x27;</span>)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">INSERT</span> <span class="keyword">INTO</span> dept (deptno,dname, loc)</span><br><span class="line">   <span class="keyword">VALUES</span> (dept_seq.NEXTVAL, p_name, p_loc);</span><br><span class="line"><span class="keyword">END</span> add_dept;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">BEGIN</span></span><br><span class="line">               add_dept;</span><br><span class="line">               add_dept (<span class="string">&#x27;TRAINING&#x27;</span>);</span><br><span class="line">               add_dept ( p_loc <span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;BOSTON &#x27;</span>, p_name <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;EDUCATION&#x27;</span>);</span><br><span class="line">               add_dept ( p_loc <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;CHICAGO&#x27;</span>) ;</span><br><span class="line">              <span class="keyword">END</span>;     <span class="operator">/</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> dept;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例8.4  为scott.emp表创建一个能完成插入功能的存储过程insert_emp。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> insert_emp </span><br><span class="line">(<span class="keyword">no</span> <span class="keyword">IN</span> scott.emp.empno<span class="operator">%</span>TYPE,</span><br><span class="line">    name <span class="keyword">IN</span> scott.emp.ename<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    job <span class="keyword">IN</span> scott.emp.job<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="string">&#x27;SALESMAN&#x27;</span>,</span><br><span class="line">    mgr <span class="keyword">IN</span> scott.emp.mgr<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">7369</span>,</span><br><span class="line">    hiredate scott.emp.hiredate<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> SYSDATE,</span><br><span class="line">    salary scott.emp.sal<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">800</span>,</span><br><span class="line">    comm scott.emp.comm<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    deptno scott.emp.deptno<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">10</span>)   <span class="keyword">IS</span></span><br><span class="line">    e_integrity EXCEPTION;</span><br><span class="line">    PRAGMA EXCEPTION_INIT (e_integrity,<span class="number">-2291</span>);</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> scott.emp <span class="keyword">VALUES</span>(<span class="keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);</span><br><span class="line">    EXCEPTION</span><br><span class="line">        <span class="keyword">WHEN</span> DUP_VAL_ON_INDEX <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;该员工已经存在！&#x27;</span>);</span><br><span class="line">        <span class="keyword">WHEN</span> e_integrity <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;部门编号填写错误！&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">-- 注意：在参数的定义上，除了向主键字段empno插入值的变量no没有设置默认值外，其他所有的变量都给出了默认值，这样当用户调用该存储过程时，可以指定任意个数的实参。 </span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="删除过程"><a href="#删除过程" class="headerlink" title="删除过程"></a>删除过程</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> procedure_name;</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><h5 id="创建函数"><a href="#创建函数" class="headerlink" title="创建函数"></a>创建函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">FUNCTION</span> function_name </span><br><span class="line">[(argument1 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data_type , argument2 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data­_type,…)]</span><br><span class="line"><span class="keyword">RETURN</span> data_type</span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span><span class="keyword">AS</span></span><br><span class="line">   [declaration_section;]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   executable_section;</span><br><span class="line">   <span class="keyword">RETURN</span> expression;</span><br><span class="line">[EXCEPTION</span><br><span class="line">   exception_handlers;</span><br><span class="line"><span class="keyword">RETURN</span> expression;</span><br><span class="line"><span class="keyword">END</span> [function_name]; </span><br><span class="line"> <span class="comment">-- return_datatype是函数返回的数值的类型，不能对数据类型的SIZE进行限定。</span></span><br><span class="line"><span class="comment">-- 在PL/SQL块中，可以使用多个RETURN语句，但是必须保证至少有一条RETURN语句存在。函数每一次运行只有一个RETURN语句被执行。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例子</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> get_sal</span><br><span class="line">      (p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">RETURN</span> NUMBER</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">      v_salary emp.sal<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">     <span class="keyword">SELECT</span> sal     <span class="keyword">INTO</span> v_salary     <span class="keyword">FROM</span> emp     <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line">     <span class="keyword">RETURN</span> v_salary;</span><br><span class="line"><span class="keyword">END</span> get_sal;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="执行函数"><a href="#执行函数" class="headerlink" title="执行函数"></a>执行函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 注意：因为函数具有返回值，所以调用函数是作为一个表达式的一部分，而不能像调用过程那样作为一个独立的语句使用。 </span></span><br><span class="line"><span class="comment">-- 方式一：SQLPLUS命令使用变量接收返回值</span></span><br><span class="line">VAR salary NUMBER;</span><br><span class="line"><span class="keyword">EXEC</span> :salary:<span class="operator">=</span>get_sal(<span class="number">7369</span>);</span><br><span class="line">PRINT salary;</span><br><span class="line"><span class="comment">-- 方式二：在SQL语句中直接调用函数</span></span><br><span class="line"><span class="keyword">SELECT</span> get_sal(<span class="number">7369</span>) <span class="keyword">FROM</span> DUAL;</span><br><span class="line"><span class="comment">-- 方式三：使用DBMS_OUTPUT调用函数（表达式运算）</span></span><br><span class="line">dbms_output.put_line(<span class="string">&#x27;工资是:&#x27;</span><span class="operator">||</span> get_sal(<span class="number">7369</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="删除函数"><a href="#删除函数" class="headerlink" title="删除函数"></a>删除函数</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> function_name;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例  创建函数，从scott.emp表中查询指定编号职工的工资。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> select_sal</span><br><span class="line">(<span class="keyword">no</span> scott.emp.empno<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">RETURN</span> scott.emp.sal<span class="operator">%</span>TYPE</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">salary scott.emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">SELECT</span> sal <span class="keyword">INTO</span> salary <span class="keyword">FROM</span> scott.emp <span class="keyword">WHERE</span> empno<span class="operator">=</span><span class="keyword">no</span>;</span><br><span class="line"><span class="keyword">RETURN</span> salary;</span><br><span class="line">EXCEPTION</span><br><span class="line"><span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line"><span class="keyword">RETURN</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 例   创建函数，从scott.emp表中查询指定员编号工的工资和姓名。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> SELECT_NAME_SAL</span><br><span class="line">(P_EMPNO <span class="keyword">IN</span> NUMBER,P_SAL <span class="keyword">OUT</span> NUMBER, P_NAME <span class="keyword">OUT</span> VARCHAR2)</span><br><span class="line"><span class="keyword">RETURN</span> NUMBER  <span class="comment">--0 表示成功 1表示异常 员工编号不存在</span></span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">V_RESULT NUMBER:<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">SELECT</span> SAL ,ENAME <span class="keyword">INTO</span> P_SAL ,P_NAME <span class="keyword">FROM</span> EMP <span class="keyword">WHERE</span> EMPNO<span class="operator">=</span> P_EMPNO;</span><br><span class="line"><span class="keyword">RETURN</span> V_RESULT;</span><br><span class="line">EXCEPTION</span><br><span class="line"><span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line">	DBMS_OUTPUT.PUT_LINE(<span class="string">&#x27;无符合要求的记录&#x27;</span>);</span><br><span class="line">  	V_RESULT:<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">	<span class="keyword">RETURN</span> V_RESULT;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Oracle实验1</title>
+    <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C1/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Oracle实验2</title>
     <url>/2021/11/12/Oracle%E5%AE%9E%E9%AA%8C2/</url>
     <content><![CDATA[<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 编写SQL创建视图v_getTeacherbyDeptID，获取信息技术学院及其下属部门的所有教师信息。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> v_getTeacherbyDeptID;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">view</span> v_getTeacherbyDeptID <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> teacher </span><br><span class="line"><span class="keyword">where</span> dept_id <span class="keyword">in</span> (</span><br><span class="line"><span class="keyword">select</span> dept_id <span class="keyword">from</span> dept</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> dept_name <span class="operator">=</span> <span class="string">&#x27;信息技术学院&#x27;</span></span><br><span class="line"><span class="keyword">connect</span> <span class="keyword">by</span> prior dept_id <span class="operator">=</span> parent_id</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_getTeacherbyDeptID; </span><br></pre></td></tr></table></figure>
@@ -1146,6 +1146,19 @@
       </tags>
   </entry>
   <entry>
+    <title>SpringBoot的web容器基本配置</title>
+    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</url>
+    <content><![CDATA[<p>我们都知道SpringBoot中内嵌了一个Tomcat中可以直接使用。</p>
+]]></content>
+      <categories>
+        <category>SpringBoot</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spring Boot 项目中的 parent</title>
     <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03/</url>
     <content><![CDATA[<p>以下是学习松哥的SpringBoot的学习笔记</p>
@@ -1197,16 +1210,130 @@
 ]]></content>
   </entry>
   <entry>
-    <title>SpringBoot的web容器基本配置</title>
-    <url>/2021/10/23/SpringBoot%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</url>
-    <content><![CDATA[<p>我们都知道SpringBoot中内嵌了一个Tomcat中可以直接使用。</p>
+    <title>leetcode刷题日记</title>
+    <url>/2022/02/28/leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0/</url>
+    <content><![CDATA[<h5 id="day1"><a href="#day1" class="headerlink" title="day1"></a>day1</h5><p><a href="https://leetcode-cn.com/problems/binary-search/"> #704 二分查找</a></p>
+<p><a href="https://leetcode-cn.com/problems/search-insert-position/"> #35 搜索插入位置</a></p>
+<p><a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/"> #34 在排序数组中查找元素的第一个和最后一个位置</a></p>
+<p><a href="https://leetcode-cn.com/problems/sqrtx/">#69 x 的平方根</a></p>
+<p><a href="https://leetcode-cn.com/problems/valid-perfect-square/">#367 有效的完全平方数</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-element/"> #27 移除元素</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/">#26 删除有序数组中的重复项</a></p>
+<p><a href="https://leetcode-cn.com/problems/move-zeroes/"> #283 移动零</a></p>
+<p><a href="https://leetcode-cn.com/problems/backspace-string-compare/">#844 比较含退格的字符串</a></p>
+<h5 id="day2"><a href="#day2" class="headerlink" title="day2"></a>day2</h5><p><a href="https://leetcode-cn.com/problems/squares-of-a-sorted-array/">#977 有序数组的平方</a></p>
+<h5 id="day3"><a href="#day3" class="headerlink" title="day3"></a>day3</h5><p><a href="https://leetcode-cn.com/problems/minimum-size-subarray-sum/">#209 长度最小的子数组</a></p>
+<p><a href="https://leetcode-cn.com/problems/fruit-into-baskets/">#904 水果成篮</a></p>
+<h5 id="day4"><a href="#day4" class="headerlink" title="day4"></a>day4</h5><p><a href="https://leetcode-cn.com/problems/minimum-window-substring/"> #76 最小覆盖子串</a></p>
+<p><a href="https://leetcode-cn.com/problems/spiral-matrix-ii/"> #59 螺旋矩阵 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/spiral-matrix/">#54 螺旋矩阵</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-linked-list-elements/">#203 移除链表元素</a></p>
+<p><a href="https://leetcode-cn.com/problems/design-linked-list/">#707 设计链表</a></p>
+<p><a href="https://leetcode-cn.com/problems/reverse-linked-list/"> #206 反转链表</a></p>
+<h5 id="day5"><a href="#day5" class="headerlink" title="day5"></a>day5</h5><p><a href="https://leetcode-cn.com/problems/swap-nodes-in-pairs/">#24 两两交换链表中的节点</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/">#19 删除链表的倒数第 N 个结点</a></p>
+<p><a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists-lcci/">#面试题 02.07 链表相交</a></p>
+<p><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/"> #142 环形链表 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/valid-anagram/">#242 有效的字母异位词</a></p>
+<p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays/">#349 两个数组的交集</a></p>
+<p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/">#350 两个数组的交集 II</a></p>
+<h5 id="day6"><a href="#day6" class="headerlink" title="day6"></a>day6</h5><p><a href="https://leetcode-cn.com/problems/happy-number/">#202 快乐数</a></p>
+<p><a href="https://leetcode-cn.com/problems/two-sum/"> #1 两数之和</a></p>
+<p><a href="https://leetcode-cn.com/problems/4sum-ii/">#454 四数相加 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/ransom-note/">#383 赎金信</a></p>
+<p><a href="https://leetcode-cn.com/problems/3sum/"> #15 三数之和</a></p>
+<p><a href="https://leetcode-cn.com/problems/4sum/">#18 四数之和</a></p>
+<h5 id="day7"><a href="#day7" class="headerlink" title="day7"></a>day7</h5><p><a href="https://leetcode-cn.com/problems/reverse-string/">#344 反转字符串</a></p>
+<p><a href="https://leetcode-cn.com/problems/reverse-string-ii/">#541 反转字符串 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/"> #剑指 Offer 05 替换空格</a></p>
+<p><a href="https://leetcode-cn.com/problems/reverse-words-in-a-string/"> #151 翻转字符串里的单词</a></p>
+<p><a href="https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/">#剑指 Offer 58 - II 左旋转字符串</a></p>
+<p><a href="https://leetcode-cn.com/problems/implement-strstr/">#28 实现 strStr()</a></p>
+<h5 id="day8"><a href="#day8" class="headerlink" title="day8"></a>day8</h5><p><a href="https://leetcode-cn.com/problems/repeated-substring-pattern/">#459 重复的子字符串</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-element/"> #27 移除元素</a></p>
+<p><a href="https://leetcode-cn.com/problems/reverse-string/"> #344 反转字符串</a></p>
+<p><a href="https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/"> #剑指 Offer 05 替换空格</a></p>
+<p><a href="https://leetcode-cn.com/problems/reverse-words-in-a-string/">#151 颠倒字符串中的单词</a></p>
+<h5 id="day9"><a href="#day9" class="headerlink" title="day9"></a>day9</h5><p><a href="https://leetcode-cn.com/problems/implement-queue-using-stacks/"> #232 用栈实现队列</a></p>
+<p><a href="https://leetcode-cn.com/problems/implement-stack-using-queues/">#225 用队列实现栈</a></p>
+<p><a href="https://leetcode-cn.com/problems/valid-parentheses/">#20 有效的括号</a></p>
+<p><a href="https://leetcode-cn.com/problems/remove-all-adjacent-duplicates-in-string/">#1047 删除字符串中的所有相邻重复项</a></p>
+<p><a href="https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/"> #150 逆波兰表达式求值</a></p>
+<h5 id="day10"><a href="#day10" class="headerlink" title="day10"></a>day10</h5><p><a href="https://leetcode-cn.com/problems/sliding-window-maximum/">#239 滑动窗口最大值</a></p>
+<p><a href="https://leetcode-cn.com/problems/top-k-frequent-elements/">#347 前 K 个高频元素</a></p>
+<h5 id="day11"><a href="#day11" class="headerlink" title="day11"></a>day11</h5><p><a href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal/">#144 二叉树的前序遍历</a></p>
+<p><a href="https://leetcode-cn.com/problems/binary-tree-postorder-traversal/"> #145 二叉树的后序遍历</a></p>
+<p><a href="https://leetcode-cn.com/problems/binary-tree-inorder-traversal/"> #94 二叉树的中序遍历</a></p>
+<p><a href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal/">#102 二叉树的层序遍历</a></p>
+<p><a href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/"> #107 二叉树的层序遍历 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/binary-tree-right-side-view/"> #199 二叉树的右视图</a></p>
+<p><a href="https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/"> #637 二叉树的层平均值</a></p>
+<p><a href="https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/"> #429 N 叉树的层序遍历</a></p>
+<p><a href="https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/"> #515 在每个树行中找最大值</a></p>
+<p><a href="https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/"> #116 填充每个节点的下一个右侧节点指针</a></p>
+<p><a href="https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/"> #117 填充每个节点的下一个右侧节点指</a></p>
+<p><a href="https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/"> #104 二叉树的最大深度</a></p>
+<h5 id="day12"><a href="#day12" class="headerlink" title="day12"></a>day12</h5><p><a href="https://leetcode-cn.com/problems/invert-binary-tree/">#226 翻转二叉树</a></p>
+<p><a href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/"> #589 N 叉树的前序遍历</a></p>
+<p><a href="https://leetcode-cn.com/problems/symmetric-tree/"> #101 对称二叉树</a></p>
+<p><a href="https://leetcode-cn.com/problems/maximum-depth-of-n-ary-tree/">#559 N 叉树的最大深度</a></p>
+<p><a href="https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/"> #111 二叉树的最小深度</a></p>
+<h5 id="day13"><a href="#day13" class="headerlink" title="day13"></a>day13</h5><p><a href="https://leetcode-cn.com/problems/count-complete-tree-nodes/">#222 完全二叉树的节点个数</a></p>
+<p><a href="https://leetcode-cn.com/problems/balanced-binary-tree/"> #110 平衡二叉树</a></p>
+<p><a href="https://leetcode-cn.com/problems/binary-tree-paths/">#257 二叉树的所有路径</a></p>
+<h5 id="day14"><a href="#day14" class="headerlink" title="day14"></a>day14</h5><p><a href="https://leetcode-cn.com/problems/same-tree/"> #100 相同的树</a></p>
+<p><a href="https://leetcode-cn.com/problems/subtree-of-another-tree/">#572 另一棵树的子树</a></p>
+<p><a href="https://leetcode-cn.com/problems/sum-of-left-leaves/"> #404 左叶子之和</a></p>
+<p><a href="https://leetcode-cn.com/problems/find-bottom-left-tree-value/">#513 找树左下角的值</a></p>
+<p><a href="https://leetcode-cn.com/problems/path-sum/"> #112 路径总和</a></p>
+<h5 id="day15"><a href="#day15" class="headerlink" title="day15"></a>day15</h5><p><a href="https://leetcode-cn.com/problems/path-sum-ii/"> #113 路径总和 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/"> #105 从前序与中序遍历序列构造二叉树</a></p>
+<p><a href="https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/"> #106 从中序与后序遍历序列构造二叉树</a></p>
+<p><a href="https://leetcode-cn.com/problems/maximum-binary-tree/"> #654 最大二叉树</a></p>
+<h5 id="day16"><a href="#day16" class="headerlink" title="day16"></a>day16</h5><p><a href="https://leetcode-cn.com/problems/merge-two-binary-trees/">#617 合并二叉树</a></p>
+<p><a href="https://leetcode-cn.com/problems/search-in-a-binary-search-tree/"> #700 二叉搜索树中的搜索</a></p>
+<p><a href="https://leetcode-cn.com/problems/validate-binary-search-tree/">#98 验证二叉搜索树</a></p>
+<p><a href="https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/"> #530 二叉搜索树的最小绝对差</a></p>
+<p><a href="https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/"> #501 二叉搜索树中的众数</a></p>
+<p><a href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/"> #236 二叉树的最近公共祖先</a></p>
+<h5 id="day17"><a href="#day17" class="headerlink" title="day17"></a>day17</h5><p><a href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/">#235 二叉搜索树的最近公共祖先</a></p>
+<p><a href="https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/">#701 二叉搜索树中的插入操作</a></p>
+<p><a href="https://leetcode-cn.com/problems/delete-node-in-a-bst/">#450 删除二叉搜索树中的节点</a></p>
+<h5 id="day18"><a href="#day18" class="headerlink" title="day18"></a>day18</h5><p><a href="https://leetcode-cn.com/problems/trim-a-binary-search-tree/"> #669 修剪二叉搜索树</a></p>
+<p><a href="https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/">#108 将有序数组转换为二叉搜索树</a></p>
+<p><a href="https://leetcode-cn.com/problems/convert-bst-to-greater-tree/"> #538 把二叉搜索树转换为累加树</a></p>
+<p><a href="https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/"> #590 N 叉树的后序遍历</a></p>
+<h5 id="day19"><a href="#day19" class="headerlink" title="day19"></a>day19</h5><p><a href="https://leetcode-cn.com/problems/combinations/"> #77 组合</a></p>
+<p><a href="https://leetcode-cn.com/problems/combination-sum-iii/"> #216 组合总和 III</a></p>
+<p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/">#17 电话号码的字母组合</a></p>
+<h5 id="day20"><a href="#day20" class="headerlink" title="day20"></a>day20</h5><p><a href="https://leetcode-cn.com/problems/combination-sum/"> #39 组合总和</a></p>
+<p><a href="https://leetcode-cn.com/problems/combination-sum-ii/"> #40 组合总和 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/palindrome-partitioning/"> #131 分割回文串</a></p>
+<h5 id="day21"><a href="#day21" class="headerlink" title="day21"></a>day21</h5><p><a href="https://leetcode-cn.com/problems/restore-ip-addresses/"> #93 复原 IP 地址</a></p>
+<p><a href="https://leetcode-cn.com/problems/subsets/"> #78 子集</a></p>
+<p><a href="https://leetcode-cn.com/problems/subsets-ii/"> #90 子集 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/increasing-subsequences/"> #491 递增子序列</a></p>
+<p><a href="https://leetcode-cn.com/problems/permutations/"> #46 全排列</a></p>
+<h5 id="day22"><a href="#day22" class="headerlink" title="day22"></a>day22</h5><p><a href="https://leetcode-cn.com/problems/permutations-ii/"> #47 全排列 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/reconstruct-itinerary/"> #332 重新安排行程</a></p>
+<h5 id="day23"><a href="#day23" class="headerlink" title="day23"></a>day23</h5><p><a href="https://leetcode-cn.com/problems/n-queens/">#51 N 皇后</a></p>
+<p><a href="https://leetcode-cn.com/problems/sudoku-solver/">#37 解数独</a></p>
+<p><a href="https://leetcode-cn.com/problems/fibonacci-number/"> #509 斐波那契数</a></p>
+<p><a href="https://leetcode-cn.com/problems/climbing-stairs/"> #70 爬楼梯</a></p>
+<p><a href="https://leetcode-cn.com/problems/min-cost-climbing-stairs/"> #746 使用最小花费爬楼梯</a></p>
+<h5 id="day24"><a href="#day24" class="headerlink" title="day24"></a>day24</h5><p><a href="https://leetcode-cn.com/problems/unique-paths/"> #62 不同路径</a></p>
+<p><a href="https://leetcode-cn.com/problems/unique-paths-ii/"> #63 不同路径 II</a></p>
+<p><a href="https://leetcode-cn.com/problems/integer-break/"> #343 整数拆分</a></p>
+<p><a href="https://leetcode-cn.com/problems/unique-binary-search-trees/"> #96 不同的二叉搜索树</a></p>
+<p><a href="https://leetcode-cn.com/problems/partition-to-k-equal-sum-subsets/">#698 划分为k个相等的子集</a></p>
 ]]></content>
       <categories>
-        <category>SpringBoot</category>
+        <category>leetcode</category>
       </categories>
       <tags>
         <tag>学习</tag>
         <tag>导航</tag>
+        <tag>leetcode</tag>
       </tags>
   </entry>
   <entry>
@@ -1302,6 +1429,60 @@
         <tag>学习</tag>
         <tag>导航</tag>
         <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>上天保佑</title>
+    <url>/2021/12/30/%E4%B8%8A%E5%A4%A9%E4%BF%9D%E4%BD%91/</url>
+    <content><![CDATA[<p><img src="1.png"></p>
+<p><img src="2.png"></p>
+<p><img src="3.png"></p>
+<p><img src="4.png"></p>
+<p><img src="5.png"></p>
+<p><img src="6.png"></p>
+<p><img src="7.png"></p>
+<p><img src="8.png"></p>
+<p><img src="9.png"></p>
+<p><img src="10.png"></p>
+<p><img src="11.png"></p>
+<p><img src="12.png"></p>
+<p><img src="13.png"></p>
+<p><img src="14.png"></p>
+<p><img src="15.png"></p>
+<p><img src="16.png"></p>
+<p><img src="17.png"></p>
+<p><img src="18.png"></p>
+<p><img src="19.png"></p>
+<p><img src="20.png"></p>
+<p><img src="21.png"></p>
+<p><img src="22.png"></p>
+<p><img src="23.png"></p>
+<p><img src="24.png"></p>
+<p><img src="25.png"></p>
+<p><img src="26.png"></p>
+<p><img src="27.png"></p>
+<p><img src="28.png"></p>
+<p><img src="29.png"></p>
+<p><img src="30.png"></p>
+<p><img src="31.png"></p>
+<p><img src="32.png"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>一点仪式感都没有的20岁</title>
+    <url>/2021/12/19/%E4%B8%80%E7%82%B9%E4%BB%AA%E5%BC%8F%E6%84%9F%E9%83%BD%E6%B2%A1%E6%9C%89%E7%9A%8420%E5%B2%81/</url>
+    <content><![CDATA[<p>大学以来，遇到了各种各样的困难。特别是大一那会打算法比赛的时候，真的是一点都不会，无论怎么积极学都学不懂，一度怀疑自己真的智商有点问题(可能真的有问题)。如果当时没遇到疫情，顺利的跟着学校参加训练可能现在的结局就完全不一样了。虽然嘲讽了CUIT两年多，但是还是十分庆幸自己在CUIT，没有太多约束，成绩不好也不会太为难自己。优秀的人很多，关于绩点这件事总是有人不能如愿的（还是很烦关于自己德育分没80领不了三等奖学金——可能大学四年唯一一次能拿的奖学金就这次了，cjl好强啊呜呜呜呜呜，天天打比赛还能这么高绩点）。</p>
+<p>来到成都有段时间了，外出旅游的机会几乎没有，要么是疫情影响，要么就是自己太自闭了哎。绝大部分原因还是跟自己有关吧，真的太废物了。想到大佬们参加各种区域赛去旅游，可能这就是梦中的人生规划吧，可惜自己太菜。大二那会，原本想着自己走不了算法的路线，加一个实验室跟着学校混奖项，最气的是，到现在都大三上结束了，实验室还没进去。笑死，根本没有途径进去，完全没有听说过有实验室招新的通知。上次问岳老师的团队的人她们是怎么加入实验室的，笑死，原来岳老师是她们的班导，直接给机会进去学习。想想我们的班导就忍不住烦啊。上个学期末加的那个实验室的群，到现在群里面一点消息都没有，:(。暑假跟着曹老师的团队做了那个科研项目(数据)管理系统，哇，怎么会有人用这种技术栈开发项目啊。大二还远程实习了一个傻逼公司，除了自学go语言得到了一点收获之外几乎毫无作用，要不要把这个实习经历写在简历上都要考虑考虑hh，都不知道这个公司倒闭了没hh。这么神奇的公司是怎么招到这么多985和海外高校的实习生的，好离谱啊。不过接触到了这么多学霸，也见识到了自己跟她们的差距。</p>
+<p>刚大一的时候的计划路线是：大一打acm一直打到大三，然后去实验室做项目。后来算法没打成。想直接去实验室做项目，走大一班导ckl的路线，结果实验室也没途经进去，问了也是满人了不收。想着现在大三上都结束了。看了好多大佬的本科路线，几乎所有人大三上结束都有好多奖项，然后大三下进大厂实习。哎，到目前为止自己有什么奖项呢？一个都没有。现在离20岁还剩下一个小时，真的是对前途一片迷茫。接下来路该怎么走呢，随波逐流去考研嘛？昨天刚考完四级，听力前五个全错，阅读得分才160，作文还写离题了，哎，这样的废物真的能去考研嘛，大概率当分母啊。想到这感觉wsy真的好强，各种奖学金三好学生拿个遍，四六级都是秒过。人无完人，哎。自己数学又很好嘛？高中这么多次考试都没几次有高分吧，不会真有人把学校那水的离谱的高数和线代还有概率论来证明自己吧。408自己学的很好嘛？操作系统才70多分，笑死，还以为自己操作系统多牛逼呢，课听了不少，公众号水了不少，面经也背了不少，不还是这样。自己到底适不适合考研呢，可能我自己都不知道吧。自己又能静得下来学习嘛，在宿舍周末都会睡到12点起床，考研生物钟自己又能适应嘛，宿舍都是混子没人考研，自己又能静得下心学习吗，哎。一边是不考研就几乎去不了大厂，一遍是去考研了大概率会白给充当分母。到底该怎么选啊！真的能有前途吗，最后的结局真的不是随便去一个公司混日子，然后一直等待35岁的到来吗。都说人会触底反弹，每天在宿舍无所事事，敲着毫无作用的代码，没有一个项目能写进简历。都是一些简单的小demo或者小课设，有什么用啊！</p>
+<p>关于自己写下来的路该怎么走。先暂时这样吧：这一个星期一定学完计网可能有离散数学。接下来寒假一定不能水，先学CS61B和刷算法题，刷完之后寒假一定要注意一下大厂的春招提前批消息，无论能不能面得上（95%不可以）都一定要试一试，看看自己的水平到底如何，万一真的有机会出现呢。寒假的时候还需要考虑一下考研的问题，可以先接触一下408和英语，因为无论考不考研，408的知识和四六级还是要过的。如果可以的话，尝试的写一些项目（这里告诫一下之后的自己，不要写商城之类的水项目了）。如果可以可以把那个GRPC项目和仿QQ项目学一下。或者接着把CS系列的课程往下学。acwing基础班刷完并且开提高班，acwing的每日一题一定要跟。leetcode也要开始刷起来了。如果可以，寒假少熬夜吧。</p>
+<p>发布这篇文章的时候应该是20岁了吧，20年母胎solo，也要考虑一下自己的爱情问题了。希望自己看淡自己的身高，不要过度焦虑，相信自己一定可以找到属于自己的另一半，主动起来，无论是否有结果，一定要试一试才能成功，听了盛老师的爱情讲座，发现自己最缺的就是主动的勇气和社交。小学xxx，初中xxx，xxx，高中xx，xxx。大学xxx，xxx。相信自己，一定可以！</p>
+<p>来不及去超市买属于自己的生日蛋糕口味的奥利奥了，这次生日的感觉和高中那次晚上一人孤独吃生日蛋糕口味奥利奥的感觉是一样的。还是有很多人爱着我的呀，一定要乐观起来啊wr1sw，小学初中别人给你的印象就是乐观、幽默啊，一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！</p>
+]]></content>
+      <categories>
+        <category>总结</category>
+      </categories>
+      <tags>
+        <tag>总结</tag>
       </tags>
   </entry>
   <entry>
@@ -1435,187 +1616,6 @@
       </tags>
   </entry>
   <entry>
-    <title>一点仪式感都没有的20岁</title>
-    <url>/2021/12/19/%E4%B8%80%E7%82%B9%E4%BB%AA%E5%BC%8F%E6%84%9F%E9%83%BD%E6%B2%A1%E6%9C%89%E7%9A%8420%E5%B2%81/</url>
-    <content><![CDATA[<p>大学以来，遇到了各种各样的困难。特别是大一那会打算法比赛的时候，真的是一点都不会，无论怎么积极学都学不懂，一度怀疑自己真的智商有点问题(可能真的有问题)。如果当时没遇到疫情，顺利的跟着学校参加训练可能现在的结局就完全不一样了。虽然嘲讽了CUIT两年多，但是还是十分庆幸自己在CUIT，没有太多约束，成绩不好也不会太为难自己。优秀的人很多，关于绩点这件事总是有人不能如愿的（还是很烦关于自己德育分没80领不了三等奖学金——可能大学四年唯一一次能拿的奖学金就这次了，cjl好强啊呜呜呜呜呜，天天打比赛还能这么高绩点）。</p>
-<p>来到成都有段时间了，外出旅游的机会几乎没有，要么是疫情影响，要么就是自己太自闭了哎。绝大部分原因还是跟自己有关吧，真的太废物了。想到大佬们参加各种区域赛去旅游，可能这就是梦中的人生规划吧，可惜自己太菜。大二那会，原本想着自己走不了算法的路线，加一个实验室跟着学校混奖项，最气的是，到现在都大三上结束了，实验室还没进去。笑死，根本没有途径进去，完全没有听说过有实验室招新的通知。上次问岳老师的团队的人她们是怎么加入实验室的，笑死，原来岳老师是她们的班导，直接给机会进去学习。想想我们的班导就忍不住烦啊。上个学期末加的那个实验室的群，到现在群里面一点消息都没有，:(。暑假跟着曹老师的团队做了那个科研项目(数据)管理系统，哇，怎么会有人用这种技术栈开发项目啊。大二还远程实习了一个傻逼公司，除了自学go语言得到了一点收获之外几乎毫无作用，要不要把这个实习经历写在简历上都要考虑考虑hh，都不知道这个公司倒闭了没hh。这么神奇的公司是怎么招到这么多985和海外高校的实习生的，好离谱啊。不过接触到了这么多学霸，也见识到了自己跟她们的差距。</p>
-<p>刚大一的时候的计划路线是：大一打acm一直打到大三，然后去实验室做项目。后来算法没打成。想直接去实验室做项目，走大一班导ckl的路线，结果实验室也没途经进去，问了也是满人了不收。想着现在大三上都结束了。看了好多大佬的本科路线，几乎所有人大三上结束都有好多奖项，然后大三下进大厂实习。哎，到目前为止自己有什么奖项呢？一个都没有。现在离20岁还剩下一个小时，真的是对前途一片迷茫。接下来路该怎么走呢，随波逐流去考研嘛？昨天刚考完四级，听力前五个全错，阅读得分才160，作文还写离题了，哎，这样的废物真的能去考研嘛，大概率当分母啊。想到这感觉wsy真的好强，各种奖学金三好学生拿个遍，四六级都是秒过。人无完人，哎。自己数学又很好嘛？高中这么多次考试都没几次有高分吧，不会真有人把学校那水的离谱的高数和线代还有概率论来证明自己吧。408自己学的很好嘛？操作系统才70多分，笑死，还以为自己操作系统多牛逼呢，课听了不少，公众号水了不少，面经也背了不少，不还是这样。自己到底适不适合考研呢，可能我自己都不知道吧。自己又能静得下来学习嘛，在宿舍周末都会睡到12点起床，考研生物钟自己又能适应嘛，宿舍都是混子没人考研，自己又能静得下心学习吗，哎。一边是不考研就几乎去不了大厂，一遍是去考研了大概率会白给充当分母。到底该怎么选啊！真的能有前途吗，最后的结局真的不是随便去一个公司混日子，然后一直等待35岁的到来吗。都说人会触底反弹，每天在宿舍无所事事，敲着毫无作用的代码，没有一个项目能写进简历。都是一些简单的小demo或者小课设，有什么用啊！</p>
-<p>关于自己写下来的路该怎么走。先暂时这样吧：这一个星期一定学完计网可能有离散数学。接下来寒假一定不能水，先学CS61B和刷算法题，刷完之后寒假一定要注意一下大厂的春招提前批消息，无论能不能面得上（95%不可以）都一定要试一试，看看自己的水平到底如何，万一真的有机会出现呢。寒假的时候还需要考虑一下考研的问题，可以先接触一下408和英语，因为无论考不考研，408的知识和四六级还是要过的。如果可以的话，尝试的写一些项目（这里告诫一下之后的自己，不要写商城之类的水项目了）。如果可以可以把那个GRPC项目和仿QQ项目学一下。或者接着把CS系列的课程往下学。acwing基础班刷完并且开提高班，acwing的每日一题一定要跟。leetcode也要开始刷起来了。如果可以，寒假少熬夜吧。</p>
-<p>发布这篇文章的时候应该是20岁了吧，20年母胎solo，也要考虑一下自己的爱情问题了。希望自己看淡自己的身高，不要过度焦虑，相信自己一定可以找到属于自己的另一半，主动起来，无论是否有结果，一定要试一试才能成功，听了盛老师的爱情讲座，发现自己最缺的就是主动的勇气和社交。小学xxx，初中xxx，xxx，高中xx，xxx。大学xxx，xxx。相信自己，一定可以！</p>
-<p>来不及去超市买属于自己的生日蛋糕口味的奥利奥了，这次生日的感觉和高中那次晚上一人孤独吃生日蛋糕口味奥利奥的感觉是一样的。还是有很多人爱着我的呀，一定要乐观起来啊wr1sw，小学初中别人给你的印象就是乐观、幽默啊，一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！一定要乐观起来wr1sw！</p>
-]]></content>
-      <categories>
-        <category>总结</category>
-      </categories>
-      <tags>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>上天保佑</title>
-    <url>/2021/12/30/%E4%B8%8A%E5%A4%A9%E4%BF%9D%E4%BD%91/</url>
-    <content><![CDATA[<p><img src="1.png"></p>
-<p><img src="2.png"></p>
-<p><img src="3.png"></p>
-<p><img src="4.png"></p>
-<p><img src="5.png"></p>
-<p><img src="6.png"></p>
-<p><img src="7.png"></p>
-<p><img src="8.png"></p>
-<p><img src="9.png"></p>
-<p><img src="10.png"></p>
-<p><img src="11.png"></p>
-<p><img src="12.png"></p>
-<p><img src="13.png"></p>
-<p><img src="14.png"></p>
-<p><img src="15.png"></p>
-<p><img src="16.png"></p>
-<p><img src="17.png"></p>
-<p><img src="18.png"></p>
-<p><img src="19.png"></p>
-<p><img src="20.png"></p>
-<p><img src="21.png"></p>
-<p><img src="22.png"></p>
-<p><img src="23.png"></p>
-<p><img src="24.png"></p>
-<p><img src="25.png"></p>
-<p><img src="26.png"></p>
-<p><img src="27.png"></p>
-<p><img src="28.png"></p>
-<p><img src="29.png"></p>
-<p><img src="30.png"></p>
-<p><img src="31.png"></p>
-<p><img src="32.png"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>leetcode刷题日记</title>
-    <url>/2022/02/28/leetcode%E5%88%B7%E9%A2%98%E6%97%A5%E8%AE%B0/</url>
-    <content><![CDATA[<h5 id="day1"><a href="#day1" class="headerlink" title="day1"></a>day1</h5><p><a href="https://leetcode-cn.com/problems/binary-search/"> #704 二分查找</a></p>
-<p><a href="https://leetcode-cn.com/problems/search-insert-position/"> #35 搜索插入位置</a></p>
-<p><a href="https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/"> #34 在排序数组中查找元素的第一个和最后一个位置</a></p>
-<p><a href="https://leetcode-cn.com/problems/sqrtx/">#69 x 的平方根</a></p>
-<p><a href="https://leetcode-cn.com/problems/valid-perfect-square/">#367 有效的完全平方数</a></p>
-<p><a href="https://leetcode-cn.com/problems/remove-element/"> #27 移除元素</a></p>
-<p><a href="https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/">#26 删除有序数组中的重复项</a></p>
-<p><a href="https://leetcode-cn.com/problems/move-zeroes/"> #283 移动零</a></p>
-<p><a href="https://leetcode-cn.com/problems/backspace-string-compare/">#844 比较含退格的字符串</a></p>
-<h5 id="day2"><a href="#day2" class="headerlink" title="day2"></a>day2</h5><p><a href="https://leetcode-cn.com/problems/squares-of-a-sorted-array/">#977 有序数组的平方</a></p>
-<h5 id="day3"><a href="#day3" class="headerlink" title="day3"></a>day3</h5><p><a href="https://leetcode-cn.com/problems/minimum-size-subarray-sum/">#209 长度最小的子数组</a></p>
-<p><a href="https://leetcode-cn.com/problems/fruit-into-baskets/">#904 水果成篮</a></p>
-<h5 id="day4"><a href="#day4" class="headerlink" title="day4"></a>day4</h5><p><a href="https://leetcode-cn.com/problems/minimum-window-substring/"> #76 最小覆盖子串</a></p>
-<p><a href="https://leetcode-cn.com/problems/spiral-matrix-ii/"> #59 螺旋矩阵 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/spiral-matrix/">#54 螺旋矩阵</a></p>
-<p><a href="https://leetcode-cn.com/problems/remove-linked-list-elements/">#203 移除链表元素</a></p>
-<p><a href="https://leetcode-cn.com/problems/design-linked-list/">#707 设计链表</a></p>
-<p><a href="https://leetcode-cn.com/problems/reverse-linked-list/"> #206 反转链表</a></p>
-<h5 id="day5"><a href="#day5" class="headerlink" title="day5"></a>day5</h5><p><a href="https://leetcode-cn.com/problems/swap-nodes-in-pairs/">#24 两两交换链表中的节点</a></p>
-<p><a href="https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/">#19 删除链表的倒数第 N 个结点</a></p>
-<p><a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists-lcci/">#面试题 02.07 链表相交</a></p>
-<p><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/"> #142 环形链表 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/valid-anagram/">#242 有效的字母异位词</a></p>
-<p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays/">#349 两个数组的交集</a></p>
-<p><a href="https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/">#350 两个数组的交集 II</a></p>
-<h5 id="day6"><a href="#day6" class="headerlink" title="day6"></a>day6</h5><p><a href="https://leetcode-cn.com/problems/happy-number/">#202 快乐数</a></p>
-<p><a href="https://leetcode-cn.com/problems/two-sum/"> #1 两数之和</a></p>
-<p><a href="https://leetcode-cn.com/problems/4sum-ii/">#454 四数相加 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/ransom-note/">#383 赎金信</a></p>
-<p><a href="https://leetcode-cn.com/problems/3sum/"> #15 三数之和</a></p>
-<p><a href="https://leetcode-cn.com/problems/4sum/">#18 四数之和</a></p>
-<h5 id="day7"><a href="#day7" class="headerlink" title="day7"></a>day7</h5><p><a href="https://leetcode-cn.com/problems/reverse-string/">#344 反转字符串</a></p>
-<p><a href="https://leetcode-cn.com/problems/reverse-string-ii/">#541 反转字符串 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/"> #剑指 Offer 05 替换空格</a></p>
-<p><a href="https://leetcode-cn.com/problems/reverse-words-in-a-string/"> #151 翻转字符串里的单词</a></p>
-<p><a href="https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/">#剑指 Offer 58 - II 左旋转字符串</a></p>
-<p><a href="https://leetcode-cn.com/problems/implement-strstr/">#28 实现 strStr()</a></p>
-<h5 id="day8"><a href="#day8" class="headerlink" title="day8"></a>day8</h5><p><a href="https://leetcode-cn.com/problems/repeated-substring-pattern/">#459 重复的子字符串</a></p>
-<p><a href="https://leetcode-cn.com/problems/remove-element/"> #27 移除元素</a></p>
-<p><a href="https://leetcode-cn.com/problems/reverse-string/"> #344 反转字符串</a></p>
-<p><a href="https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/"> #剑指 Offer 05 替换空格</a></p>
-<p><a href="https://leetcode-cn.com/problems/reverse-words-in-a-string/">#151 颠倒字符串中的单词</a></p>
-<h5 id="day9"><a href="#day9" class="headerlink" title="day9"></a>day9</h5><p><a href="https://leetcode-cn.com/problems/implement-queue-using-stacks/"> #232 用栈实现队列</a></p>
-<p><a href="https://leetcode-cn.com/problems/implement-stack-using-queues/">#225 用队列实现栈</a></p>
-<p><a href="https://leetcode-cn.com/problems/valid-parentheses/">#20 有效的括号</a></p>
-<p><a href="https://leetcode-cn.com/problems/remove-all-adjacent-duplicates-in-string/">#1047 删除字符串中的所有相邻重复项</a></p>
-<p><a href="https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/"> #150 逆波兰表达式求值</a></p>
-<h5 id="day10"><a href="#day10" class="headerlink" title="day10"></a>day10</h5><p><a href="https://leetcode-cn.com/problems/sliding-window-maximum/">#239 滑动窗口最大值</a></p>
-<p><a href="https://leetcode-cn.com/problems/top-k-frequent-elements/">#347 前 K 个高频元素</a></p>
-<h5 id="day11"><a href="#day11" class="headerlink" title="day11"></a>day11</h5><p><a href="https://leetcode-cn.com/problems/binary-tree-preorder-traversal/">#144 二叉树的前序遍历</a></p>
-<p><a href="https://leetcode-cn.com/problems/binary-tree-postorder-traversal/"> #145 二叉树的后序遍历</a></p>
-<p><a href="https://leetcode-cn.com/problems/binary-tree-inorder-traversal/"> #94 二叉树的中序遍历</a></p>
-<p><a href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal/">#102 二叉树的层序遍历</a></p>
-<p><a href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/"> #107 二叉树的层序遍历 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/binary-tree-right-side-view/"> #199 二叉树的右视图</a></p>
-<p><a href="https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/"> #637 二叉树的层平均值</a></p>
-<p><a href="https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/"> #429 N 叉树的层序遍历</a></p>
-<p><a href="https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/"> #515 在每个树行中找最大值</a></p>
-<p><a href="https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/"> #116 填充每个节点的下一个右侧节点指针</a></p>
-<p><a href="https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/"> #117 填充每个节点的下一个右侧节点指</a></p>
-<p><a href="https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/"> #104 二叉树的最大深度</a></p>
-<h5 id="day12"><a href="#day12" class="headerlink" title="day12"></a>day12</h5><p><a href="https://leetcode-cn.com/problems/invert-binary-tree/">#226 翻转二叉树</a></p>
-<p><a href="https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/"> #589 N 叉树的前序遍历</a></p>
-<p><a href="https://leetcode-cn.com/problems/symmetric-tree/"> #101 对称二叉树</a></p>
-<p><a href="https://leetcode-cn.com/problems/maximum-depth-of-n-ary-tree/">#559 N 叉树的最大深度</a></p>
-<p><a href="https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/"> #111 二叉树的最小深度</a></p>
-<h5 id="day13"><a href="#day13" class="headerlink" title="day13"></a>day13</h5><p><a href="https://leetcode-cn.com/problems/count-complete-tree-nodes/">#222 完全二叉树的节点个数</a></p>
-<p><a href="https://leetcode-cn.com/problems/balanced-binary-tree/"> #110 平衡二叉树</a></p>
-<p><a href="https://leetcode-cn.com/problems/binary-tree-paths/">#257 二叉树的所有路径</a></p>
-<h5 id="day14"><a href="#day14" class="headerlink" title="day14"></a>day14</h5><p><a href="https://leetcode-cn.com/problems/same-tree/"> #100 相同的树</a></p>
-<p><a href="https://leetcode-cn.com/problems/subtree-of-another-tree/">#572 另一棵树的子树</a></p>
-<p><a href="https://leetcode-cn.com/problems/sum-of-left-leaves/"> #404 左叶子之和</a></p>
-<p><a href="https://leetcode-cn.com/problems/find-bottom-left-tree-value/">#513 找树左下角的值</a></p>
-<p><a href="https://leetcode-cn.com/problems/path-sum/"> #112 路径总和</a></p>
-<h5 id="day15"><a href="#day15" class="headerlink" title="day15"></a>day15</h5><p><a href="https://leetcode-cn.com/problems/path-sum-ii/"> #113 路径总和 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/"> #105 从前序与中序遍历序列构造二叉树</a></p>
-<p><a href="https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/"> #106 从中序与后序遍历序列构造二叉树</a></p>
-<p><a href="https://leetcode-cn.com/problems/maximum-binary-tree/"> #654 最大二叉树</a></p>
-<h5 id="day16"><a href="#day16" class="headerlink" title="day16"></a>day16</h5><p><a href="https://leetcode-cn.com/problems/merge-two-binary-trees/">#617 合并二叉树</a></p>
-<p><a href="https://leetcode-cn.com/problems/search-in-a-binary-search-tree/"> #700 二叉搜索树中的搜索</a></p>
-<p><a href="https://leetcode-cn.com/problems/validate-binary-search-tree/">#98 验证二叉搜索树</a></p>
-<p><a href="https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/"> #530 二叉搜索树的最小绝对差</a></p>
-<p><a href="https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/"> #501 二叉搜索树中的众数</a></p>
-<p><a href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/"> #236 二叉树的最近公共祖先</a></p>
-<h5 id="day17"><a href="#day17" class="headerlink" title="day17"></a>day17</h5><p><a href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/">#235 二叉搜索树的最近公共祖先</a></p>
-<p><a href="https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/">#701 二叉搜索树中的插入操作</a></p>
-<p><a href="https://leetcode-cn.com/problems/delete-node-in-a-bst/">#450 删除二叉搜索树中的节点</a></p>
-<h5 id="day18"><a href="#day18" class="headerlink" title="day18"></a>day18</h5><p><a href="https://leetcode-cn.com/problems/trim-a-binary-search-tree/"> #669 修剪二叉搜索树</a></p>
-<p><a href="https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/">#108 将有序数组转换为二叉搜索树</a></p>
-<p><a href="https://leetcode-cn.com/problems/convert-bst-to-greater-tree/"> #538 把二叉搜索树转换为累加树</a></p>
-<p><a href="https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/"> #590 N 叉树的后序遍历</a></p>
-<h5 id="day19"><a href="#day19" class="headerlink" title="day19"></a>day19</h5><p><a href="https://leetcode-cn.com/problems/combinations/"> #77 组合</a></p>
-<p><a href="https://leetcode-cn.com/problems/combination-sum-iii/"> #216 组合总和 III</a></p>
-<p><a href="https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/">#17 电话号码的字母组合</a></p>
-<h5 id="day20"><a href="#day20" class="headerlink" title="day20"></a>day20</h5><p><a href="https://leetcode-cn.com/problems/combination-sum/"> #39 组合总和</a></p>
-<p><a href="https://leetcode-cn.com/problems/combination-sum-ii/"> #40 组合总和 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/palindrome-partitioning/"> #131 分割回文串</a></p>
-<h5 id="day21"><a href="#day21" class="headerlink" title="day21"></a>day21</h5><p><a href="https://leetcode-cn.com/problems/restore-ip-addresses/"> #93 复原 IP 地址</a></p>
-<p><a href="https://leetcode-cn.com/problems/subsets/"> #78 子集</a></p>
-<p><a href="https://leetcode-cn.com/problems/subsets-ii/"> #90 子集 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/increasing-subsequences/"> #491 递增子序列</a></p>
-<p><a href="https://leetcode-cn.com/problems/permutations/"> #46 全排列</a></p>
-<h5 id="day22"><a href="#day22" class="headerlink" title="day22"></a>day22</h5><p><a href="https://leetcode-cn.com/problems/permutations-ii/"> #47 全排列 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/reconstruct-itinerary/"> #332 重新安排行程</a></p>
-<h5 id="day23"><a href="#day23" class="headerlink" title="day23"></a>day23</h5><p><a href="https://leetcode-cn.com/problems/n-queens/">#51 N 皇后</a></p>
-<p><a href="https://leetcode-cn.com/problems/sudoku-solver/">#37 解数独</a></p>
-<p><a href="https://leetcode-cn.com/problems/fibonacci-number/"> #509 斐波那契数</a></p>
-<p><a href="https://leetcode-cn.com/problems/climbing-stairs/"> #70 爬楼梯</a></p>
-<p><a href="https://leetcode-cn.com/problems/min-cost-climbing-stairs/"> #746 使用最小花费爬楼梯</a></p>
-<h5 id="day24"><a href="#day24" class="headerlink" title="day24"></a>day24</h5><p><a href="https://leetcode-cn.com/problems/unique-paths/"> #62 不同路径</a></p>
-<p><a href="https://leetcode-cn.com/problems/unique-paths-ii/"> #63 不同路径 II</a></p>
-<p><a href="https://leetcode-cn.com/problems/integer-break/"> #343 整数拆分</a></p>
-<p><a href="https://leetcode-cn.com/problems/unique-binary-search-trees/"> #96 不同的二叉搜索树</a></p>
-<p><a href="https://leetcode-cn.com/problems/partition-to-k-equal-sum-subsets/">#698 划分为k个相等的子集</a></p>
-]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>leetcode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>孤独</title>
     <url>/2021/10/21/%E5%AD%A4%E7%8B%AC/</url>
     <content><![CDATA[<h3 id="什么是孤独？"><a href="#什么是孤独？" class="headerlink" title="什么是孤独？"></a>什么是孤独？</h3><p>什么是孤独呢？可能就是离2021/10/22日还剩下3分钟了，而你还没回复我的消息；<br>-礼物已经买好，礼物已经送到，但是缺了一个主人。</p>
@@ -1627,6 +1627,11 @@
     <content><![CDATA[<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>纠结了很久，还是决定在你生日那天挣扎一下；估计你也能从一些空间的小细节能看出来吧；仔细想来，长那么大，第一次收到真正意义上的好人卡，感觉还是有点奇怪；<br>脸，会很热会热；心，真的会跳的蛮快的；脑子，确实是有那么一点点蒙蒙的感觉。可能，对这个结果早就预想到了，并没有多难受吧；刚才打开的是王道考研的视频，一直都没下定决心要不要考研。可能，这也是冥冥之中自有天意吧。</p>
 <p>有人在骗自己，听了一晚上房东的猫；有人在骗自己，她不玩qq了看不到信息；有人在骗自己，他并没有多难受；那只熊猫就让他在北京留着吧。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>老坛酸菜</title>
+    <url>/2021/10/23/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C/</url>
+    <content><![CDATA[<h4 id="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"><a href="#有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；" class="headerlink" title="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"></a>有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；</h4>]]></content>
   </entry>
   <entry>
     <title>英语作文模板</title>
@@ -1803,6 +1808,61 @@
         <tag>学习</tag>
         <tag>导航</tag>
         <tag>英语</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>计算机网络复习2</title>
+    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
+    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
+<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
+<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
+<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
+</ul>
+<p><img src="1.png"></p>
+<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
+<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
+</ul>
+<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
+<li>频分多路复用 FDM </li>
+<li>时分多路复用 TDM</li>
+<li>波分多路复用 WDM</li>
+<li>码分复用 CDMA</li>
+</ul>
+<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
+<li>常用于载波电话系统、电视等</li>
+</ul>
+<p><img src="2.png"></p>
+<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
+<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
+<li>按需分配媒体资源，提高了传输媒体的利用率</li>
+</ul>
+<p><img src="4.png"></p>
+<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
+<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
+<li>密集波分复用是一种支持巨大数量信道的系统</li>
+<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
+</ul>
+<p><img src="5.png"></p>
+<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
+<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
+<ul>
+<li>数据分为：模拟数据和数字数据</li>
+<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
+<li>数字数据：只能取离散数值的数据</li>
+<li>信号分为：模拟信号和数字信号</li>
+<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
+</ul>
+<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
+<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
+<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>导航</tag>
+        <tag>计算机网络</tag>
       </tags>
   </entry>
   <entry>
@@ -2241,66 +2301,6 @@
       <tags>
         <tag>导航</tag>
         <tag>分享</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>老坛酸菜</title>
-    <url>/2021/10/23/%E8%80%81%E5%9D%9B%E9%85%B8%E8%8F%9C/</url>
-    <content><![CDATA[<h4 id="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"><a href="#有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；" class="headerlink" title="有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；"></a>有感个鸡毛，什么都没听；吃了一个会议的酸菜，聊你妈聊你妈聊你妈聊你妈；</h4>]]></content>
-  </entry>
-  <entry>
-    <title>计算机网络复习2</title>
-    <url>/2021/12/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A02/</url>
-    <content><![CDATA[<h3 id="2-3-传输媒体的类型"><a href="#2-3-传输媒体的类型" class="headerlink" title="2.3 传输媒体的类型"></a>2.3 传输媒体的类型</h3><ul>
-<li>传输媒体可分为两大类：<strong>导引型传输媒体</strong>和<strong>非导引型传输媒体</strong></li>
-<li>在导引型传播媒体中，电磁波被导引沿着固体媒介（铜线或光纤）传播</li>
-<li>非导引型传输媒体就是指自由空间。在非导引型传输媒体中，电磁波传输常称为无线传输</li>
-</ul>
-<p><img src="1.png"></p>
-<h3 id="2-4-频分复用、时分复用、和统计时分复用"><a href="#2-4-频分复用、时分复用、和统计时分复用" class="headerlink" title="2.4 频分复用、时分复用、和统计时分复用"></a>2.4 频分复用、时分复用、和统计时分复用</h3><ul>
-<li>多路复用技术：由于一条传输线路的能力远远超过传输一个用户信号所需的能力，为了提高线路利用率，经常让多个信号同时共用一条物理线路。</li>
-</ul>
-<h4 id="常用的多路复用技术："><a href="#常用的多路复用技术：" class="headerlink" title="常用的多路复用技术："></a>常用的多路复用技术：</h4><ul>
-<li>频分多路复用 FDM </li>
-<li>时分多路复用 TDM</li>
-<li>波分多路复用 WDM</li>
-<li>码分复用 CDMA</li>
-</ul>
-<h5 id="频分复用"><a href="#频分复用" class="headerlink" title="频分复用"></a>频分复用</h5><ul>
-<li>常用于载波电话系统、电视等</li>
-</ul>
-<p><img src="2.png"></p>
-<h5 id="时分复用"><a href="#时分复用" class="headerlink" title="时分复用"></a>时分复用</h5><p><img src="3.png"></p>
-<h5 id="统计时分复用"><a href="#统计时分复用" class="headerlink" title="统计时分复用"></a>统计时分复用</h5><ul>
-<li>按需分配媒体资源，提高了传输媒体的利用率</li>
-</ul>
-<p><img src="4.png"></p>
-<h5 id="波分复用"><a href="#波分复用" class="headerlink" title="波分复用"></a>波分复用</h5><ul>
-<li><strong>波分复用就是光的频分复用</strong>，即在一根光纤上传输多路光载波信号</li>
-<li>密集波分复用是一种支持巨大数量信道的系统</li>
-<li>波分复用技术可以进一步提高光纤的传输容量，满足通信需求量的迅速增长和多媒体通信</li>
-</ul>
-<p><img src="5.png"></p>
-<h5 id="码分复用"><a href="#码分复用" class="headerlink" title="码分复用"></a>码分复用</h5><p><img src="6.png"></p>
-<h3 id="数字传输系统"><a href="#数字传输系统" class="headerlink" title="数字传输系统"></a>数字传输系统</h3><p>数据和信号</p>
-<ul>
-<li>数据分为：模拟数据和数字数据</li>
-<li>模拟数据：在一定的数据区间内可连续取值的数据，即连续变化的数据</li>
-<li>数字数据：只能取离散数值的数据</li>
-<li>信号分为：模拟信号和数字信号</li>
-<li>信号发送方式：模拟信号发送（模拟信道）和数字信号发送（数字信道）</li>
-</ul>
-<h4 id="模拟传输"><a href="#模拟传输" class="headerlink" title="模拟传输"></a>模拟传输</h4><p><img src="7.png"></p>
-<p>调制：利用调制信号对载波信号进行调制，使载波信号的某些量随调制信号的规律变化的过程</p>
-<h4 id="数字传输"><a href="#数字传输" class="headerlink" title="数字传输"></a>数字传输</h4><p><img src="8.png"></p>
-]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>导航</tag>
-        <tag>计算机网络</tag>
       </tags>
   </entry>
   <entry>
