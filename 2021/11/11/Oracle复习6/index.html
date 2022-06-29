@@ -1,26 +1,22 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":320,"display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
-
-  <meta name="description" content="数据查询与事务控制——SELECT进阶高级查询、连接查询、分组查询、子查询、限制查询">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wr1sw">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="数据查询与事务控制——SELECT进阶高级查询、连接查询、分组查询、子查询、限制查询">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle复习6">
 <meta property="og:url" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A06/index.html">
@@ -43,280 +39,294 @@
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="导航">
 <meta property="article:tag" content="Oracle">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A06/1-1.png">
+  
+  
+  
+  <title>Oracle复习6 - wr1sw</title>
 
-<link rel="canonical" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A06/">
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>Oracle复习6 | wr1sw</title>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
   
 
 
 
 
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
 
 
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
 
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
+<body>
+  
 
-</head>
+  <header>
+    
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">wr1sw</h1>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
     </a>
-      <p class="site-subtitle" itemprop="description">wr1sw</p>
-  </div>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
   </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a>
-
-  </li>
-        <li class="menu-item menu-item-schedule">
-
-    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
-
-  </li>
-        <li class="menu-item menu-item-sitemap">
-
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
-
-  </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
 </nav>
 
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</div>
-    </header>
-
-    
-
-  <a href="https://github.com/wr1sw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
   
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A06/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="wr1sw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wr1sw">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Oracle复习6
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-11-11 18:49:21 / 修改时间：21:55:37" itemprop="dateCreated datePublished" datetime="2021-11-11T18:49:21+08:00">2021-11-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
-                </span>
-            </span>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-            <div class="post-description">数据查询与事务控制——SELECT进阶高级查询、连接查询、分组查询、子查询、限制查询</div>
-
+            <span id="subtitle" data-typed-text="Oracle复习6"></span>
+          
         </div>
-      </header>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-11 18:49" pubdate>
+          2021年11月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          34 分钟
+        
+      </span>
+    
 
     
     
-    
-    <div class="post-body" itemprop="articleBody">
+  </div>
+
+
+        
+      </div>
 
       
-        <h3 id="连接查询"><a href="#连接查询" class="headerlink" title="连接查询"></a>连接查询</h3><h4 id="相等连接"><a href="#相等连接" class="headerlink" title="相等连接"></a>相等连接</h4><p><img src="1-1.png"></p>
-<h4 id="不相等连接"><a href="#不相等连接" class="headerlink" title="不相等连接"></a>不相等连接</h4><p><img src="1-2.png"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> 	<span class="keyword">SELECT</span> 	e.ename, e.sal, s.grade</span><br><span class="line">   <span class="number">2</span>	<span class="keyword">FROM</span>	emp e, salgrade s</span><br><span class="line">   <span class="number">3</span>	<span class="keyword">WHERE</span> 	e.sal</span><br><span class="line">   <span class="number">4</span>	<span class="keyword">BETWEEN</span> 	s.losal <span class="keyword">AND</span> s.hisal;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ENAME            SAL     GRADE</span><br><span class="line"><span class="comment">---------- --------- ---------</span></span><br><span class="line">JAMES            <span class="number">950</span>         <span class="number">1</span></span><br><span class="line">SMITH            <span class="number">800</span>         <span class="number">1</span></span><br><span class="line">ADAMS           <span class="number">1100</span>         <span class="number">1</span></span><br><span class="line">...</span><br><span class="line"><span class="number">14</span> <span class="keyword">rows</span> selected.</span><br></pre></td></tr></table></figure>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Oracle复习6</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="连接查询"><a href="#连接查询" class="headerlink" title="连接查询"></a>连接查询</h3><h4 id="相等连接"><a href="#相等连接" class="headerlink" title="相等连接"></a>相等连接</h4><p><img src="1-1.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="不相等连接"><a href="#不相等连接" class="headerlink" title="不相等连接"></a>不相等连接</h4><p><img src="1-2.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> 	<span class="hljs-keyword">SELECT</span> 	e.ename, e.sal, s.grade<br>   <span class="hljs-number">2</span>	<span class="hljs-keyword">FROM</span>	emp e, salgrade s<br>   <span class="hljs-number">3</span>	<span class="hljs-keyword">WHERE</span> 	e.sal<br>   <span class="hljs-number">4</span>	<span class="hljs-keyword">BETWEEN</span> 	s.losal <span class="hljs-keyword">AND</span> s.hisal;<br><br><br>ENAME            SAL     GRADE<br><span class="hljs-comment">---------- --------- ---------</span><br>JAMES            <span class="hljs-number">950</span>         <span class="hljs-number">1</span><br>SMITH            <span class="hljs-number">800</span>         <span class="hljs-number">1</span><br>ADAMS           <span class="hljs-number">1100</span>         <span class="hljs-number">1</span><br>...<br><span class="hljs-number">14</span> <span class="hljs-keyword">rows</span> selected.<br></code></pre></td></tr></table></figure>
 
 <h4 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h4><ul>
 <li><strong>外连接</strong>(Outer Joins) —是对简单联接的扩充，它返回简单联接所返回的全部行，而且还返回一表中不与另一表的行相匹配的行</li>
 </ul>
-<p><img src="1-3.png"></p>
+<p><img src="1-3.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>外连接操作符时(+)加号（表示在该表中加入一个空行来与没有直接匹配行的数据进行匹配）</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>	table.column, table.column</span><br><span class="line"><span class="keyword">FROM</span>	table1, table2</span><br><span class="line"><span class="keyword">WHERE</span>	table1.column(<span class="operator">+</span>) <span class="operator">=</span> table2.column;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span>	table.column, table.column</span><br><span class="line"><span class="keyword">FROM</span>	table1, table2</span><br><span class="line"><span class="keyword">WHERE</span>	table1.column <span class="operator">=</span> table2.column(<span class="operator">+</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>	table.column, table.column<br><span class="hljs-keyword">FROM</span>	table1, table2<br><span class="hljs-keyword">WHERE</span>	table1.column(<span class="hljs-operator">+</span>) <span class="hljs-operator">=</span> table2.column;<br><br><br><span class="hljs-keyword">SELECT</span>	table.column, table.column<br><span class="hljs-keyword">FROM</span>	table1, table2<br><span class="hljs-keyword">WHERE</span>	table1.column <span class="hljs-operator">=</span> table2.column(<span class="hljs-operator">+</span>);<br></code></pre></td></tr></table></figure>
 
 <p><strong>查询每个部门包括的雇员，如某部门没雇员，也要显示其情况。要求显示部门名称，雇员名字</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>	e.ename, d.deptno, d.dname</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>	emp e, dept d</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">WHERE</span>	e.deptno(<span class="operator">+</span>) <span class="operator">=</span> d.deptno</span><br><span class="line">  <span class="number">4</span>  <span class="keyword">ORDER</span> <span class="keyword">BY</span>	e.deptno;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ENAME         DEPTNO DNAME</span><br><span class="line"><span class="comment">---------- --------- -------------</span></span><br><span class="line">KING              <span class="number">10</span> ACCOUNTING</span><br><span class="line">CLARK             <span class="number">10</span> ACCOUNTING</span><br><span class="line">...</span><br><span class="line">                  <span class="number">40</span> OPERATIONS</span><br><span class="line"><span class="number">15</span> <span class="keyword">rows</span> selected.</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span>	e.ename, d.deptno, d.dname<br>  <span class="hljs-number">2</span>  <span class="hljs-keyword">FROM</span>	emp e, dept d<br>  <span class="hljs-number">3</span>  <span class="hljs-keyword">WHERE</span>	e.deptno(<span class="hljs-operator">+</span>) <span class="hljs-operator">=</span> d.deptno<br>  <span class="hljs-number">4</span>  <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span>	e.deptno;<br><br><br>ENAME         DEPTNO DNAME<br><span class="hljs-comment">---------- --------- -------------</span><br>KING              <span class="hljs-number">10</span> ACCOUNTING<br>CLARK             <span class="hljs-number">10</span> ACCOUNTING<br>...<br>                  <span class="hljs-number">40</span> OPERATIONS<br><span class="hljs-number">15</span> <span class="hljs-keyword">rows</span> selected.<br></code></pre></td></tr></table></figure>
 
-<h4 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h4><p><img src="1-4.png"></p>
+<h4 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h4><p><img src="1-4.png" srcset="/img/loading.gif" lazyload></p>
 <ul>
 <li>查询每个有上级的员工的姓名，及其上级员工的姓名</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> worker.ename<span class="operator">||</span><span class="string">&#x27; works for &#x27;</span><span class="operator">||</span>manager.ename</span><br><span class="line">    <span class="keyword">FROM</span> 	emp worker, emp manager</span><br><span class="line">    <span class="keyword">WHERE</span> 	worker.mgr <span class="operator">=</span> manager.empno;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">WORKER.ENAME<span class="operator">||</span><span class="string">&#x27;WORKSFOR&#x27;</span><span class="operator">||</span>MANAG</span><br><span class="line"><span class="comment">-------------------------------</span></span><br><span class="line">BLAKE works <span class="keyword">for</span> KING</span><br><span class="line">CLARK works <span class="keyword">for</span> KING</span><br><span class="line">JONES works <span class="keyword">for</span> KING</span><br><span class="line">MARTIN works <span class="keyword">for</span> BLAKE</span><br><span class="line">...</span><br><span class="line"><span class="number">13</span> <span class="keyword">rows</span> selected.</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> worker.ename<span class="hljs-operator">||</span><span class="hljs-string">&#x27; works for &#x27;</span><span class="hljs-operator">||</span>manager.ename<br>    <span class="hljs-keyword">FROM</span> 	emp worker, emp manager<br>    <span class="hljs-keyword">WHERE</span> 	worker.mgr <span class="hljs-operator">=</span> manager.empno;<br><br><br>WORKER.ENAME<span class="hljs-operator">||</span><span class="hljs-string">&#x27;WORKSFOR&#x27;</span><span class="hljs-operator">||</span>MANAG<br><span class="hljs-comment">-------------------------------</span><br>BLAKE works <span class="hljs-keyword">for</span> KING<br>CLARK works <span class="hljs-keyword">for</span> KING<br>JONES works <span class="hljs-keyword">for</span> KING<br>MARTIN works <span class="hljs-keyword">for</span> BLAKE<br>...<br><span class="hljs-number">13</span> <span class="hljs-keyword">rows</span> selected.<br></code></pre></td></tr></table></figure>
 
 <h4 id="递归查询-树查询"><a href="#递归查询-树查询" class="headerlink" title="递归查询(树查询)"></a>递归查询(树查询)</h4><ul>
 <li><p>语法：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [LEVEL], <span class="keyword">column</span>, expr...</span><br><span class="line"><span class="keyword">FROM</span> <span class="keyword">table</span></span><br><span class="line">[<span class="keyword">WHERE</span> <span class="keyword">condition</span>(s)]</span><br><span class="line">[<span class="keyword">START</span> <span class="keyword">WITH</span> <span class="keyword">condition</span>(s)]</span><br><span class="line">[<span class="keyword">CONNECT</span> <span class="keyword">BY</span> PRIOR <span class="keyword">condition</span>(s)]</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> [LEVEL], <span class="hljs-keyword">column</span>, expr...<br><span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span><br>[<span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">condition</span>(s)]<br>[<span class="hljs-keyword">START</span> <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">condition</span>(s)]<br>[<span class="hljs-keyword">CONNECT</span> <span class="hljs-keyword">BY</span> PRIOR <span class="hljs-keyword">condition</span>(s)]<br></code></pre></td></tr></table></figure></li>
 <li><p>根据员工的管辖关系，显示员工的上下级关系树</p>
 </li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> lpad(ename,length(ename)<span class="operator">+</span>(level<span class="number">-1</span>)<span class="operator">*</span><span class="number">3</span>,<span class="string">&#x27;-&#x27;</span>) employee,level</span><br><span class="line"><span class="keyword">FROM</span> emp</span><br><span class="line"><span class="keyword">START</span> <span class="keyword">WITH</span> ename <span class="operator">=</span> <span class="string">&#x27;KING&#x27;</span></span><br><span class="line"><span class="keyword">CONNECT</span> <span class="keyword">BY</span> PRIOR empno <span class="operator">=</span> mgr;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> lpad(ename,length(ename)<span class="hljs-operator">+</span>(level<span class="hljs-number">-1</span>)<span class="hljs-operator">*</span><span class="hljs-number">3</span>,<span class="hljs-string">&#x27;-&#x27;</span>) employee,level<br><span class="hljs-keyword">FROM</span> emp<br><span class="hljs-keyword">START</span> <span class="hljs-keyword">WITH</span> ename <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;KING&#x27;</span><br><span class="hljs-keyword">CONNECT</span> <span class="hljs-keyword">BY</span> PRIOR empno <span class="hljs-operator">=</span> mgr;<br></code></pre></td></tr></table></figure>
 
-<p><img src="1-5.png"></p>
+<p><img src="1-5.png" srcset="/img/loading.gif" lazyload></p>
 <p><font color="#dd0000">PRIOR位置决定查子树还是回溯</font><br/></p>
 <ul>
 <li>查询员工JONES的所有下属员工</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> empno,ename,level</span><br><span class="line"><span class="keyword">FROM</span> emp</span><br><span class="line"><span class="keyword">START</span> <span class="keyword">WITH</span> ename <span class="operator">=</span> <span class="string">&#x27;JONES&#x27;</span></span><br><span class="line"><span class="keyword">CONNECT</span> <span class="keyword">BY</span> PRIOR empno <span class="operator">=</span> mgr</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empno,ename,level<br><span class="hljs-keyword">FROM</span> emp<br><span class="hljs-keyword">START</span> <span class="hljs-keyword">WITH</span> ename <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;JONES&#x27;</span><br><span class="hljs-keyword">CONNECT</span> <span class="hljs-keyword">BY</span> PRIOR empno <span class="hljs-operator">=</span> mgr<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>查询员工JONES的所有上级员工</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> empno, ename,level</span><br><span class="line"><span class="keyword">FROM</span> emp</span><br><span class="line"><span class="keyword">START</span> <span class="keyword">WITH</span> ename <span class="operator">=</span> <span class="string">&#x27;JONES&#x27;</span></span><br><span class="line"><span class="keyword">CONNECT</span> <span class="keyword">BY</span> empno <span class="operator">=</span> PRIOR  mgr;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> empno, ename,level<br><span class="hljs-keyword">FROM</span> emp<br><span class="hljs-keyword">START</span> <span class="hljs-keyword">WITH</span> ename <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;JONES&#x27;</span><br><span class="hljs-keyword">CONNECT</span> <span class="hljs-keyword">BY</span> empno <span class="hljs-operator">=</span> PRIOR  mgr;<br></code></pre></td></tr></table></figure>
 
 <h3 id="分组函数"><a href="#分组函数" class="headerlink" title="分组函数"></a>分组函数</h3><ul>
 <li><p>分组函数(Group Functions)：对多行进行操作，并为每一组给出一个结果。</p>
@@ -324,48 +334,48 @@
 <li><p>语法</p>
 </li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>	[<span class="keyword">column</span>,] group_function(<span class="keyword">column</span>), ...</span><br><span class="line"><span class="keyword">FROM</span>		<span class="keyword">table</span></span><br><span class="line">[<span class="keyword">WHERE</span>	<span class="keyword">condition</span>]</span><br><span class="line">[<span class="keyword">GROUP</span> <span class="keyword">BY</span>	<span class="keyword">column</span>]</span><br><span class="line">[<span class="keyword">ORDER</span> <span class="keyword">BY</span>	<span class="keyword">column</span>];</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>	[<span class="hljs-keyword">column</span>,] group_function(<span class="hljs-keyword">column</span>), ...<br><span class="hljs-keyword">FROM</span>		<span class="hljs-keyword">table</span><br>[<span class="hljs-keyword">WHERE</span>	<span class="hljs-keyword">condition</span>]<br>[<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span>	<span class="hljs-keyword">column</span>]<br>[<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span>	<span class="hljs-keyword">column</span>];<br></code></pre></td></tr></table></figure>
 
-<p><img src="1-6.png"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(sal), <span class="built_in">MAX</span>(sal), <span class="built_in">MIN</span>(sal), <span class="built_in">SUM</span>(sal)	<span class="keyword">FROM</span>	emp</span><br><span class="line">	<span class="keyword">WHERE</span> job <span class="keyword">LIKE</span> <span class="string">&#x27;SALES%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(comm), <span class="built_in">MAX</span>(comm), <span class="built_in">MIN</span>(comm), <span class="built_in">SUM</span>(comm) <span class="keyword">FROM</span> emp;</span><br><span class="line">	<span class="comment">--WHERE job LIKE &#x27;SALES%&#x27;;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- AVG, MAX, MIN, SUM在计算时会忽略NULL行</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(comm), <span class="built_in">MAX</span>(comm), <span class="built_in">MIN</span>(comm), <span class="built_in">SUM</span>(comm)	<span class="keyword">FROM</span>	emp </span><br><span class="line"> <span class="keyword">WHERE</span> job <span class="keyword">NOT</span> <span class="keyword">LIKE</span> <span class="string">&#x27;SALES%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- AVG, MAX, MIN, SUM在全为NULL时计算结果为NULL</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">MIN</span>(hiredate), <span class="built_in">MAX</span>(hiredate)  <span class="keyword">FROM</span> emp;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="1-6.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(sal), <span class="hljs-built_in">MAX</span>(sal), <span class="hljs-built_in">MIN</span>(sal), <span class="hljs-built_in">SUM</span>(sal)	<span class="hljs-keyword">FROM</span>	emp<br>	<span class="hljs-keyword">WHERE</span> job <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;SALES%&#x27;</span>;<br><br><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(comm), <span class="hljs-built_in">MAX</span>(comm), <span class="hljs-built_in">MIN</span>(comm), <span class="hljs-built_in">SUM</span>(comm) <span class="hljs-keyword">FROM</span> emp;<br>	<span class="hljs-comment">--WHERE job LIKE &#x27;SALES%&#x27;;</span><br><br><span class="hljs-comment">-- AVG, MAX, MIN, SUM在计算时会忽略NULL行</span><br><br><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(comm), <span class="hljs-built_in">MAX</span>(comm), <span class="hljs-built_in">MIN</span>(comm), <span class="hljs-built_in">SUM</span>(comm)	<span class="hljs-keyword">FROM</span>	emp <br> <span class="hljs-keyword">WHERE</span> job <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;SALES%&#x27;</span>;<br><br><span class="hljs-comment">-- AVG, MAX, MIN, SUM在全为NULL时计算结果为NULL</span><br><br><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MIN</span>(hiredate), <span class="hljs-built_in">MAX</span>(hiredate)  <span class="hljs-keyword">FROM</span> emp;<br><br><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><strong>COUNT(*)</strong> <strong>返回表中所有行</strong></li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>	<span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line">  <span class="keyword">FROM</span>	emp</span><br><span class="line">  <span class="keyword">WHERE</span>	deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line">  </span><br><span class="line">   <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="comment">---------</span></span><br><span class="line">        <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>	<span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<br>  <span class="hljs-keyword">FROM</span>	emp<br>  <span class="hljs-keyword">WHERE</span>	deptno <span class="hljs-operator">=</span> <span class="hljs-number">30</span>;<br>  <br>   <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<br><span class="hljs-comment">---------</span><br>        <span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>COUNT(expr)返回表中指定列的非NULL行数</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>	<span class="built_in">COUNT</span>(comm)</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>	emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">WHERE</span>	deptno <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">COUNT</span>(COMM)</span><br><span class="line"><span class="comment">-----------</span></span><br><span class="line">          <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span>	<span class="hljs-built_in">COUNT</span>(comm)<br>  <span class="hljs-number">2</span>  <span class="hljs-keyword">FROM</span>	emp<br>  <span class="hljs-number">3</span>  <span class="hljs-keyword">WHERE</span>	deptno <span class="hljs-operator">=</span> <span class="hljs-number">30</span>;<br><br><span class="hljs-built_in">COUNT</span>(COMM)<br><span class="hljs-comment">-----------</span><br>          <span class="hljs-number">4</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="数据分组"><a href="#数据分组" class="headerlink" title="数据分组"></a>数据分组</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用GROUP BY子句将表中的行划分成小组</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>   deptno, <span class="built_in">AVG</span>(sal)</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>     emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">GROUP</span> <span class="keyword">BY</span> deptno;</span><br><span class="line">  </span><br><span class="line">  DEPTNO  <span class="built_in">AVG</span>(SAL)</span><br><span class="line"><span class="comment">--------- ---------</span></span><br><span class="line">       <span class="number">10</span> <span class="number">2916.6667</span></span><br><span class="line">       <span class="number">20</span>      <span class="number">2175</span></span><br><span class="line">       <span class="number">30</span> <span class="number">1566.6667</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据分组"><a href="#数据分组" class="headerlink" title="数据分组"></a>数据分组</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 使用GROUP BY子句将表中的行划分成小组</span><br><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span>   deptno, <span class="hljs-built_in">AVG</span>(sal)<br>  <span class="hljs-number">2</span>  <span class="hljs-keyword">FROM</span>     emp<br>  <span class="hljs-number">3</span>  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> deptno;<br>  <br>  DEPTNO  <span class="hljs-built_in">AVG</span>(SAL)<br><span class="hljs-comment">--------- ---------</span><br>       <span class="hljs-number">10</span> <span class="hljs-number">2916.6667</span><br>       <span class="hljs-number">20</span>      <span class="hljs-number">2175</span><br>       <span class="hljs-number">30</span> <span class="hljs-number">1566.6667</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 多列分组</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>   deptno, job, <span class="built_in">sum</span>(sal)</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>     emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">GROUP</span> <span class="keyword">BY</span> deptno, job;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">     DEPTNO JOB        <span class="built_in">SUM</span>(SAL)</span><br><span class="line"><span class="comment">--------- --------- ---------</span></span><br><span class="line">       <span class="number">10</span> CLERK          <span class="number">1300</span></span><br><span class="line">       <span class="number">10</span> MANAGER        <span class="number">2450</span></span><br><span class="line">       <span class="number">10</span> PRESIDENT      <span class="number">5000</span></span><br><span class="line">       <span class="number">20</span> ANALYST        <span class="number">6000</span></span><br><span class="line">       <span class="number">20</span> CLERK          <span class="number">1900</span></span><br><span class="line">...</span><br><span class="line"><span class="number">9</span> <span class="keyword">rows</span> selected.</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 多列分组</span><br><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span>   deptno, job, <span class="hljs-built_in">sum</span>(sal)<br>  <span class="hljs-number">2</span>  <span class="hljs-keyword">FROM</span>     emp<br>  <span class="hljs-number">3</span>  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> deptno, job;<br>  <br>  <br>     DEPTNO JOB        <span class="hljs-built_in">SUM</span>(SAL)<br><span class="hljs-comment">--------- --------- ---------</span><br>       <span class="hljs-number">10</span> CLERK          <span class="hljs-number">1300</span><br>       <span class="hljs-number">10</span> MANAGER        <span class="hljs-number">2450</span><br>       <span class="hljs-number">10</span> PRESIDENT      <span class="hljs-number">5000</span><br>       <span class="hljs-number">20</span> ANALYST        <span class="hljs-number">6000</span><br>       <span class="hljs-number">20</span> CLERK          <span class="hljs-number">1900</span><br>...<br><span class="hljs-number">9</span> <span class="hljs-keyword">rows</span> selected.<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> (<span class="keyword">SELECT</span> DNAME <span class="keyword">FROM</span> DEPT <span class="keyword">WHERE</span> DEPTNO<span class="operator">=</span>EMP.DEPTNO),</span><br><span class="line"><span class="built_in">COUNT</span>(EMPNO) <span class="keyword">FROM</span> EMP</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> DEPTNO;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">SELECT</span> D.C,DEPT.<span class="operator">*</span> <span class="keyword">FROM</span></span><br><span class="line">(<span class="keyword">SELECT</span> DEPTNO,<span class="built_in">COUNT</span>(EMPNO) C <span class="keyword">FROM</span> EMP</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> DEPTNO) D,DEPT </span><br><span class="line"><span class="keyword">WHERE</span> D.DEPTNO(<span class="operator">+</span>)<span class="operator">=</span>DEPT.DEPTNO;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> (<span class="hljs-keyword">SELECT</span> DNAME <span class="hljs-keyword">FROM</span> DEPT <span class="hljs-keyword">WHERE</span> DEPTNO<span class="hljs-operator">=</span>EMP.DEPTNO),<br><span class="hljs-built_in">COUNT</span>(EMPNO) <span class="hljs-keyword">FROM</span> EMP<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> DEPTNO;<br> <br><span class="hljs-keyword">SELECT</span> D.C,DEPT.<span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span><br>(<span class="hljs-keyword">SELECT</span> DEPTNO,<span class="hljs-built_in">COUNT</span>(EMPNO) C <span class="hljs-keyword">FROM</span> EMP<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> DEPTNO) D,DEPT <br><span class="hljs-keyword">WHERE</span> D.DEPTNO(<span class="hljs-operator">+</span>)<span class="hljs-operator">=</span>DEPT.DEPTNO;<br></code></pre></td></tr></table></figure>
 
-<h3 id="限制选择组-HAVING子句"><a href="#限制选择组-HAVING子句" class="headerlink" title="限制选择组(HAVING子句)"></a>限制选择组(HAVING子句)</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>   deptno, <span class="built_in">max</span>(sal)</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>     emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">GROUP</span> <span class="keyword">BY</span> deptno</span><br><span class="line">  <span class="number">4</span>  <span class="keyword">HAVING</span>   <span class="built_in">max</span>(sal)<span class="operator">&gt;</span><span class="number">2900</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="限制选择组-HAVING子句"><a href="#限制选择组-HAVING子句" class="headerlink" title="限制选择组(HAVING子句)"></a>限制选择组(HAVING子句)</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span>   deptno, <span class="hljs-built_in">max</span>(sal)<br>  <span class="hljs-number">2</span>  <span class="hljs-keyword">FROM</span>     emp<br>  <span class="hljs-number">3</span>  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> deptno<br>  <span class="hljs-number">4</span>  <span class="hljs-keyword">HAVING</span>   <span class="hljs-built_in">max</span>(sal)<span class="hljs-operator">&gt;</span><span class="hljs-number">2900</span>;<br><br></code></pre></td></tr></table></figure>
 
 <p>非法使用分组函数</p>
 <ul>
 <li><p>非法使用分组函数，使用组函数必须使用GROUP BY 子句</p>
 <ul>
-<li><img src="1-7.png"></li>
+<li><img src="1-7.png" srcset="/img/loading.gif" lazyload></li>
 </ul>
 </li>
 <li><p>在WHERE子句中不能直接使用组函数。</p>
 </li>
 <li><p>在HAVING子句中可以直接使用组函数</p>
 <ul>
-<li><img src="1-8.png"></li>
+<li><img src="1-8.png" srcset="/img/loading.gif" lazyload></li>
 </ul>
 </li>
 </ul>
 <h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><ul>
 <li>语法</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>	select_list</span><br><span class="line"><span class="keyword">FROM</span>	<span class="keyword">table</span></span><br><span class="line"><span class="keyword">WHERE</span>	expr operator</span><br><span class="line">		 	(<span class="keyword">SELECT</span>	select_list</span><br><span class="line">		       <span class="keyword">FROM</span>		<span class="keyword">table</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>	select_list<br><span class="hljs-keyword">FROM</span>	<span class="hljs-keyword">table</span><br><span class="hljs-keyword">WHERE</span>	expr operator<br>		 	(<span class="hljs-keyword">SELECT</span>	select_list<br>		       <span class="hljs-keyword">FROM</span>		<span class="hljs-keyword">table</span>);<br></code></pre></td></tr></table></figure>
 
 
 
@@ -373,7 +383,7 @@
 <li>子查询（内部查询）在主查询之前执行。</li>
 <li>子查询的查询结果提供给主查询(外部查询)使用。</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span> ename</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>   emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">WHERE</span>  sal <span class="operator">&gt;</span> </span><br><span class="line">  <span class="number">4</span>		    (<span class="keyword">SELECT</span> sal</span><br><span class="line">  <span class="number">5</span>               <span class="keyword">FROM</span>   emp</span><br><span class="line">  <span class="number">6</span>               <span class="keyword">WHERE</span>  empno<span class="operator">=</span><span class="number">7566</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ENAME</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">KING</span><br><span class="line">FORD</span><br><span class="line">SCOTT</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> ename<br>  <span class="hljs-number">2</span>  <span class="hljs-keyword">FROM</span>   emp<br>  <span class="hljs-number">3</span>  <span class="hljs-keyword">WHERE</span>  sal <span class="hljs-operator">&gt;</span> <br>  <span class="hljs-number">4</span>		    (<span class="hljs-keyword">SELECT</span> sal<br>  <span class="hljs-number">5</span>               <span class="hljs-keyword">FROM</span>   emp<br>  <span class="hljs-number">6</span>               <span class="hljs-keyword">WHERE</span>  empno<span class="hljs-operator">=</span><span class="hljs-number">7566</span>);<br><br><br>ENAME<br><span class="hljs-comment">----------</span><br>KING<br>FORD<br>SCOTT<br></code></pre></td></tr></table></figure>
 
 <h5 id="子查询使用原则"><a href="#子查询使用原则" class="headerlink" title="子查询使用原则"></a>子查询使用原则</h5><ol>
 <li>子查询应该封装在括号内</li>
@@ -381,253 +391,355 @@
 <li>子查询中一般不使用ORDER BY子句。</li>
 <li>单行子查询使用单行操作符，多行子查询使用多行操作符</li>
 </ol>
-<h5 id="单行子查询"><a href="#单行子查询" class="headerlink" title="单行子查询"></a>单行子查询</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">SELECT</span>	deptno, <span class="built_in">MIN</span>(sal)</span><br><span class="line">  <span class="number">2</span>  <span class="keyword">FROM</span>	emp</span><br><span class="line">  <span class="number">3</span>  <span class="keyword">GROUP</span> <span class="keyword">BY</span>	deptno</span><br><span class="line">  <span class="number">4</span>  <span class="keyword">HAVING</span>	<span class="built_in">MIN</span>(sal) <span class="operator">&gt;</span></span><br><span class="line">  <span class="number">5</span>		(<span class="keyword">SELECT</span>	<span class="built_in">MIN</span>(sal)</span><br><span class="line">  <span class="number">6</span>		<span class="keyword">FROM</span>	emp</span><br><span class="line">  <span class="number">7</span>		<span class="keyword">WHERE</span>	deptno <span class="operator">=</span> <span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+<h5 id="单行子查询"><a href="#单行子查询" class="headerlink" title="单行子查询"></a>单行子查询</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span>	deptno, <span class="hljs-built_in">MIN</span>(sal)<br>  <span class="hljs-number">2</span>  <span class="hljs-keyword">FROM</span>	emp<br>  <span class="hljs-number">3</span>  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span>	deptno<br>  <span class="hljs-number">4</span>  <span class="hljs-keyword">HAVING</span>	<span class="hljs-built_in">MIN</span>(sal) <span class="hljs-operator">&gt;</span><br>  <span class="hljs-number">5</span>		(<span class="hljs-keyword">SELECT</span>	<span class="hljs-built_in">MIN</span>(sal)<br>  <span class="hljs-number">6</span>		<span class="hljs-keyword">FROM</span>	emp<br>  <span class="hljs-number">7</span>		<span class="hljs-keyword">WHERE</span>	deptno <span class="hljs-operator">=</span> <span class="hljs-number">20</span>);<br></code></pre></td></tr></table></figure>
 
-<h5 id="多行子查询"><a href="#多行子查询" class="headerlink" title="多行子查询"></a>多行子查询</h5><p><img src="1-9.png"></p>
-<p><img src="1-10.png"></p>
-<h5 id="多行子查询EXISTS应用举例："><a href="#多行子查询EXISTS应用举例：" class="headerlink" title="多行子查询EXISTS应用举例："></a>多行子查询EXISTS应用举例：</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  e.empno, e.ename</span><br><span class="line"><span class="keyword">FROM</span>    emp e</span><br><span class="line"><span class="keyword">WHERE</span>   <span class="keyword">EXISTS</span> (<span class="keyword">SELECT</span> ‘X’</span><br><span class="line">		<span class="keyword">FROM</span>  dept d</span><br><span class="line">		<span class="keyword">WHERE</span> e.deptno<span class="operator">=</span>d.deptno</span><br><span class="line">		<span class="keyword">and</span> d.loc<span class="operator">=</span> <span class="string">&#x27;NEW YORK&#x27;</span>);</span><br><span class="line">	</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">SELECT</span>  e.empno, e.ename</span><br><span class="line"><span class="keyword">FROM</span>    emp e</span><br><span class="line"><span class="keyword">WHERE</span>   e.deptno <span class="keyword">in</span> (<span class="keyword">SELECT</span> d.deptno</span><br><span class="line">		<span class="keyword">FROM</span>  dept d</span><br><span class="line">		<span class="keyword">WHERE</span>  d.loc<span class="operator">=</span> <span class="string">&#x27;NEW YORK&#x27;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="多行子查询"><a href="#多行子查询" class="headerlink" title="多行子查询"></a>多行子查询</h5><p><img src="1-9.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="1-10.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="多行子查询EXISTS应用举例："><a href="#多行子查询EXISTS应用举例：" class="headerlink" title="多行子查询EXISTS应用举例："></a>多行子查询EXISTS应用举例：</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  e.empno, e.ename<br><span class="hljs-keyword">FROM</span>    emp e<br><span class="hljs-keyword">WHERE</span>   <span class="hljs-keyword">EXISTS</span> (<span class="hljs-keyword">SELECT</span> ‘X’<br>		<span class="hljs-keyword">FROM</span>  dept d<br>		<span class="hljs-keyword">WHERE</span> e.deptno<span class="hljs-operator">=</span>d.deptno<br>		<span class="hljs-keyword">and</span> d.loc<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;NEW YORK&#x27;</span>);<br>	<br>    <br>    <br><span class="hljs-keyword">SELECT</span>  e.empno, e.ename<br><span class="hljs-keyword">FROM</span>    emp e<br><span class="hljs-keyword">WHERE</span>   e.deptno <span class="hljs-keyword">in</span> (<span class="hljs-keyword">SELECT</span> d.deptno<br>		<span class="hljs-keyword">FROM</span>  dept d<br>		<span class="hljs-keyword">WHERE</span>  d.loc<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;NEW YORK&#x27;</span>);<br><br></code></pre></td></tr></table></figure>
 
 
 
-<h5 id="多行子查询IN应用举例："><a href="#多行子查询IN应用举例：" class="headerlink" title="多行子查询IN应用举例："></a>多行子查询IN应用举例：</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  e.empno, e.ename</span><br><span class="line"><span class="keyword">FROM</span>    emp e</span><br><span class="line"><span class="keyword">WHERE</span>   e.deptno <span class="keyword">in</span> (<span class="keyword">SELECT</span> d.deptno</span><br><span class="line">		<span class="keyword">FROM</span>  dept d</span><br><span class="line">		<span class="keyword">WHERE</span>  d.loc<span class="operator">=</span> <span class="string">&#x27;NEW YORK&#x27;</span> </span><br><span class="line">				<span class="keyword">or</span> d.loc<span class="operator">=</span> <span class="string">&#x27;CHICAGO&#x27;</span>);</span><br><span class="line">				</span><br><span class="line">				</span><br><span class="line"><span class="keyword">SELECT</span>  e.empno, e.ename,d.loc</span><br><span class="line"><span class="keyword">FROM</span>    emp e,</span><br><span class="line">   (<span class="keyword">SELECT</span> deptno,loc <span class="keyword">FROM</span>  dept </span><br><span class="line">    <span class="keyword">WHERE</span>  loc<span class="operator">=</span> ‘<span class="keyword">NEW</span> YORK’ <span class="keyword">or</span> loc<span class="operator">=</span> <span class="string">&#x27;CHICAGO&#x27;</span>) d</span><br><span class="line"><span class="keyword">WHERE</span>   e.deptno <span class="operator">=</span>d.deptno;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="多行子查询IN应用举例："><a href="#多行子查询IN应用举例：" class="headerlink" title="多行子查询IN应用举例："></a>多行子查询IN应用举例：</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  e.empno, e.ename<br><span class="hljs-keyword">FROM</span>    emp e<br><span class="hljs-keyword">WHERE</span>   e.deptno <span class="hljs-keyword">in</span> (<span class="hljs-keyword">SELECT</span> d.deptno<br>		<span class="hljs-keyword">FROM</span>  dept d<br>		<span class="hljs-keyword">WHERE</span>  d.loc<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;NEW YORK&#x27;</span> <br>				<span class="hljs-keyword">or</span> d.loc<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CHICAGO&#x27;</span>);<br>				<br>				<br><span class="hljs-keyword">SELECT</span>  e.empno, e.ename,d.loc<br><span class="hljs-keyword">FROM</span>    emp e,<br>   (<span class="hljs-keyword">SELECT</span> deptno,loc <span class="hljs-keyword">FROM</span>  dept <br>    <span class="hljs-keyword">WHERE</span>  loc<span class="hljs-operator">=</span> ‘<span class="hljs-keyword">NEW</span> YORK’ <span class="hljs-keyword">or</span> loc<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CHICAGO&#x27;</span>) d<br><span class="hljs-keyword">WHERE</span>   e.deptno <span class="hljs-operator">=</span>d.deptno;<br><br><br></code></pre></td></tr></table></figure>
 
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Oracle/" class="category-chain-item">Oracle</a>
+  
+  
+
+      </span>
+    
+  
+</span>
 
     </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
-              <a href="/tags/%E5%AF%BC%E8%88%AA/" rel="tag"><i class="fa fa-tag"></i> 导航</a>
-              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A05/" rel="prev" title="Oracle复习5">
-      <i class="fa fa-chevron-left"></i> Oracle复习5
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/" rel="next" title="Oracle复习7">
-      Oracle复习7 <i class="fa fa-chevron-right"></i>
-    </a></div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+      
+        <a href="/tags/%E5%AF%BC%E8%88%AA/">#导航</a>
+      
+        <a href="/tags/Oracle/">#Oracle</a>
+      
     </div>
-      </footer>
-    
-  </article>
   
-  
-  
+</div>
 
 
+              
+  
 
-          </div>
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Oracle复习6</div>
+      <div>http://example.com/2021/11/11/Oracle复习6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wr1sw</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年11月11日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
           
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/" title="Oracle复习7">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Oracle复习7</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A05/" title="Oracle复习5">
+                        <span class="hidden-mobile">Oracle复习5</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
   });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
 </script>
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
 
-  <aside class="sidebar">
-    <div class="sidebar-inner">
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
+  <script>Fluid.plugins.codeWidget();</script>
 
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.</span> <span class="nav-text">连接查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E7%AD%89%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.1.</span> <span class="nav-text">相等连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E7%9B%B8%E7%AD%89%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.2.</span> <span class="nav-text">不相等连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.3.</span> <span class="nav-text">外连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.4.</span> <span class="nav-text">自连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2-%E6%A0%91%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.5.</span> <span class="nav-text">递归查询(树查询)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">分组函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">数据分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E5%88%B6%E9%80%89%E6%8B%A9%E7%BB%84-HAVING%E5%AD%90%E5%8F%A5"><span class="nav-number">4.</span> <span class="nav-text">限制选择组(HAVING子句)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">5.</span> <span class="nav-text">子查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%88%99"><span class="nav-number">5.0.1.</span> <span class="nav-text">子查询使用原则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95%E8%A1%8C%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">5.0.2.</span> <span class="nav-text">单行子查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">5.0.3.</span> <span class="nav-text">多行子查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E5%AD%90%E6%9F%A5%E8%AF%A2EXISTS%E5%BA%94%E7%94%A8%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="nav-number">5.0.4.</span> <span class="nav-text">多行子查询EXISTS应用举例：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E5%AD%90%E6%9F%A5%E8%AF%A2IN%E5%BA%94%E7%94%A8%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="nav-number">5.0.5.</span> <span class="nav-text">多行子查询IN应用举例：</span></a></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="wr1sw"
-      src="/images/avatar.jpg">
-  <p class="site-author-name" itemprop="name">wr1sw</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">34</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">12</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/wr1sw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wr1sw" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
-      </span>
-  </div>
-
-
-
-      </div>
-        <div class="back-to-top motion-element">
-          <i class="fa fa-arrow-up"></i>
-          <span>0%</span>
-        </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蜀ICP备2021024994号 </a>
-      <img src="http://www.beian.gov.cn/portal/download" style="display: inline-block;">
-  </div>
-
-<div class="copyright">
-  
-  &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">wr1sw</span>
-</div>
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
 
-<script src="/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
 
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
   
 
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

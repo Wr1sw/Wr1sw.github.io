@@ -1,26 +1,22 @@
+
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":320,"display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
-
-  <meta name="description" content="PL&#x2F;SQL程序设计——触发器">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="wr1sw">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="PL&#x2F;SQL程序设计——触发器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle复习7">
 <meta property="og:url" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/index.html">
@@ -35,240 +31,254 @@
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="导航">
 <meta property="article:tag" content="Oracle">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/1-11.png">
+  
+  
+  
+  <title>Oracle复习7 - wr1sw</title>
 
-<link rel="canonical" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/">
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>Oracle复习7 | wr1sw</title>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
   
 
 
 
 
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
 
 
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
 
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
+<body>
+  
 
-</head>
+  <header>
+    
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">wr1sw</h1>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
     </a>
-      <p class="site-subtitle" itemprop="description">wr1sw</p>
-  </div>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
   </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">14</span></a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a>
-
-  </li>
-        <li class="menu-item menu-item-schedule">
-
-    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
-
-  </li>
-        <li class="menu-item menu-item-sitemap">
-
-    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
-
-  </li>
-        <li class="menu-item menu-item-commonweal">
-
-    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
-
-  </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
 </nav>
 
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</div>
-    </header>
-
-    
-
-  <a href="https://github.com/wr1sw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
   
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/11/Oracle%E5%A4%8D%E4%B9%A07/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="wr1sw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="wr1sw">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Oracle复习7
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-11-11 21:57:45 / 修改时间：22:49:19" itemprop="dateCreated datePublished" datetime="2021-11-11T21:57:45+08:00">2021-11-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
-                </span>
-            </span>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-            <div class="post-description">PL/SQL程序设计——触发器</div>
-
+            <span id="subtitle" data-typed-text="Oracle复习7"></span>
+          
         </div>
-      </header>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-11 21:57" pubdate>
+          2021年11月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          85 分钟
+        
+      </span>
+    
 
     
     
-    
-    <div class="post-body" itemprop="articleBody">
+  </div>
+
+
+        
+      </div>
 
       
-        <h3 id="匿名块"><a href="#匿名块" class="headerlink" title="匿名块"></a>匿名块</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> (可选)</span><br><span class="line">    定义在PL<span class="operator">/</span><span class="keyword">SQL</span>块中要使用的对象</span><br><span class="line"><span class="keyword">BEGIN</span> (必须)</span><br><span class="line">    执行语句</span><br><span class="line">EXCEPTION (可选)</span><br><span class="line">    错误处理语句</span><br><span class="line"><span class="keyword">END</span>; (必须)</span><br></pre></td></tr></table></figure>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Oracle复习7</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="匿名块"><a href="#匿名块" class="headerlink" title="匿名块"></a>匿名块</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DECLARE</span> (可选)<br>    定义在PL<span class="hljs-operator">/</span><span class="hljs-keyword">SQL</span>块中要使用的对象<br><span class="hljs-keyword">BEGIN</span> (必须)<br>    执行语句<br>EXCEPTION (可选)<br>    错误处理语句<br><span class="hljs-keyword">END</span>; (必须)<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>匿名块（以DECLARE或BEGIN开始）每次使用时都要进行编译。</li>
@@ -282,7 +292,7 @@
 <li>触发器可用来补充声明的参照完整性，强制实施复杂的业务规则</li>
 <li>触发器是一个独立的事务，被当作一个整体执行，在执行过程中如果发生错误，则整个事务会<strong>自动回滚</strong>。</li>
 </ul>
-<h4 id="DML触发器创建语法"><a href="#DML触发器创建语法" class="headerlink" title="DML触发器创建语法"></a>DML触发器创建语法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- trigger_name是触发器名，triggering_event指定了何时激发触发器， table_reference是定义触发器的表， trigger_body是触发器</span></span><br><span class="line"><span class="comment">-- 的主要处理代码。WHEN子句的trigger_condition如果被使用的话，将首先进行求值。触发器的主体仅当此条件求值为TRUE时才被执行。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">TRIGGER</span> trigger_name</span><br><span class="line">   &#123;BEFORE <span class="operator">|</span> AFTER&#125; triggering_event <span class="keyword">ON</span> table_reference</span><br><span class="line">   [<span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span> [<span class="keyword">WHEN</span> trigger_condition]]</span><br><span class="line">trigger_body;</span><br></pre></td></tr></table></figure>
+<h4 id="DML触发器创建语法"><a href="#DML触发器创建语法" class="headerlink" title="DML触发器创建语法"></a>DML触发器创建语法</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- trigger_name是触发器名，triggering_event指定了何时激发触发器， table_reference是定义触发器的表， trigger_body是触发器</span><br><span class="hljs-comment">-- 的主要处理代码。WHEN子句的trigger_condition如果被使用的话，将首先进行求值。触发器的主体仅当此条件求值为TRUE时才被执行。</span><br><br><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">OR</span> REPLACE] <span class="hljs-keyword">TRIGGER</span> trigger_name<br>   &#123;BEFORE <span class="hljs-operator">|</span> AFTER&#125; triggering_event <span class="hljs-keyword">ON</span> table_reference<br>   [<span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span> [<span class="hljs-keyword">WHEN</span> trigger_condition]]<br>trigger_body;<br></code></pre></td></tr></table></figure>
 
 <h4 id="触发器的激发顺序"><a href="#触发器的激发顺序" class="headerlink" title="触发器的激发顺序"></a>触发器的激发顺序</h4><ol>
 <li>执行BEFORE语句级触发器（如果有的话）</li>
@@ -294,38 +304,38 @@
 </li>
 <li>执行AFTER语句级触发器（如果有的话）</li>
 </ol>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_stmBefore</span><br><span class="line">BEFORE <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;Before Statement trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_stmAfter</span><br><span class="line">after <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;After Statement trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> tri_emp_stmBefore<br>BEFORE <span class="hljs-keyword">INSERT</span>  <span class="hljs-keyword">ON</span> EMP<br><span class="hljs-keyword">BEGIN</span><br>  dbms_output.put_line(<span class="hljs-string">&#x27;Before Statement trigger&#x27;</span>);<br><span class="hljs-keyword">END</span>;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> tri_emp_stmAfter<br>after <span class="hljs-keyword">INSERT</span>  <span class="hljs-keyword">ON</span> EMP<br><span class="hljs-keyword">BEGIN</span><br>  dbms_output.put_line(<span class="hljs-string">&#x27;After Statement trigger&#x27;</span>);<br><span class="hljs-keyword">END</span>;<br><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_rowBefore</span><br><span class="line">before <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;Beore row trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> tri_emp_rowAfter</span><br><span class="line">after <span class="keyword">INSERT</span>  <span class="keyword">ON</span> EMP</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;After row trigger&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> tri_emp_rowBefore<br>before <span class="hljs-keyword">INSERT</span>  <span class="hljs-keyword">ON</span> EMP<br><span class="hljs-keyword">for</span> <span class="hljs-keyword">each</span> <span class="hljs-type">row</span><br><span class="hljs-keyword">BEGIN</span><br>  dbms_output.put_line(<span class="hljs-string">&#x27;Beore row trigger&#x27;</span>);<br><span class="hljs-keyword">END</span>;<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> tri_emp_rowAfter<br>after <span class="hljs-keyword">INSERT</span>  <span class="hljs-keyword">ON</span> EMP<br><span class="hljs-keyword">for</span> <span class="hljs-keyword">each</span> <span class="hljs-type">row</span><br><span class="hljs-keyword">BEGIN</span><br>  dbms_output.put_line(<span class="hljs-string">&#x27;After row trigger&#x27;</span>);<br><span class="hljs-keyword">END</span>;<br><br></code></pre></td></tr></table></figure>
 
-<h4 id="语句级触发器例子"><a href="#语句级触发器例子" class="headerlink" title="语句级触发器例子"></a>语句级触发器例子</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> secure_emp</span><br><span class="line">   BEFORE <span class="keyword">INSERT</span> <span class="keyword">ON</span> emp</span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">     IF (TO_CHAR(SYSDATE, <span class="string">&#x27;DY&#x27;</span>) <span class="keyword">IN</span> (<span class="string">&#x27;星期六&#x27;</span>, <span class="string">&#x27;星期天&#x27;</span>)) </span><br><span class="line">           <span class="keyword">OR</span> (TO_CHAR(SYSDATE, <span class="string">&#x27;HH24:MI&#x27;</span>) <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="string">&#x27;08:00&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;18:00&#x27;</span>)</span><br><span class="line">     <span class="keyword">THEN</span> </span><br><span class="line">         RAISE_APPLICATION_ERROR</span><br><span class="line">			 (<span class="number">-20500</span>, <span class="string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);</span><br><span class="line">      <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emp (empno, ename,hiredate,job, sal, deptno)</span><br><span class="line">               <span class="keyword">VALUES</span> (<span class="number">300</span>,<span class="string">&#x27;Smith Rob&#x27;</span>,SYSDATE,<span class="string">&#x27;IT_PROG&#x27;</span>, <span class="number">4500</span>, <span class="number">30</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="语句级触发器例子"><a href="#语句级触发器例子" class="headerlink" title="语句级触发器例子"></a>语句级触发器例子</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> secure_emp<br>   BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> emp<br>   <span class="hljs-keyword">BEGIN</span><br>     IF (TO_CHAR(SYSDATE, <span class="hljs-string">&#x27;DY&#x27;</span>) <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;星期六&#x27;</span>, <span class="hljs-string">&#x27;星期天&#x27;</span>)) <br>           <span class="hljs-keyword">OR</span> (TO_CHAR(SYSDATE, <span class="hljs-string">&#x27;HH24:MI&#x27;</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">BETWEEN</span> <span class="hljs-string">&#x27;08:00&#x27;</span> <span class="hljs-keyword">AND</span> <span class="hljs-string">&#x27;18:00&#x27;</span>)<br>     <span class="hljs-keyword">THEN</span> <br>         RAISE_APPLICATION_ERROR<br>			 (<span class="hljs-number">-20500</span>, <span class="hljs-string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);<br>      <span class="hljs-keyword">END</span> IF;<br><span class="hljs-keyword">END</span>;<br><br><br><span class="hljs-comment">-- 测试</span><br><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> emp (empno, ename,hiredate,job, sal, deptno)<br>               <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">300</span>,<span class="hljs-string">&#x27;Smith Rob&#x27;</span>,SYSDATE,<span class="hljs-string">&#x27;IT_PROG&#x27;</span>, <span class="hljs-number">4500</span>, <span class="hljs-number">30</span>)<br><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> secure_emp</span><br><span class="line">BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">OR</span> <span class="keyword">DELETE</span>  <span class="keyword">ON</span> EMP</span><br><span class="line">  <span class="keyword">BEGIN</span></span><br><span class="line">    IF (TO_CHAR(SYSDATE, <span class="string">&#x27;DY&#x27;</span>) <span class="keyword">IN</span> (<span class="string">&#x27;星期六&#x27;</span>, <span class="string">&#x27;星期天&#x27;</span>)) </span><br><span class="line">           <span class="keyword">OR</span> (TO_CHAR(SYSDATE, <span class="string">&#x27;HH24&#x27;</span>) <span class="keyword">NOT</span> <span class="keyword">BETWEEN</span> <span class="string">&#x27;08&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;18&#x27;</span>)</span><br><span class="line">    <span class="keyword">THEN</span> </span><br><span class="line">      IF DELETING <span class="keyword">THEN</span></span><br><span class="line">          RAISE_APPLICATION_ERROR (<span class="number">-20502</span>, <span class="string">&#x27;You may delete from  EMP table only during business hours.&#x27;</span>);</span><br><span class="line">       ELSIF INSERTING <span class="keyword">THEN</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20500</span>,<span class="string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);</span><br><span class="line">       ELSIF UPDATING (<span class="string">&#x27;SAL&#x27;</span>) <span class="keyword">THEN</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20503</span>,<span class="string">&#x27;You may update SAL only during business hours.&#x27;</span>);</span><br><span class="line">       <span class="keyword">ELSE</span></span><br><span class="line">         RAISE_APPLICATION_ERROR (<span class="number">-20504</span>,<span class="string">&#x27;You may update EMP table only during normal hours.&#x27;</span>);</span><br><span class="line">       <span class="keyword">END</span> IF;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> secure_emp<br>BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> UPDATE <span class="hljs-keyword">OR</span> <span class="hljs-keyword">DELETE</span>  <span class="hljs-keyword">ON</span> EMP<br>  <span class="hljs-keyword">BEGIN</span><br>    IF (TO_CHAR(SYSDATE, <span class="hljs-string">&#x27;DY&#x27;</span>) <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;星期六&#x27;</span>, <span class="hljs-string">&#x27;星期天&#x27;</span>)) <br>           <span class="hljs-keyword">OR</span> (TO_CHAR(SYSDATE, <span class="hljs-string">&#x27;HH24&#x27;</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">BETWEEN</span> <span class="hljs-string">&#x27;08&#x27;</span> <span class="hljs-keyword">AND</span> <span class="hljs-string">&#x27;18&#x27;</span>)<br>    <span class="hljs-keyword">THEN</span> <br>      IF DELETING <span class="hljs-keyword">THEN</span><br>          RAISE_APPLICATION_ERROR (<span class="hljs-number">-20502</span>, <span class="hljs-string">&#x27;You may delete from  EMP table only during business hours.&#x27;</span>);<br>       ELSIF INSERTING <span class="hljs-keyword">THEN</span><br>         RAISE_APPLICATION_ERROR (<span class="hljs-number">-20500</span>,<span class="hljs-string">&#x27;You may insert into EMP table only during business hours.&#x27;</span>);<br>       ELSIF UPDATING (<span class="hljs-string">&#x27;SAL&#x27;</span>) <span class="hljs-keyword">THEN</span><br>         RAISE_APPLICATION_ERROR (<span class="hljs-number">-20503</span>,<span class="hljs-string">&#x27;You may update SAL only during business hours.&#x27;</span>);<br>       <span class="hljs-keyword">ELSE</span><br>         RAISE_APPLICATION_ERROR (<span class="hljs-number">-20504</span>,<span class="hljs-string">&#x27;You may update EMP table only during normal hours.&#x27;</span>);<br>       <span class="hljs-keyword">END</span> IF;<br>    <span class="hljs-keyword">END</span> IF;<br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 
-<h4 id="行级触发器例子"><a href="#行级触发器例子" class="headerlink" title="行级触发器例子"></a>行级触发器例子</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> restrict_salary</span><br><span class="line">  BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">ON</span> emp</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">    <span class="keyword">BEGIN</span></span><br><span class="line">      IF <span class="keyword">NOT</span> (:NEW.job <span class="keyword">IN</span> (<span class="string">&#x27;PRESIDENT&#x27;</span>, <span class="string">&#x27;MANAGER&#x27;</span>, <span class="string">&#x27;ANALYST&#x27;</span>)) <span class="keyword">AND</span> :NEW.sal <span class="operator">&gt;</span> <span class="number">2500</span></span><br><span class="line">      <span class="keyword">THEN</span></span><br><span class="line">        RAISE_APPLICATION_ERROR (<span class="number">-20202</span>, <span class="string">&#x27;Employee cannot earn this amount&#x27;</span>);</span><br><span class="line">      <span class="keyword">END</span> IF;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> UPDATE emp</span><br><span class="line">              <span class="keyword">SET</span> sal <span class="number">3000</span></span><br><span class="line">              <span class="keyword">WHERE</span> ename <span class="operator">=</span> <span class="string">&#x27;SMITH&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="行级触发器例子"><a href="#行级触发器例子" class="headerlink" title="行级触发器例子"></a>行级触发器例子</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> restrict_salary<br>  BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> UPDATE <span class="hljs-keyword">ON</span> emp<br>    <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span><br>    <span class="hljs-keyword">BEGIN</span><br>      IF <span class="hljs-keyword">NOT</span> (:NEW.job <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;PRESIDENT&#x27;</span>, <span class="hljs-string">&#x27;MANAGER&#x27;</span>, <span class="hljs-string">&#x27;ANALYST&#x27;</span>)) <span class="hljs-keyword">AND</span> :NEW.sal <span class="hljs-operator">&gt;</span> <span class="hljs-number">2500</span><br>      <span class="hljs-keyword">THEN</span><br>        RAISE_APPLICATION_ERROR (<span class="hljs-number">-20202</span>, <span class="hljs-string">&#x27;Employee cannot earn this amount&#x27;</span>);<br>      <span class="hljs-keyword">END</span> IF;<br><span class="hljs-keyword">END</span>;<br><br><span class="hljs-comment">-- 测试</span><br><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span> UPDATE emp<br>              <span class="hljs-keyword">SET</span> sal <span class="hljs-number">3000</span><br>              <span class="hljs-keyword">WHERE</span> ename <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;SMITH&#x27;</span>;<br></code></pre></td></tr></table></figure>
 
-<h4 id="行级触发器——-old和-new"><a href="#行级触发器——-old和-new" class="headerlink" title="行级触发器——:old和:new"></a>行级触发器——:old和:new</h4><p><img src="1-11.png"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> audit_emp_values</span><br><span class="line">   AFTER <span class="keyword">DELETE</span> <span class="keyword">OR</span> <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">ON</span> emp</span><br><span class="line">   <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">   <span class="keyword">BEGIN</span></span><br><span class="line">      <span class="keyword">INSERT</span> <span class="keyword">INTO</span> audit_emp_table (user_name, <span class="type">timestamp</span>,empno,</span><br><span class="line">          old_ename, new_ename, old_job,new_job, old_sal, new_sal)</span><br><span class="line">          <span class="keyword">VALUES</span> (<span class="keyword">USER</span>, SYSDATE, :OLD.empno,:OLD.ename, :NEW.ename,</span><br><span class="line">              :OLD.job,:NEW.job, :OLD.sal, :NEW.sal );</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line">   t_oplog(<span class="keyword">user</span>,optime,opcontent)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="行级触发器——-old和-new"><a href="#行级触发器——-old和-new" class="headerlink" title="行级触发器——:old和:new"></a>行级触发器——:old和:new</h4><p><img src="1-11.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> audit_emp_values<br>   AFTER <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> UPDATE <span class="hljs-keyword">ON</span> emp<br>   <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span><br>   <span class="hljs-keyword">BEGIN</span><br>      <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> audit_emp_table (user_name, <span class="hljs-type">timestamp</span>,empno,<br>          old_ename, new_ename, old_job,new_job, old_sal, new_sal)<br>          <span class="hljs-keyword">VALUES</span> (<span class="hljs-keyword">USER</span>, SYSDATE, :OLD.empno,:OLD.ename, :NEW.ename,<br>              :OLD.job,:NEW.job, :OLD.sal, :NEW.sal );<br><span class="hljs-keyword">END</span>;<br><br>   t_oplog(<span class="hljs-keyword">user</span>,optime,opcontent)<br><br></code></pre></td></tr></table></figure>
 
-<h4 id="行级触发器——限制条件"><a href="#行级触发器——限制条件" class="headerlink" title="行级触发器——限制条件"></a>行级触发器——限制条件</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">TRIGGER</span> derive_commission_pct</span><br><span class="line">    BEFORE <span class="keyword">INSERT</span> <span class="keyword">OR</span> UPDATE <span class="keyword">OF</span> sal <span class="keyword">ON</span> emp</span><br><span class="line">    <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line">    <span class="keyword">WHEN</span> (NEW.job <span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>)</span><br><span class="line"> <span class="keyword">BEGIN</span></span><br><span class="line">    IF INSERTING  <span class="keyword">THEN</span> :NEW.comm :<span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    ELSIF :OLD.comm <span class="keyword">IS</span> <span class="keyword">NULL</span> <span class="keyword">THEN</span> :NEW.comm :<span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">ELSE</span>  :NEW.comm :<span class="operator">=</span> :NEW.sal<span class="operator">*</span><span class="number">0.10</span>;</span><br><span class="line">    <span class="keyword">END</span> IF;</span><br><span class="line"> <span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="行级触发器——限制条件"><a href="#行级触发器——限制条件" class="headerlink" title="行级触发器——限制条件"></a>行级触发器——限制条件</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">TRIGGER</span> derive_commission_pct<br>    BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> UPDATE <span class="hljs-keyword">OF</span> sal <span class="hljs-keyword">ON</span> emp<br>    <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span><br>    <span class="hljs-keyword">WHEN</span> (NEW.job <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;SALESMAN&#x27;</span>)<br> <span class="hljs-keyword">BEGIN</span><br>    IF INSERTING  <span class="hljs-keyword">THEN</span> :NEW.comm :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    ELSIF :OLD.comm <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> :NEW.comm :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">ELSE</span>  :NEW.comm :<span class="hljs-operator">=</span> :NEW.sal<span class="hljs-operator">*</span><span class="hljs-number">0.10</span>;<br>    <span class="hljs-keyword">END</span> IF;<br> <span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 
-<h4 id="行级触发器应用"><a href="#行级触发器应用" class="headerlink" title="行级触发器应用"></a>行级触发器应用</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 练习:创建序列和触发器后,给出执行下面两个insert语句后的数据记录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> SEQUENCE SEQ_EMPNO </span><br><span class="line"><span class="keyword">START</span> <span class="keyword">WITH</span> <span class="number">9000</span> </span><br><span class="line">MAXVALUE <span class="number">9999</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">---------</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> replace <span class="keyword">TRIGGER</span> tri_insert_emp</span><br><span class="line">  BEFORE <span class="keyword">INSERT</span>  <span class="keyword">ON</span> emp</span><br><span class="line">  <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="type">ROW</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  if :new.deptno <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">then</span></span><br><span class="line">    :new.deptno:<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">  ELSIF :new.deptno<span class="operator">=</span><span class="number">30</span> <span class="keyword">then</span></span><br><span class="line">    :new.job:<span class="operator">=</span><span class="string">&#x27;SALSEMAN&#x27;</span>;</span><br><span class="line">  <span class="keyword">end</span> if;</span><br><span class="line">  <span class="keyword">SELECT</span> seq_empno.NEXTVAL</span><br><span class="line">      <span class="keyword">INTO</span> :new.empno</span><br><span class="line">      <span class="keyword">FROM</span> dual;</span><br><span class="line"><span class="keyword">END</span> tri_insert_emp;</span><br><span class="line"><span class="comment">--------</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp (ename,sal) <span class="keyword">values</span> (‘LL<span class="string">&#x27;,2300);</span></span><br><span class="line"><span class="string">insert into emp (empno,ename,sal) values (9100,‘HH&#x27;</span>,<span class="number">2500</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="行级触发器应用"><a href="#行级触发器应用" class="headerlink" title="行级触发器应用"></a>行级触发器应用</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 练习:创建序列和触发器后,给出执行下面两个insert语句后的数据记录</span><br><br><span class="hljs-keyword">CREATE</span> SEQUENCE SEQ_EMPNO <br><span class="hljs-keyword">START</span> <span class="hljs-keyword">WITH</span> <span class="hljs-number">9000</span> <br>MAXVALUE <span class="hljs-number">9999</span>;<br><br><span class="hljs-comment">---------</span><br><span class="hljs-keyword">create</span> <span class="hljs-keyword">or</span> replace <span class="hljs-keyword">TRIGGER</span> tri_insert_emp<br>  BEFORE <span class="hljs-keyword">INSERT</span>  <span class="hljs-keyword">ON</span> emp<br>  <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span><br><span class="hljs-keyword">BEGIN</span><br>  if :new.deptno <span class="hljs-keyword">is</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">then</span><br>    :new.deptno:<span class="hljs-operator">=</span><span class="hljs-number">10</span>;<br>  ELSIF :new.deptno<span class="hljs-operator">=</span><span class="hljs-number">30</span> <span class="hljs-keyword">then</span><br>    :new.job:<span class="hljs-operator">=</span><span class="hljs-string">&#x27;SALSEMAN&#x27;</span>;<br>  <span class="hljs-keyword">end</span> if;<br>  <span class="hljs-keyword">SELECT</span> seq_empno.NEXTVAL<br>      <span class="hljs-keyword">INTO</span> :new.empno<br>      <span class="hljs-keyword">FROM</span> dual;<br><span class="hljs-keyword">END</span> tri_insert_emp;<br><span class="hljs-comment">--------</span><br><span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> emp (ename,sal) <span class="hljs-keyword">values</span> (‘LL<span class="hljs-string">&#x27;,2300);</span><br><span class="hljs-string">insert into emp (empno,ename,sal) values (9100,‘HH&#x27;</span>,<span class="hljs-number">2500</span>);<br><br></code></pre></td></tr></table></figure>
 
 <h4 id="管理触发器"><a href="#管理触发器" class="headerlink" title="管理触发器"></a>管理触发器</h4><ul>
 <li><p>禁用或启用一个触发器</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span> trigger_name DISABLE <span class="operator">|</span> ENABLE</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TRIGGER</span> trigger_name DISABLE <span class="hljs-operator">|</span> ENABLE<br></code></pre></td></tr></table></figure></li>
 <li><p>禁用或启用一张表的多有触发器</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name DISABLE <span class="operator">|</span> ENABLE <span class="keyword">ALL</span> TRIGGERS</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> table_name DISABLE <span class="hljs-operator">|</span> ENABLE <span class="hljs-keyword">ALL</span> TRIGGERS<br></code></pre></td></tr></table></figure></li>
 <li><p>重新编译一个触发器</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TRIGGER</span> trigger_name COMPILE</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TRIGGER</span> trigger_name COMPILE<br></code></pre></td></tr></table></figure></li>
 <li><p>删除触发器</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TRIGGER</span> trigger_name</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TRIGGER</span> trigger_name<br></code></pre></td></tr></table></figure></li>
 </ul>
 <hr>
 <h3 id="子程序"><a href="#子程序" class="headerlink" title="子程序"></a>子程序</h3><ul>
 <li>子程序是带名的PL/SQL块，能够接受参数和被环境调用。在PL/SQL中两类子程序：过程和函数</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>header<span class="operator">&gt;</span></span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span> <span class="keyword">AS</span></span><br><span class="line">    声明部分</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    执行部分</span><br><span class="line">EXCEPTION (可选)</span><br><span class="line">    异常处理部分</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-operator">&lt;</span>header<span class="hljs-operator">&gt;</span><br><span class="hljs-keyword">IS</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">AS</span><br>    声明部分<br><span class="hljs-keyword">BEGIN</span><br>    执行部分<br>EXCEPTION (可选)<br>    异常处理部分<br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>子程序说明（<em>header）决定</em>:<ul>
@@ -343,288 +353,390 @@
 </ul>
 </li>
 </ul>
-<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><h5 id="创建过程"><a href="#创建过程" class="headerlink" title="创建过程"></a>创建过程</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">PROCEDURE</span> procedure_name </span><br><span class="line">[(parameter1 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data_type , parameter2 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data­_type,…)]</span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span><span class="keyword">AS</span></span><br><span class="line">   [declaration_section;]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   executable_section;</span><br><span class="line">[EXCEPTION</span><br><span class="line">   exception_handlers;]</span><br><span class="line"><span class="keyword">END</span> [procedure_name];</span><br><span class="line"><span class="comment">-- 注意与匿名块有三点区别：</span></span><br><span class="line"><span class="comment">-- 1.无DECLARE关键字</span></span><br><span class="line"><span class="comment">-- 2.在END后面可以加过程名  作为定义结束的标志</span></span><br><span class="line"><span class="comment">-- 3.存储过程定义完成后需要调用才能执行过程内部的代码。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><h5 id="创建过程"><a href="#创建过程" class="headerlink" title="创建过程"></a>创建过程</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">OR</span> REPLACE] <span class="hljs-keyword">PROCEDURE</span> procedure_name <br>[(parameter1 [<span class="hljs-keyword">IN</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">OUT</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span>] data_type , parameter2 [<span class="hljs-keyword">IN</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">OUT</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span>] data­_type,…)]<br><span class="hljs-keyword">IS</span> <span class="hljs-operator">|</span><span class="hljs-keyword">AS</span><br>   [declaration_section;]<br><span class="hljs-keyword">BEGIN</span><br>   executable_section;<br>[EXCEPTION<br>   exception_handlers;]<br><span class="hljs-keyword">END</span> [procedure_name];<br><span class="hljs-comment">-- 注意与匿名块有三点区别：</span><br><span class="hljs-comment">-- 1.无DECLARE关键字</span><br><span class="hljs-comment">-- 2.在END后面可以加过程名  作为定义结束的标志</span><br><span class="hljs-comment">-- 3.存储过程定义完成后需要调用才能执行过程内部的代码。</span><br><br></code></pre></td></tr></table></figure>
 
-<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> display_time </span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   dbms_output.put_line(systimestamp);</span><br><span class="line"><span class="keyword">END</span> display_time;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用三种方式调用上面创建的存储过程</span></span><br><span class="line"><span class="comment">-- 方式一：使用sqlplus命令EXECUTE(简写EXEC) 调用</span></span><br><span class="line">	<span class="keyword">EXECUTE</span> display_time; </span><br><span class="line"><span class="comment">-- 方式二：使用sql命令CALL调用</span></span><br><span class="line">	<span class="keyword">CALL</span> display_time( );</span><br><span class="line"><span class="comment">-- 方式三：在PL/SQL块中调用</span></span><br><span class="line">	<span class="keyword">BEGIN</span></span><br><span class="line">		display_time;</span><br><span class="line">	<span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> display_time <br><span class="hljs-keyword">IS</span><br><span class="hljs-keyword">BEGIN</span><br>   dbms_output.put_line(systimestamp);<br><span class="hljs-keyword">END</span> display_time;<br><br><span class="hljs-comment">-- 使用三种方式调用上面创建的存储过程</span><br><span class="hljs-comment">-- 方式一：使用sqlplus命令EXECUTE(简写EXEC) 调用</span><br>	<span class="hljs-keyword">EXECUTE</span> display_time; <br><span class="hljs-comment">-- 方式二：使用sql命令CALL调用</span><br>	<span class="hljs-keyword">CALL</span> display_time( );<br><span class="hljs-comment">-- 方式三：在PL/SQL块中调用</span><br>	<span class="hljs-keyword">BEGIN</span><br>		display_time;<br>	<span class="hljs-keyword">END</span>;<br><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 形式参数(Formal parameters):在过程中声明的参数就是形式参数。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> insert_emp </span><br><span class="line">(<span class="keyword">no</span>  emp.empno<span class="operator">%</span>TYPE,			name  emp.ename<span class="operator">%</span>TYPE,</span><br><span class="line">Job  emp.job<span class="operator">%</span>TYPE,				mgr  emp.mgr<span class="operator">%</span>TYPE,</span><br><span class="line">hiredate emp.hiredate<span class="operator">%</span>TYPE ,	salary emp.sal<span class="operator">%</span>TYPE ,</span><br><span class="line">comm emp.comm<span class="operator">%</span>TYPE ,		deptno emp.deptno<span class="operator">%</span>TYPE </span><br><span class="line">)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> emp <span class="keyword">VALUES</span>(<span class="keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">-- 实际参数(Actual parameters):在调用过程中作为参数传递给过程的变量或表达式就是实际参数。</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">v_no  emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="number">10000</span>,</span><br><span class="line">v_name  emp.ename<span class="operator">%</span>TYPE :<span class="operator">=</span>‘Jones’,</span><br><span class="line">v_job  emp.job<span class="operator">%</span>TYPE :<span class="operator">=</span> <span class="string">&#x27;SALESMAN&#x27;</span>,</span><br><span class="line">v_mgr  emp.mgr<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">7369</span>,</span><br><span class="line">v_hiredate emp.hiredate<span class="operator">%</span>TYPE :<span class="operator">=</span>SYSDATE,</span><br><span class="line">v_salary emp.sal<span class="operator">%</span>TYPE :<span class="operator">=</span> <span class="number">800</span>,</span><br><span class="line">v_comm emp.comm<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="keyword">NULL</span>,</span><br><span class="line">v_deptno emp.deptno<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">10</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"> insert_emp(v_no, v_name, v_job, v_mgr, v_hiredate, v_salary, v_comm, v_deptno );</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 形式参数(Formal parameters):在过程中声明的参数就是形式参数。</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> insert_emp <br>(<span class="hljs-keyword">no</span>  emp.empno<span class="hljs-operator">%</span>TYPE,			name  emp.ename<span class="hljs-operator">%</span>TYPE,<br>Job  emp.job<span class="hljs-operator">%</span>TYPE,				mgr  emp.mgr<span class="hljs-operator">%</span>TYPE,<br>hiredate emp.hiredate<span class="hljs-operator">%</span>TYPE ,	salary emp.sal<span class="hljs-operator">%</span>TYPE ,<br>comm emp.comm<span class="hljs-operator">%</span>TYPE ,		deptno emp.deptno<span class="hljs-operator">%</span>TYPE <br>)<br><span class="hljs-keyword">IS</span><br><span class="hljs-keyword">BEGIN</span><br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> emp <span class="hljs-keyword">VALUES</span>(<span class="hljs-keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);<br><span class="hljs-keyword">END</span>;<br><span class="hljs-comment">-- 实际参数(Actual parameters):在调用过程中作为参数传递给过程的变量或表达式就是实际参数。</span><br><span class="hljs-keyword">DECLARE</span><br>v_no  emp.empno<span class="hljs-operator">%</span>TYPE:<span class="hljs-operator">=</span><span class="hljs-number">10000</span>,<br>v_name  emp.ename<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span>‘Jones’,<br>v_job  emp.job<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;SALESMAN&#x27;</span>,<br>v_mgr  emp.mgr<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span><span class="hljs-number">7369</span>,<br>v_hiredate emp.hiredate<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span>SYSDATE,<br>v_salary emp.sal<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span> <span class="hljs-number">800</span>,<br>v_comm emp.comm<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span><span class="hljs-keyword">NULL</span>,<br>v_deptno emp.deptno<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span><span class="hljs-number">10</span><br><span class="hljs-keyword">BEGIN</span><br> insert_emp(v_no, v_name, v_job, v_mgr, v_hiredate, v_salary, v_comm, v_deptno );<br><span class="hljs-keyword">END</span>;<br><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 对形式参数的约束：在过程声明中，限制CHAR和VARCHAR2参数的长度以及限制NUMBER参数的精度和/或刻度范围都是非法的。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> ParameterLength (</span><br><span class="line">  p_Parameter1 <span class="keyword">IN</span> <span class="keyword">OUT</span> VARCHAR2(<span class="number">10</span>), <span class="comment">-- 非法</span></span><br><span class="line">  p_Parameter2 <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER(<span class="number">3</span>,<span class="number">2</span>)) <span class="keyword">AS</span> <span class="comment">-- 非法</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  p_Parameter1 :<span class="operator">=</span> <span class="string">&#x27;abcdefghijklm&#x27;</span>;</span><br><span class="line">  p_Parameter2 :<span class="operator">=</span> <span class="number">12.3</span>;</span><br><span class="line"><span class="keyword">END</span> ParameterLength;</span><br><span class="line"><span class="operator">/</span></span><br><span class="line"><span class="comment">-- 过程声明非法</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 对形式参数的约束：在过程声明中，限制CHAR和VARCHAR2参数的长度以及限制NUMBER参数的精度和/或刻度范围都是非法的。</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> ParameterLength (<br>  p_Parameter1 <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span> VARCHAR2(<span class="hljs-number">10</span>), <span class="hljs-comment">-- 非法</span><br>  p_Parameter2 <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span> NUMBER(<span class="hljs-number">3</span>,<span class="hljs-number">2</span>)) <span class="hljs-keyword">AS</span> <span class="hljs-comment">-- 非法</span><br><span class="hljs-keyword">BEGIN</span><br>  p_Parameter1 :<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;abcdefghijklm&#x27;</span>;<br>  p_Parameter2 :<span class="hljs-operator">=</span> <span class="hljs-number">12.3</span>;<br><span class="hljs-keyword">END</span> ParameterLength;<br><span class="hljs-operator">/</span><br><span class="hljs-comment">-- 过程声明非法</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="参数的模式"><a href="#参数的模式" class="headerlink" title="参数的模式"></a>参数的模式</h4><ul>
 <li>过程可以通过参数和调用环境进行数据传递</li>
 <li>有三种传递模式—<strong>IN、OUT和IN OUT</strong>。如果没有为形式参数指定模式，则使用<strong>缺省模式IN。</strong></li>
 </ul>
-<p><img src="1-12.png"></p>
-<h4 id="IN参数"><a href="#IN参数" class="headerlink" title="IN参数"></a>IN参数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> raise_salary</span><br><span class="line">(p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE)       <span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">     UPDATE emp          <span class="keyword">SET</span> sal <span class="operator">=</span> sal <span class="operator">*</span> <span class="number">1.10</span>          <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line"><span class="keyword">END</span> raise_salary;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empno emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  raise_salary(v_empno);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="1-12.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="IN参数"><a href="#IN参数" class="headerlink" title="IN参数"></a>IN参数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> raise_salary<br>(p_id <span class="hljs-keyword">IN</span> emp.empno<span class="hljs-operator">%</span>TYPE)       <span class="hljs-keyword">IS</span><br><span class="hljs-keyword">BEGIN</span><br>     UPDATE emp          <span class="hljs-keyword">SET</span> sal <span class="hljs-operator">=</span> sal <span class="hljs-operator">*</span> <span class="hljs-number">1.10</span>          <span class="hljs-keyword">WHERE</span> empno <span class="hljs-operator">=</span> p_id;<br><span class="hljs-keyword">END</span> raise_salary;<br><span class="hljs-comment">-- 执行</span><br><span class="hljs-keyword">DECLARE</span><br>  v_empno emp.empno<span class="hljs-operator">%</span>TYPE:<span class="hljs-operator">=</span><span class="hljs-operator">&amp;</span><span class="hljs-keyword">no</span>;<br><span class="hljs-keyword">BEGIN</span><br>  raise_salary(v_empno);<br><span class="hljs-keyword">END</span>;<br><br></code></pre></td></tr></table></figure>
 
-<h4 id="OUT参数"><a href="#OUT参数" class="headerlink" title="OUT参数"></a>OUT参数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> query_emp</span><br><span class="line">(p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE, p_name <span class="keyword">OUT</span> emp.ename<span class="operator">%</span>TYPE,</span><br><span class="line"> p_salary <span class="keyword">OUT</span> emp.sal<span class="operator">%</span>TYPE,p_comm <span class="keyword">OUT</span> emp.comm<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SELECT</span> ename, sal, comm</span><br><span class="line">      <span class="keyword">INTO</span> p_name, p_salary, p_comm</span><br><span class="line">      <span class="keyword">FROM</span> emp  <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line"><span class="keyword">END</span> query_emp;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  v_empno emp.empno<span class="operator">%</span>TYPE:<span class="operator">=</span><span class="operator">&amp;</span><span class="keyword">no</span>;</span><br><span class="line">  v_name  emp.ename<span class="operator">%</span>TYPE;</span><br><span class="line">  v_salary  emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line">  v_comm  emp.comm<span class="operator">%</span>TYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  query_emp(v_empno,v_name,v_salary,v_comm);</span><br><span class="line">  dbms_output.put_line(v_empno<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_name<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_salary<span class="operator">||</span><span class="string">&#x27; &#x27;</span><span class="operator">||</span>v_comm);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="OUT参数"><a href="#OUT参数" class="headerlink" title="OUT参数"></a>OUT参数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> query_emp<br>(p_id <span class="hljs-keyword">IN</span> emp.empno<span class="hljs-operator">%</span>TYPE, p_name <span class="hljs-keyword">OUT</span> emp.ename<span class="hljs-operator">%</span>TYPE,<br> p_salary <span class="hljs-keyword">OUT</span> emp.sal<span class="hljs-operator">%</span>TYPE,p_comm <span class="hljs-keyword">OUT</span> emp.comm<span class="hljs-operator">%</span>TYPE)<br><span class="hljs-keyword">IS</span><br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">SELECT</span> ename, sal, comm<br>      <span class="hljs-keyword">INTO</span> p_name, p_salary, p_comm<br>      <span class="hljs-keyword">FROM</span> emp  <span class="hljs-keyword">WHERE</span> empno <span class="hljs-operator">=</span> p_id;<br><span class="hljs-keyword">END</span> query_emp;<br><span class="hljs-comment">-- 执行</span><br><span class="hljs-keyword">DECLARE</span><br>  v_empno emp.empno<span class="hljs-operator">%</span>TYPE:<span class="hljs-operator">=</span><span class="hljs-operator">&amp;</span><span class="hljs-keyword">no</span>;<br>  v_name  emp.ename<span class="hljs-operator">%</span>TYPE;<br>  v_salary  emp.sal<span class="hljs-operator">%</span>TYPE;<br>  v_comm  emp.comm<span class="hljs-operator">%</span>TYPE;<br><span class="hljs-keyword">BEGIN</span><br>  query_emp(v_empno,v_name,v_salary,v_comm);<br>  dbms_output.put_line(v_empno<span class="hljs-operator">||</span><span class="hljs-string">&#x27; &#x27;</span><span class="hljs-operator">||</span>v_name<span class="hljs-operator">||</span><span class="hljs-string">&#x27; &#x27;</span><span class="hljs-operator">||</span>v_salary<span class="hljs-operator">||</span><span class="hljs-string">&#x27; &#x27;</span><span class="hljs-operator">||</span>v_comm);<br><span class="hljs-keyword">END</span>;<br><br></code></pre></td></tr></table></figure>
 
-<h4 id="IN-OUT参数"><a href="#IN-OUT参数" class="headerlink" title="IN OUT参数"></a>IN OUT参数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 编写程序，交换两个变量的值并输出</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> swap</span><br><span class="line">(x <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER ,y <span class="keyword">IN</span> <span class="keyword">OUT</span> NUMBER)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">z NUMBER;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">	z:<span class="operator">=</span>x;</span><br><span class="line">	x:<span class="operator">=</span>y;</span><br><span class="line">	y:<span class="operator">=</span>z;</span><br><span class="line"><span class="keyword">END</span> swap;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">  a NUMBER:<span class="operator">=</span><span class="number">10</span>;</span><br><span class="line">  b NUMBER:<span class="operator">=</span><span class="number">20</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;交换前a和b的值是：&#x27;</span><span class="operator">||</span>a<span class="operator">||</span><span class="string">&#x27;  &#x27;</span><span class="operator">||</span>b);</span><br><span class="line">  swap(a,b);</span><br><span class="line">  dbms_output.put_line(<span class="string">&#x27;交换后a和b的值是：&#x27;</span><span class="operator">||</span>a<span class="operator">||</span><span class="string">&#x27;  &#x27;</span><span class="operator">||</span>b);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="IN-OUT参数"><a href="#IN-OUT参数" class="headerlink" title="IN OUT参数"></a>IN OUT参数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 编写程序，交换两个变量的值并输出</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> swap<br>(x <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span> NUMBER ,y <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span> NUMBER)<br><span class="hljs-keyword">IS</span><br>z NUMBER;<br><span class="hljs-keyword">BEGIN</span><br>	z:<span class="hljs-operator">=</span>x;<br>	x:<span class="hljs-operator">=</span>y;<br>	y:<span class="hljs-operator">=</span>z;<br><span class="hljs-keyword">END</span> swap;<br><br><span class="hljs-comment">-- 执行</span><br><span class="hljs-keyword">DECLARE</span><br>  a NUMBER:<span class="hljs-operator">=</span><span class="hljs-number">10</span>;<br>  b NUMBER:<span class="hljs-operator">=</span><span class="hljs-number">20</span>;<br><span class="hljs-keyword">BEGIN</span><br>  dbms_output.put_line(<span class="hljs-string">&#x27;交换前a和b的值是：&#x27;</span><span class="hljs-operator">||</span>a<span class="hljs-operator">||</span><span class="hljs-string">&#x27;  &#x27;</span><span class="hljs-operator">||</span>b);<br>  swap(a,b);<br>  dbms_output.put_line(<span class="hljs-string">&#x27;交换后a和b的值是：&#x27;</span><span class="hljs-operator">||</span>a<span class="hljs-operator">||</span><span class="hljs-string">&#x27;  &#x27;</span><span class="hljs-operator">||</span>b);<br><span class="hljs-keyword">END</span>;<br><br><br></code></pre></td></tr></table></figure>
 
-<h4 id="参数的缺省值"><a href="#参数的缺省值" class="headerlink" title="参数的缺省值"></a>参数的缺省值</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例子</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> add_dept</span><br><span class="line">  (p_name <span class="keyword">IN</span> dept.dname<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="string">&#x27;unknown&#x27;</span>,</span><br><span class="line">   p_loc <span class="keyword">IN</span> dept.loc<span class="operator">%</span>TYPE  <span class="keyword">DEFAULT</span> <span class="string">&#x27;NEW YORK&#x27;</span>)</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   <span class="keyword">INSERT</span> <span class="keyword">INTO</span> dept (deptno,dname, loc)</span><br><span class="line">   <span class="keyword">VALUES</span> (dept_seq.NEXTVAL, p_name, p_loc);</span><br><span class="line"><span class="keyword">END</span> add_dept;</span><br><span class="line"><span class="comment">-- 执行</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">BEGIN</span></span><br><span class="line">               add_dept;</span><br><span class="line">               add_dept (<span class="string">&#x27;TRAINING&#x27;</span>);</span><br><span class="line">               add_dept ( p_loc <span class="operator">=</span><span class="operator">&gt;</span><span class="string">&#x27;BOSTON &#x27;</span>, p_name <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;EDUCATION&#x27;</span>);</span><br><span class="line">               add_dept ( p_loc <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;CHICAGO&#x27;</span>) ;</span><br><span class="line">              <span class="keyword">END</span>;     <span class="operator">/</span></span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> dept;</span><br></pre></td></tr></table></figure>
+<h4 id="参数的缺省值"><a href="#参数的缺省值" class="headerlink" title="参数的缺省值"></a>参数的缺省值</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 例子</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> add_dept<br>  (p_name <span class="hljs-keyword">IN</span> dept.dname<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;unknown&#x27;</span>,<br>   p_loc <span class="hljs-keyword">IN</span> dept.loc<span class="hljs-operator">%</span>TYPE  <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;NEW YORK&#x27;</span>)<br><span class="hljs-keyword">IS</span><br><span class="hljs-keyword">BEGIN</span><br>   <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> dept (deptno,dname, loc)<br>   <span class="hljs-keyword">VALUES</span> (dept_seq.NEXTVAL, p_name, p_loc);<br><span class="hljs-keyword">END</span> add_dept;<br><span class="hljs-comment">-- 执行</span><br><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span><span class="hljs-keyword">BEGIN</span><br>               add_dept;<br>               add_dept (<span class="hljs-string">&#x27;TRAINING&#x27;</span>);<br>               add_dept ( p_loc <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span><span class="hljs-string">&#x27;BOSTON &#x27;</span>, p_name <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;EDUCATION&#x27;</span>);<br>               add_dept ( p_loc <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;CHICAGO&#x27;</span>) ;<br>              <span class="hljs-keyword">END</span>;     <span class="hljs-operator">/</span><br><span class="hljs-keyword">SQL</span><span class="hljs-operator">&gt;</span><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> dept;<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例8.4  为scott.emp表创建一个能完成插入功能的存储过程insert_emp。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">PROCEDURE</span> insert_emp </span><br><span class="line">(<span class="keyword">no</span> <span class="keyword">IN</span> scott.emp.empno<span class="operator">%</span>TYPE,</span><br><span class="line">    name <span class="keyword">IN</span> scott.emp.ename<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    job <span class="keyword">IN</span> scott.emp.job<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="string">&#x27;SALESMAN&#x27;</span>,</span><br><span class="line">    mgr <span class="keyword">IN</span> scott.emp.mgr<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">7369</span>,</span><br><span class="line">    hiredate scott.emp.hiredate<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> SYSDATE,</span><br><span class="line">    salary scott.emp.sal<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">800</span>,</span><br><span class="line">    comm scott.emp.comm<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    deptno scott.emp.deptno<span class="operator">%</span>TYPE <span class="keyword">DEFAULT</span> <span class="number">10</span>)   <span class="keyword">IS</span></span><br><span class="line">    e_integrity EXCEPTION;</span><br><span class="line">    PRAGMA EXCEPTION_INIT (e_integrity,<span class="number">-2291</span>);</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> scott.emp <span class="keyword">VALUES</span>(<span class="keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);</span><br><span class="line">    EXCEPTION</span><br><span class="line">        <span class="keyword">WHEN</span> DUP_VAL_ON_INDEX <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;该员工已经存在！&#x27;</span>);</span><br><span class="line">        <span class="keyword">WHEN</span> e_integrity <span class="keyword">THEN</span>  dbms_output.put_line(<span class="string">&#x27;部门编号填写错误！&#x27;</span>);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">-- 注意：在参数的定义上，除了向主键字段empno插入值的变量no没有设置默认值外，其他所有的变量都给出了默认值，这样当用户调用该存储过程时，可以指定任意个数的实参。 </span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 例8.4  为scott.emp表创建一个能完成插入功能的存储过程insert_emp。</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> insert_emp <br>(<span class="hljs-keyword">no</span> <span class="hljs-keyword">IN</span> scott.emp.empno<span class="hljs-operator">%</span>TYPE,<br>    name <span class="hljs-keyword">IN</span> scott.emp.ename<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>    job <span class="hljs-keyword">IN</span> scott.emp.job<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">&#x27;SALESMAN&#x27;</span>,<br>    mgr <span class="hljs-keyword">IN</span> scott.emp.mgr<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">7369</span>,<br>    hiredate scott.emp.hiredate<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> SYSDATE,<br>    salary scott.emp.sal<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">800</span>,<br>    comm scott.emp.comm<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,<br>    deptno scott.emp.deptno<span class="hljs-operator">%</span>TYPE <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">10</span>)   <span class="hljs-keyword">IS</span><br>    e_integrity EXCEPTION;<br>    PRAGMA EXCEPTION_INIT (e_integrity,<span class="hljs-number">-2291</span>);<br><span class="hljs-keyword">BEGIN</span><br>    <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> scott.emp <span class="hljs-keyword">VALUES</span>(<span class="hljs-keyword">no</span>,name,job,mgr,hiredate,salary,comm,deptno);<br>    EXCEPTION<br>        <span class="hljs-keyword">WHEN</span> DUP_VAL_ON_INDEX <span class="hljs-keyword">THEN</span>  dbms_output.put_line(<span class="hljs-string">&#x27;该员工已经存在！&#x27;</span>);<br>        <span class="hljs-keyword">WHEN</span> e_integrity <span class="hljs-keyword">THEN</span>  dbms_output.put_line(<span class="hljs-string">&#x27;部门编号填写错误！&#x27;</span>);<br><span class="hljs-keyword">END</span>;<br><span class="hljs-comment">-- 注意：在参数的定义上，除了向主键字段empno插入值的变量no没有设置默认值外，其他所有的变量都给出了默认值，这样当用户调用该存储过程时，可以指定任意个数的实参。 </span><br><br></code></pre></td></tr></table></figure>
 
-<h4 id="删除过程"><a href="#删除过程" class="headerlink" title="删除过程"></a>删除过程</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> procedure_name;</span><br></pre></td></tr></table></figure>
+<h4 id="删除过程"><a href="#删除过程" class="headerlink" title="删除过程"></a>删除过程</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">PROCEDURE</span> procedure_name;<br></code></pre></td></tr></table></figure>
 
-<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><h5 id="创建函数"><a href="#创建函数" class="headerlink" title="创建函数"></a>创建函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> REPLACE] <span class="keyword">FUNCTION</span> function_name </span><br><span class="line">[(argument1 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data_type , argument2 [<span class="keyword">IN</span> <span class="operator">|</span> <span class="keyword">OUT</span> <span class="operator">|</span> <span class="keyword">IN</span> <span class="keyword">OUT</span>] data­_type,…)]</span><br><span class="line"><span class="keyword">RETURN</span> data_type</span><br><span class="line"><span class="keyword">IS</span> <span class="operator">|</span><span class="keyword">AS</span></span><br><span class="line">   [declaration_section;]</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">   executable_section;</span><br><span class="line">   <span class="keyword">RETURN</span> expression;</span><br><span class="line">[EXCEPTION</span><br><span class="line">   exception_handlers;</span><br><span class="line"><span class="keyword">RETURN</span> expression;</span><br><span class="line"><span class="keyword">END</span> [function_name]; </span><br><span class="line"> <span class="comment">-- return_datatype是函数返回的数值的类型，不能对数据类型的SIZE进行限定。</span></span><br><span class="line"><span class="comment">-- 在PL/SQL块中，可以使用多个RETURN语句，但是必须保证至少有一条RETURN语句存在。函数每一次运行只有一个RETURN语句被执行。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><h5 id="创建函数"><a href="#创建函数" class="headerlink" title="创建函数"></a>创建函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">OR</span> REPLACE] <span class="hljs-keyword">FUNCTION</span> function_name <br>[(argument1 [<span class="hljs-keyword">IN</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">OUT</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span>] data_type , argument2 [<span class="hljs-keyword">IN</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">OUT</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">IN</span> <span class="hljs-keyword">OUT</span>] data­_type,…)]<br><span class="hljs-keyword">RETURN</span> data_type<br><span class="hljs-keyword">IS</span> <span class="hljs-operator">|</span><span class="hljs-keyword">AS</span><br>   [declaration_section;]<br><span class="hljs-keyword">BEGIN</span><br>   executable_section;<br>   <span class="hljs-keyword">RETURN</span> expression;<br>[EXCEPTION<br>   exception_handlers;<br><span class="hljs-keyword">RETURN</span> expression;<br><span class="hljs-keyword">END</span> [function_name]; <br> <span class="hljs-comment">-- return_datatype是函数返回的数值的类型，不能对数据类型的SIZE进行限定。</span><br><span class="hljs-comment">-- 在PL/SQL块中，可以使用多个RETURN语句，但是必须保证至少有一条RETURN语句存在。函数每一次运行只有一个RETURN语句被执行。</span><br><br></code></pre></td></tr></table></figure>
 
-<h5 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例子</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> get_sal</span><br><span class="line">      (p_id <span class="keyword">IN</span> emp.empno<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">RETURN</span> NUMBER</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">      v_salary emp.sal<span class="operator">%</span>TYPE :<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">     <span class="keyword">SELECT</span> sal     <span class="keyword">INTO</span> v_salary     <span class="keyword">FROM</span> emp     <span class="keyword">WHERE</span> empno <span class="operator">=</span> p_id;</span><br><span class="line">     <span class="keyword">RETURN</span> v_salary;</span><br><span class="line"><span class="keyword">END</span> get_sal;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 例子</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">FUNCTION</span> get_sal<br>      (p_id <span class="hljs-keyword">IN</span> emp.empno<span class="hljs-operator">%</span>TYPE)<br><span class="hljs-keyword">RETURN</span> NUMBER<br><span class="hljs-keyword">IS</span><br>      v_salary emp.sal<span class="hljs-operator">%</span>TYPE :<span class="hljs-operator">=</span><span class="hljs-number">0</span>;<br><span class="hljs-keyword">BEGIN</span><br>     <span class="hljs-keyword">SELECT</span> sal     <span class="hljs-keyword">INTO</span> v_salary     <span class="hljs-keyword">FROM</span> emp     <span class="hljs-keyword">WHERE</span> empno <span class="hljs-operator">=</span> p_id;<br>     <span class="hljs-keyword">RETURN</span> v_salary;<br><span class="hljs-keyword">END</span> get_sal;<br><br></code></pre></td></tr></table></figure>
 
-<h5 id="执行函数"><a href="#执行函数" class="headerlink" title="执行函数"></a>执行函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 注意：因为函数具有返回值，所以调用函数是作为一个表达式的一部分，而不能像调用过程那样作为一个独立的语句使用。 </span></span><br><span class="line"><span class="comment">-- 方式一：SQLPLUS命令使用变量接收返回值</span></span><br><span class="line">VAR salary NUMBER;</span><br><span class="line"><span class="keyword">EXEC</span> :salary:<span class="operator">=</span>get_sal(<span class="number">7369</span>);</span><br><span class="line">PRINT salary;</span><br><span class="line"><span class="comment">-- 方式二：在SQL语句中直接调用函数</span></span><br><span class="line"><span class="keyword">SELECT</span> get_sal(<span class="number">7369</span>) <span class="keyword">FROM</span> DUAL;</span><br><span class="line"><span class="comment">-- 方式三：使用DBMS_OUTPUT调用函数（表达式运算）</span></span><br><span class="line">dbms_output.put_line(<span class="string">&#x27;工资是:&#x27;</span><span class="operator">||</span> get_sal(<span class="number">7369</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="执行函数"><a href="#执行函数" class="headerlink" title="执行函数"></a>执行函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 注意：因为函数具有返回值，所以调用函数是作为一个表达式的一部分，而不能像调用过程那样作为一个独立的语句使用。 </span><br><span class="hljs-comment">-- 方式一：SQLPLUS命令使用变量接收返回值</span><br>VAR salary NUMBER;<br><span class="hljs-keyword">EXEC</span> :salary:<span class="hljs-operator">=</span>get_sal(<span class="hljs-number">7369</span>);<br>PRINT salary;<br><span class="hljs-comment">-- 方式二：在SQL语句中直接调用函数</span><br><span class="hljs-keyword">SELECT</span> get_sal(<span class="hljs-number">7369</span>) <span class="hljs-keyword">FROM</span> DUAL;<br><span class="hljs-comment">-- 方式三：使用DBMS_OUTPUT调用函数（表达式运算）</span><br>dbms_output.put_line(<span class="hljs-string">&#x27;工资是:&#x27;</span><span class="hljs-operator">||</span> get_sal(<span class="hljs-number">7369</span>));<br><br></code></pre></td></tr></table></figure>
 
-<h5 id="删除函数"><a href="#删除函数" class="headerlink" title="删除函数"></a>删除函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> function_name;</span><br></pre></td></tr></table></figure>
+<h5 id="删除函数"><a href="#删除函数" class="headerlink" title="删除函数"></a>删除函数</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">FUNCTION</span> function_name;<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例  创建函数，从scott.emp表中查询指定编号职工的工资。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> select_sal</span><br><span class="line">(<span class="keyword">no</span> scott.emp.empno<span class="operator">%</span>TYPE)</span><br><span class="line"><span class="keyword">RETURN</span> scott.emp.sal<span class="operator">%</span>TYPE</span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">salary scott.emp.sal<span class="operator">%</span>TYPE;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">SELECT</span> sal <span class="keyword">INTO</span> salary <span class="keyword">FROM</span> scott.emp <span class="keyword">WHERE</span> empno<span class="operator">=</span><span class="keyword">no</span>;</span><br><span class="line"><span class="keyword">RETURN</span> salary;</span><br><span class="line">EXCEPTION</span><br><span class="line"><span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line"><span class="keyword">RETURN</span> <span class="number">0</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 例   创建函数，从scott.emp表中查询指定员编号工的工资和姓名。</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> REPLACE <span class="keyword">FUNCTION</span> SELECT_NAME_SAL</span><br><span class="line">(P_EMPNO <span class="keyword">IN</span> NUMBER,P_SAL <span class="keyword">OUT</span> NUMBER, P_NAME <span class="keyword">OUT</span> VARCHAR2)</span><br><span class="line"><span class="keyword">RETURN</span> NUMBER  <span class="comment">--0 表示成功 1表示异常 员工编号不存在</span></span><br><span class="line"><span class="keyword">IS</span></span><br><span class="line">V_RESULT NUMBER:<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"><span class="keyword">SELECT</span> SAL ,ENAME <span class="keyword">INTO</span> P_SAL ,P_NAME <span class="keyword">FROM</span> EMP <span class="keyword">WHERE</span> EMPNO<span class="operator">=</span> P_EMPNO;</span><br><span class="line"><span class="keyword">RETURN</span> V_RESULT;</span><br><span class="line">EXCEPTION</span><br><span class="line"><span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span></span><br><span class="line">	DBMS_OUTPUT.PUT_LINE(<span class="string">&#x27;无符合要求的记录&#x27;</span>);</span><br><span class="line">  	V_RESULT:<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">	<span class="keyword">RETURN</span> V_RESULT;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 例  创建函数，从scott.emp表中查询指定编号职工的工资。</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">FUNCTION</span> select_sal<br>(<span class="hljs-keyword">no</span> scott.emp.empno<span class="hljs-operator">%</span>TYPE)<br><span class="hljs-keyword">RETURN</span> scott.emp.sal<span class="hljs-operator">%</span>TYPE<br><span class="hljs-keyword">IS</span><br>salary scott.emp.sal<span class="hljs-operator">%</span>TYPE;<br><span class="hljs-keyword">BEGIN</span><br><span class="hljs-keyword">SELECT</span> sal <span class="hljs-keyword">INTO</span> salary <span class="hljs-keyword">FROM</span> scott.emp <span class="hljs-keyword">WHERE</span> empno<span class="hljs-operator">=</span><span class="hljs-keyword">no</span>;<br><span class="hljs-keyword">RETURN</span> salary;<br>EXCEPTION<br><span class="hljs-keyword">WHEN</span> NO_DATA_FOUND <span class="hljs-keyword">THEN</span><br><span class="hljs-keyword">RETURN</span> <span class="hljs-number">0</span>;<br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 
 
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 例   创建函数，从scott.emp表中查询指定员编号工的工资和姓名。</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">FUNCTION</span> SELECT_NAME_SAL<br>(P_EMPNO <span class="hljs-keyword">IN</span> NUMBER,P_SAL <span class="hljs-keyword">OUT</span> NUMBER, P_NAME <span class="hljs-keyword">OUT</span> VARCHAR2)<br><span class="hljs-keyword">RETURN</span> NUMBER  <span class="hljs-comment">--0 表示成功 1表示异常 员工编号不存在</span><br><span class="hljs-keyword">IS</span><br>V_RESULT NUMBER:<span class="hljs-operator">=</span><span class="hljs-number">0</span>;<br><span class="hljs-keyword">BEGIN</span><br><span class="hljs-keyword">SELECT</span> SAL ,ENAME <span class="hljs-keyword">INTO</span> P_SAL ,P_NAME <span class="hljs-keyword">FROM</span> EMP <span class="hljs-keyword">WHERE</span> EMPNO<span class="hljs-operator">=</span> P_EMPNO;<br><span class="hljs-keyword">RETURN</span> V_RESULT;<br>EXCEPTION<br><span class="hljs-keyword">WHEN</span> NO_DATA_FOUND <span class="hljs-keyword">THEN</span><br>	DBMS_OUTPUT.PUT_LINE(<span class="hljs-string">&#x27;无符合要求的记录&#x27;</span>);<br>  	V_RESULT:<span class="hljs-operator">=</span><span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">RETURN</span> V_RESULT;<br><span class="hljs-keyword">END</span>;<br><br><br><br></code></pre></td></tr></table></figure>
 
 
 
 
 
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Oracle/" class="category-chain-item">Oracle</a>
+  
+  
+
+      </span>
+    
+  
+</span>
 
     </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
-              <a href="/tags/%E5%AF%BC%E8%88%AA/" rel="tag"><i class="fa fa-tag"></i> 导航</a>
-              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A06/" rel="prev" title="Oracle复习6">
-      <i class="fa fa-chevron-left"></i> Oracle复习6
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/" rel="next" title="Oracle复习8">
-      Oracle复习8 <i class="fa fa-chevron-right"></i>
-    </a></div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+      
+        <a href="/tags/%E5%AF%BC%E8%88%AA/">#导航</a>
+      
+        <a href="/tags/Oracle/">#Oracle</a>
+      
     </div>
-      </footer>
-    
-  </article>
   
-  
-  
+</div>
 
 
+              
+  
 
-          </div>
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Oracle复习7</div>
+      <div>http://example.com/2021/11/11/Oracle复习7/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>wr1sw</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年11月11日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
           
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
 
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A08/" title="Oracle复习8">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Oracle复习8</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/11/Oracle%E5%A4%8D%E4%B9%A06/" title="Oracle复习6">
+                        <span class="hidden-mobile">Oracle复习6</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
       }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
   });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
 </script>
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
 
-  <aside class="sidebar">
-    <div class="sidebar-inner">
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
+  <script>Fluid.plugins.codeWidget();</script>
 
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">匿名块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">触发器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DML%E8%A7%A6%E5%8F%91%E5%99%A8%E5%88%9B%E5%BB%BA%E8%AF%AD%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">DML触发器创建语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8%E7%9A%84%E6%BF%80%E5%8F%91%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">触发器的激发顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E7%BA%A7%E8%A7%A6%E5%8F%91%E5%99%A8%E4%BE%8B%E5%AD%90"><span class="nav-number">2.3.</span> <span class="nav-text">语句级触发器例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E7%BA%A7%E8%A7%A6%E5%8F%91%E5%99%A8%E4%BE%8B%E5%AD%90"><span class="nav-number">2.4.</span> <span class="nav-text">行级触发器例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E7%BA%A7%E8%A7%A6%E5%8F%91%E5%99%A8%E2%80%94%E2%80%94-old%E5%92%8C-new"><span class="nav-number">2.5.</span> <span class="nav-text">行级触发器——:old和:new</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E7%BA%A7%E8%A7%A6%E5%8F%91%E5%99%A8%E2%80%94%E2%80%94%E9%99%90%E5%88%B6%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.6.</span> <span class="nav-text">行级触发器——限制条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E7%BA%A7%E8%A7%A6%E5%8F%91%E5%99%A8%E5%BA%94%E7%94%A8"><span class="nav-number">2.7.</span> <span class="nav-text">行级触发器应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">2.8.</span> <span class="nav-text">管理触发器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">子程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.1.</span> <span class="nav-text">创建过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">3.1.2.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E7%9A%84%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">参数的模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IN%E5%8F%82%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">IN参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OUT%E5%8F%82%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">OUT参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IN-OUT%E5%8F%82%E6%95%B0"><span class="nav-number">3.5.</span> <span class="nav-text">IN OUT参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E7%9A%84%E7%BC%BA%E7%9C%81%E5%80%BC"><span class="nav-number">3.6.</span> <span class="nav-text">参数的缺省值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%BF%87%E7%A8%8B"><span class="nav-number">3.7.</span> <span class="nav-text">删除过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">3.8.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%87%BD%E6%95%B0"><span class="nav-number">3.8.1.</span> <span class="nav-text">创建函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">3.8.2.</span> <span class="nav-text">调用函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="nav-number">3.8.3.</span> <span class="nav-text">执行函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%87%BD%E6%95%B0"><span class="nav-number">3.8.4.</span> <span class="nav-text">删除函数</span></a></li></ol></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="wr1sw"
-      src="/images/avatar.jpg">
-  <p class="site-author-name" itemprop="name">wr1sw</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">34</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">12</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/wr1sw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wr1sw" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
-      </span>
-  </div>
-
-
-
-      </div>
-        <div class="back-to-top motion-element">
-          <i class="fa fa-arrow-up"></i>
-          <span>0%</span>
-        </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">蜀ICP备2021024994号 </a>
-      <img src="http://www.beian.gov.cn/portal/download" style="display: inline-block;">
-  </div>
-
-<div class="copyright">
-  
-  &copy; 2021 – 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">wr1sw</span>
-</div>
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
 
   
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
 
-<script src="/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
 
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
   
 
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
